@@ -4,28 +4,28 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --color-primary-100: #E8EBF3;
-  --color-primary-200: #BCC4DC;
-  --color-primary-300: #8E9CC4;
-  --color-primary-400: #6275AD;
-  --color-primary-500: #1E3A8A;
-  --color-primary-600: #1A3175;
-  --color-primary-700: #14265A;
-  --color-primary-800: #0E1A3E;
-  --color-primary-900: #080E22;
+  --color-primary-100: #e8ebf3;
+  --color-primary-200: #bcc4dc;
+  --color-primary-300: #8e9cc4;
+  --color-primary-400: #6275ad;
+  --color-primary-500: #1e3a8a;
+  --color-primary-600: #1a3175;
+  --color-primary-700: #14265a;
+  --color-primary-800: #0e1a3e;
+  --color-primary-900: #080e22;
   --color-primary: var(--color-primary-500);
   --radius: 0.625rem;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.21 0.006 285.885);
+  --primary: oklch(0.3791 0.1378 265.52);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.967 0.001 286.375);
   --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
+  --accent: oklch(0.8868 0.182186 95.3305);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.92 0.004 286.32);
@@ -86,6 +86,31 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Extending Tailwind's Themes based on design system */
+  --color-yellow-light: #fffbe6;
+  --color-yellow-light-hover: #fff9d9;
+  --color-yellow-light-active: #fff3b0;
+  --color-accent-normal: #ffd700;
+  --color-yellow-normal-hover: #e6c200;
+  --color-yellow-normal-active: #ccac00;
+  --color-yellow-dark: #bfa100;
+  --color-yellow-dark-hover: #998100;
+  --color-yellow-dark-active: #736100;
+  --color-yellow-darker: #594b00;
+
+  --color-blue-light: #e8ebf3;
+  --color-blue-light-hover: #bcc4dc;
+  --color-blue-light-active: #8e9cc4;
+  --color-primary-normal: #6275ad;
+  --color-blue-normal-hover: #1e3a8a;
+  --color-blue-normal-active: #1a3175;
+  --color-blue-dark: #14265a;
+  --color-blue-dark-hover: #0e1a3e;
+  --color-blue-dark-active: #080e22;
+  --color-blue-darker: #0b1430;
+
+  --color-grey: #aeaeae;
 }
 
 .font-inter {
@@ -132,9 +157,34 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50 leading-[100%] tracking-normal;
   }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Custom Classes based on design system */
+.hero-text {
+  @apply text-4xl font-medium;
+}
+.heading-1 {
+  @apply text-2xl;
+}
+.heading-2 {
+  @apply text-xl;
+}
+.heading-3 {
+  @apply text-lg;
+}
+
+.heading-4 {
+  @apply text-[16px];
+}
+
+.body-text {
+  @apply text-sm;
+}
+.label {
+  @apply text-xs;
 }
