@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Eye, EyeOff, User, Mail, Lock } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaMicrosoft, FaApple } from 'react-icons/fa';
+import toast from 'react-hot-toast';
+
 
 import { useRouter } from "next/navigation";
 
@@ -68,7 +70,7 @@ const SignUpPage = () => {
   const handleSubmit = () => {
     if (validateForm()) {
       console.log('Form submitted:', formData);
-      alert('Sign up successful!');
+      toast.success('Sign up successful!');
     }
   };
 
@@ -227,11 +229,11 @@ const SignUpPage = () => {
                   type="checkbox"
                   checked={formData.rememberMe}
                   onChange={(e) => handleChange('rememberMe', e.target.checked)}
-                  className="h-4 w-4 rounded border-input text-primary-normal"
+                  className="h-4 w-4 rounded border-input text-primary"
                 />
                 <span className="text-foreground text-sm">Remember me</span>
               </label>
-              <button className="text-foreground text-sm hover:underline">
+              <button onClick={() => router.push("/reset-password")} className="text-foreground text-sm hover:underline">
                 Forgotten password?
               </button>
             </div>
@@ -285,7 +287,7 @@ const SignUpPage = () => {
           {/* Sign In Link */}
           <p className="text-center body-text text-muted-foreground mt-6">
             Already have an account?{' '}
-            <button onClick={() => router.push("/login")} className="text-primary-normal font-medium hover:underline">
+            <button onClick={() => router.push("/login")} className="text-primary font-medium hover:underline">
               Sign In
             </button>
           </p>
@@ -293,7 +295,7 @@ const SignUpPage = () => {
           {/* Terms & Conditions */}
           <p className="text-center label text-muted-foreground mt-6">
             By proceeding, you consent to our{' '}
-            <button className="text-primary-normal underline">
+            <button className="text-primary underline">
               Terms & Conditions
             </button>
           </p>
