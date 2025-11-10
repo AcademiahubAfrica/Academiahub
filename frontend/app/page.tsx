@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import Explore from "./components/ExploreSection";
 
 export default function Home() {
 	const userImg = [
@@ -22,7 +23,7 @@ export default function Home() {
 		},
 	];
 	return (
-		<div className="flex  items-center bg-linear-to-b from-[#E9EBF3] to-white bg-zinc-50 font-sans -mx-6 px-6 pt-10">
+		<div className="flex flex-col  items-center bg-linear-to-b from-[#E9EBF3] to-white bg-zinc-50 font-sans -mx-6 px-6 pt-10">
 			{/* Hero Section */}
 			<section className="hero-section justify-between min-[904px]:flex min-[904px]:items-center mx-auto min-[1300px]:w-full min-[1560px]:pl-[72px]">
 				<div className="hero-text flex flex-col gap-5 max-[404px]:w-[282px] max-lg:mx-auto min-[904px]:w-[470px] min-[1300px]:w-[704px] min-[1560px]:w-[800px]">
@@ -131,6 +132,7 @@ export default function Home() {
 					</picture>
 				</div>
 			</section>
+			<Explore />
 		</div>
 	);
 }

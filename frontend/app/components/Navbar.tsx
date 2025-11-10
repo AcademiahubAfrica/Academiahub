@@ -47,7 +47,7 @@ const Navbar = () => {
 	const pathname = usePathname();
 	return (
 		// NavBar notes: should there be a navbar on the authenticaation pages.. ie sign up and login
-		<nav className="flex relative items-center justify-between bg-white py-5 pl-[72px]">
+		<nav className="flex relative items-center justify-between bg-white py-5 ">
 			<div className="right  flex items-center gap-7">
 				{/* Menu Button */}
 				<FaBars
