@@ -2,26 +2,10 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import Explore from "./components/ExploreSection";
+import { userImg } from "./data/userImgData";
 
 export default function Home() {
-	const userImg = [
-		{
-			id: 1,
-			imagePath: "/assets/images/users/user-4.png",
-		},
-		{
-			id: 2,
-			imagePath: "/assets/images/users/user-3.png",
-		},
-		{
-			id: 3,
-			imagePath: "/assets/images/users/user-2.png",
-		},
-		{
-			id: 4,
-			imagePath: "/assets/images/users/user-1.png",
-		},
-	];
+	
 	return (
 		<div className="flex flex-col  items-center bg-linear-to-b from-[#E9EBF3] to-white bg-zinc-50 font-sans -mx-6 px-6 pt-10">
 			{/* Hero Section */}
@@ -116,15 +100,15 @@ export default function Home() {
 					<picture>
 						<source
 							media="(min-width: 1024px)"
-							srcSet="/assets/images/desktop-hero-img.png"
+							srcSet="/assets/images/LandingPage/desktop-hero-img.png"
 						/>
 						<source
 							media="(min-width: 904px)"
-							srcSet="/assets/images/tablet-hero-img.png"
+							srcSet="/assets/images/LandingPage/tablet-hero-img.png"
 						/>
 						<Image
 							className="mt-16 sm:max-[904px]:w-[85%] w-[498px] max-[904px]mx-auto lg:max-[1560px]:w-[704px] lg:h-[651px] lg:-mt-10 lg:object-center min-[1560px]:w-full"
-							src={"/assets/images/hero-img.png"}
+							src={"/assets/images/LandingPage/hero-img.png"}
 							alt="Hero image"
 							width={336}
 							height={344}
