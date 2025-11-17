@@ -218,7 +218,7 @@ const SignInPage = () => {
 
           {/* Sign Up Link */}
           <p className="text-center body-text text-muted-foreground mt-6">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <button onClick={() => router.push("/signup")} className="text-primary font-medium hover:underline">
               Sign Up
             </button>
