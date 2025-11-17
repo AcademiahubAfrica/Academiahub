@@ -1,3 +1,4 @@
+//This is an array of the user images on the hero section, the ones below the buttons 
 export const userImg = [
     {
       id: 1,
