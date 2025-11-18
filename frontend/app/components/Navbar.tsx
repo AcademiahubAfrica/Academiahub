@@ -59,7 +59,7 @@ const Navbar = () => {
 				<Image
 					src={"/assets/images/academiaHub-Logo.png"}
 					alt="AcademiaHub logo"
-					width={157}
+					width={158}
 					height={45}
 				/>
 			</div>
