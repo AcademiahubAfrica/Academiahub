@@ -5,6 +5,7 @@ import Explore from "./components/ExploreSection";
 import { userImg } from "./data/userImgData";
 import ChooseUs from "./components/LandingChooseUs";
 import LandingUserSay from "./components/LandingUserSay";
+import LandingAboutUs from "./components/LandingAboutUs";
 
 export default function Home() {
 	
@@ -121,6 +122,7 @@ export default function Home() {
 			<Explore />
 			<ChooseUs />
 			<LandingUserSay />
+			<LandingAboutUs />
 		</div>
 	);
 }
