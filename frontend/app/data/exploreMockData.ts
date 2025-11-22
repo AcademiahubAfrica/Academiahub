@@ -1,3 +1,5 @@
+// All the data on the 'Explore and find what you need section' (according to the figma file) including the path for the image(imagePath), the name of the publication(name), the profile picture of the authot.(userPfp), the name of the author(username) and their institution(institution)
+
 export  const mockData = [
     {
       id: 1,
