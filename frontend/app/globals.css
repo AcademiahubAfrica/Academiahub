@@ -111,6 +111,16 @@
   --color-blue-darker: #0b1430;
 
   --color-grey: #aeaeae;
+
+  --color-primary-100: #e8ebf3;
+  --color-primary-200: #bcc4dc;
+  --color-primary-300: #8e9cc4;
+  --color-primary-400: #6275ad;
+  --color-primary-500: #1e3a8a;
+  --color-primary-600: #1a3175;
+  --color-primary-700: #14265a;
+  --color-primary-800: #0e1a3e;
+  --color-primary-900: #080e22;
 }
 
 .font-inter {
@@ -166,7 +176,7 @@
 
 /* Custom Classes based on design system */
 .hero-text {
-  @apply text-4xl font-medium;
+  @apply text-4xl font-medium leading-[130%] tracking-normal;
 }
 .heading-1 {
   @apply text-2xl;
