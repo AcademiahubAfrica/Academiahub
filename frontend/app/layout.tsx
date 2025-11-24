@@ -36,6 +36,7 @@ export default function RootLayout({
     "/reset-password",
     "/profile-setup",
     "/verify-email",
+    "/user-registration"
   ];
 
   const isUserPage =
