@@ -1,5 +1,5 @@
-import Sidebar from "../components/Sidebar";
-import UserHeader from "../components/UserHeader";
+import Sidebar from "../../components/Sidebar";
+import UserHeader from "../../components/UserHeader";
 export default function UserLayout({
   children,
 }: {
