@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { User, ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useRouter } from "next/navigation";
 
 
 interface FormData {
@@ -38,6 +39,8 @@ const ProfileSetupPage = () => {
   
   const [errors, setErrors] = useState<FormErrors>({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const router = useRouter();
+
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -99,7 +102,7 @@ const ProfileSetupPage = () => {
         <div className="w-full max-w-md">
           {/* Logo and Header */}
           <div className="text-center mb-8">
-            <div className="flex flex-col items-center justify-center gap-3 mb-6">
+            <div className="flex flex-col items-center justify-center gap-3 mb-6 cursor-pointer" onClick={() => router.push("/")}>
               <img 
                 src="/assets/images/academialogo.png" 
                 alt="AcademiaHub Logo" 
