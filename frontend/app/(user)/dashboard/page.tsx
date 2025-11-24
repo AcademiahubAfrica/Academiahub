@@ -1,7 +1,7 @@
-import ResearchCard from "@/app/components/ResearchCard";
+import ResearchCard from "@/components/ResearchCard";
 import Image from "next/image";
 import logoIcon from "@/public/assets/images/Aicon.png";
-import ResearchFilters from "@/app/components/ResearchFilters";
+import ResearchFilters from "@/components/ResearchFilters";
 const page = () => {
   return (
     <div className="w-full">
