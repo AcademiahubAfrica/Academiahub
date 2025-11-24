@@ -1,10 +1,10 @@
-"use client"
+"use client";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
-import { Toaster } from 'react-hot-toast';
-import { usePathname } from 'next/navigation';
+import Navbar from "../components/Navbar";
+import { Toaster } from "react-hot-toast";
+import { usePathname } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,24 +28,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  
+
   // List of paths where navbar should be hidden (auth pages)
   const authPages = [
-    '/login',
-    '/signup',
-    '/reset-password',
-    '/profile-setup',
-    '/verify-email'
+    "/login",
+    "/signup",
+    "/reset-password",
+    "/profile-setup",
+    "/verify-email",
   ];
-  
+
+  const isUserPage =
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/analytics") ||
+    pathname.startsWith("/downloads") ||
+    pathname.startsWith("/uploads") ||
+    pathname.startsWith("/saved") ||
+    pathname.startsWith("/inbox");
   const isAuthPage = authPages.includes(pathname);
 
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased ${!isAuthPage ? 'p-6' : ''}`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-        {!isAuthPage && <Navbar />}
+        {!isAuthPage && !isUserPage && <Navbar />}
         {children}
         <Toaster position="top-right" reverseOrder={false} />
       </body>
