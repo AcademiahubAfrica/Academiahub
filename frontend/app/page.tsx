@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import Explore from "../components/ExploreSection";
 import { userImg } from "./data/userImgData";
-import ChooseUs from "./components/LandingChooseUs";
-import LandingUserSay from "./components/LandingUserSay";
-import LandingAboutUs from "./components/LandingAboutUs";
+import ChooseUs from "../components/LandingChooseUs";
+// import LandingUserSay from "../components/LandingUserSay";
+import LandingAboutUs from "../components/LandingAboutUs";
 
 export default function Home() {
   return (
@@ -124,7 +124,7 @@ export default function Home() {
       </section>
       <Explore />
       <ChooseUs />
-      <LandingUserSay />
+      {/* <LandingUserSay /> */}
       <LandingAboutUs />
     </div>
   );
