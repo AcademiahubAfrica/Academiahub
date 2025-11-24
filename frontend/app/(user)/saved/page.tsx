@@ -1,5 +1,11 @@
+import Search from "./Search";
+
 const page = () => {
-  return <div>saved page</div>;
+  return (
+    <main>
+      <Search />
+    </main>
+  );
 };
 
 export default page;

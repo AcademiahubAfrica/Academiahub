@@ -1,4 +1,4 @@
-import { mockData } from "../data/exploreMockData";
+import { mockData } from "../app/data/exploreMockData";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { FaRegComment } from "react-icons/fa";
