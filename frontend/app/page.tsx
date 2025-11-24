@@ -4,7 +4,6 @@ import Link from "next/link";
 import Explore from "./components/ExploreSection";
 import { userImg } from "./data/userImgData";
 import ChooseUs from "./components/LandingChooseUs";
-import LandingUserSay from "./components/LandingUserSay";
 
 export default function Home() {
 	
@@ -120,7 +119,6 @@ export default function Home() {
 			</section>
 			<Explore />
 			<ChooseUs />
-			<LandingUserSay />
 		</div>
 	);
 }
