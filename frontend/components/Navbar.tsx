@@ -1,53 +1,53 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
 import { FaBars } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
 
+// placed navlins array outside the component to prevent recreating it on every rerender
+const navlinks = [
+  {
+    id: 1,
+    name: "Home",
+    href: "/",
+  },
+  {
+    id: 2,
+    name: "Explore",
+    href: "/explore",
+  },
+  {
+    id: 3,
+    name: "Features",
+    href: "/features",
+  },
+  {
+    id: 4,
+    name: "How it works",
+    href: "/how-it-works",
+  },
+  {
+    id: 5,
+    name: "Testimonials",
+    href: "/testimonials",
+  },
+  {
+    id: 6,
+    name: "About us",
+    href: "/aboutus",
+  },
+  {
+    id: 7,
+    name: "FAQs",
+    href: "/faqs",
+  },
+];
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const navlinks = [
-    {
-      id: 1,
-      name: "Home",
-      href: "/",
-    },
-    {
-      id: 2,
-      name: "Explore",
-      href: "/explore",
-    },
-    {
-      id: 3,
-      name: "Features",
-      href: "/features",
-    },
-    {
-      id: 4,
-      name: "How it works",
-      href: "/how-it-works",
-    },
-    {
-      id: 5,
-      name: "Testimonials",
-      href: "/testimonials",
-    },
-    {
-      id: 6,
-      name: "About us",
-      href: "/aboutus",
-    },
-    {
-      id: 7,
-      name: "FAQs",
-      href: "/faqs",
-    },
-  ];
   const pathname = usePathname();
-  const router = useRouter();
+  // const router = useRouter();
 
   return (
     <nav className="flex relative items-center justify-between bg-white py-5 px-6">
