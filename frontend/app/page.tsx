@@ -7,6 +7,7 @@ import ChooseUs from "../components/LandingChooseUs";
 import LandingUserSay from "../components/LandingUserSay";
 import LandingAboutUs from "../components/LandingAboutUs";
 import JoinUs from "@/components/JoinUs";
+import HowItWorks from "@/components/HowItWorks";
 
 export default function Home() {
   return (
@@ -134,6 +135,7 @@ export default function Home() {
 
       <Explore limit={3}/>
       <ChooseUs />
+      <HowItWorks />
       <LandingUserSay />
       <LandingAboutUs />
       <JoinUs />
