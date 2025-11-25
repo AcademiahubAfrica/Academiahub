@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
+import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
 import { usePathname } from "next/navigation";
 
@@ -50,11 +51,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased p-6 pb-0`}
       >
         {!isAuthPage && !isUserPage && <Navbar />}
         {children}
         <Toaster position="top-right" reverseOrder={false} />
+        <Footer />
       </body>
     </html>
   );

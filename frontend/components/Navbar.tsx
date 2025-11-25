@@ -57,7 +57,7 @@ const Navbar = () => {
         />
         {/* Logo - Updated path to match your auth pages */}
         <Image
-          src={"/assets/images/academiaHub-Logo.png"}
+          src={"/assets/images/LandingPage/academiaHub-Logo.png"}
           alt="AcademiaHub logo"
           width={158}
           height={45}
