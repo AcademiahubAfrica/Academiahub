@@ -1,5 +1,9 @@
 const page = () => {
-  return <div>uploads page</div>;
+  return (
+    <main>
+      <Header />
+    </main>
+  );
 };
 
 export default page;
