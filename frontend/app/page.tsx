@@ -4,8 +4,9 @@ import Link from "next/link";
 import Explore from "../components/ExploreSection";
 import { userImg } from "./data/userImgData";
 import ChooseUs from "../components/LandingChooseUs";
-// import LandingUserSay from "../components/LandingUserSay";
+import LandingUserSay from "../components/LandingUserSay";
 import LandingAboutUs from "../components/LandingAboutUs";
+import JoinUs from "@/components/JoinUs";
 
 export default function Home() {
   return (
@@ -133,8 +134,9 @@ export default function Home() {
 
       <Explore limit={3}/>
       <ChooseUs />
-      {/* <LandingUserSay /> */}
+      <LandingUserSay />
       <LandingAboutUs />
+      <JoinUs />
     </div>
   );
 }

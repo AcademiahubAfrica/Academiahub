@@ -5,6 +5,7 @@ import { FaBars } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Logo from "./Logo";
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -56,12 +57,8 @@ const Navbar = () => {
           className="text-[18px] min-[1140px]:hidden cursor-pointer"
         />
         {/* Logo - Updated path to match your auth pages */}
-        <Image
-          src={"/assets/images/logo.png"}
-          alt="AcademiaHub logo"
-          width={158}
-          height={45}
-        />
+        {/* updated image to use Logo component with Link to help with navigating to "/" */}
+        <Logo />
       </div>
 
       {/* Nav Links */}
