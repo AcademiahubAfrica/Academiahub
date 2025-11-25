@@ -9,7 +9,7 @@ import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
 	return (
-		<footer className="bg-[#171717] w-[calc(100%+48px)] -mx-6 px-[39px] pt-[98px] text-white flex  pb-[66px]">
+		<footer className="bg-black w-[calc(100%+48px)] -mx-6 px-[39px] pt-[98px] text-white flex  pb-[66px]">
 			<section className="flex flex-wrap gap-[52px]">
 				<div className="first-item max-w-[323px]">
 					<header className="mb-[127px]">
