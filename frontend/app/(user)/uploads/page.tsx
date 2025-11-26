@@ -1,7 +1,9 @@
+import UploadForm from "./UploadForm";
+
 const page = () => {
   return (
     <main>
-      <Header />
+      <UploadForm />
     </main>
   );
 };

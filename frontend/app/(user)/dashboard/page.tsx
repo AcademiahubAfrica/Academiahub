@@ -1,8 +1,9 @@
-import ResearchCard from "@/components/ResearchCard";
+import { mockData } from "@/app/data/exploreMockData";
+import CardSection from "@/components/CardSection";
 import Image from "next/image";
 import logoIcon from "@/public/assets/images/Aicon.png";
 import ResearchFilters from "@/components/ResearchFilters";
-const page = () => {
+const Page = () => {
   return (
     <div className="w-full">
       <div className="h-[163px] hidden  w-full bg-linear-to-r from-primary-500! lg:flex justify-between to-primary-900">
@@ -23,9 +24,10 @@ const page = () => {
       <h4 className="text-lg font-medium leading-[130%]">
         Research of the week
       </h4>
-      <ResearchCard />
+
+      <CardSection displayData={mockData} />
     </div>
   );
 };
 
-export default page;
+export default Page;

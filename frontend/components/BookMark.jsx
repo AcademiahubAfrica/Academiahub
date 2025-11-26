@@ -1,19 +1,29 @@
 "use client";
-import { useState } from "react";
+import { useSaved } from "@/app/_contexts/SavedContext";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
-const BookMark = () => {
-  const [isBookedMarked, setIsBookMarked] = useState(false);
+const BookMark = ({ data }) => {
+  const { addToSaved, removeFromSaved, saved } = useSaved();
+
+  const isSaved = saved.some((item) => item.id === data.id);
+  const toggleSave = () => {
+    if (isSaved) {
+      removeFromSaved(data.id);
+    } else {
+      addToSaved(data);
+    }
+  };
+
   return (
     <>
-      {isBookedMarked ? (
+      {isSaved ? (
         <FaBookmark
           className="lg:absolute lg:bottom-10 cursor-pointer text-sm md:text-lg lg:right-4 text-primary"
-          onClick={() => setIsBookMarked((prev) => !prev)}
+          onClick={toggleSave}
         />
       ) : (
         <FaRegBookmark
-          className="lg:absolute lg:bottom-10 cursor-pointer text-sm md:text-lg lg:right-4 "
-          onClick={() => setIsBookMarked((prev) => !prev)}
+          className="lg:absolute lg:bottom-10 cursor-pointer text-sm md:text-lg lg:right-4 text-primary"
+          onClick={toggleSave}
         />
       )}
     </>
