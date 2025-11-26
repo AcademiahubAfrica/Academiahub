@@ -107,7 +107,8 @@ const ResetPasswordPage = () => {
               <img 
                 src="/assets/images/academialogo.png" 
                 alt="AcademiaHub Logo" 
-                className="h-16 w-auto"
+                className="h-16 w-auto cursor-pointer"
+                onClick={() => router.push("/")}
               />
             </div>
             <h1 className="heading-1 font-semibold text-foreground mb-2">

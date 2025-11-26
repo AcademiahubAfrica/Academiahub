@@ -1,13 +1,14 @@
 "use client"
 import { useState, useRef, useEffect } from 'react';
 import toast from 'react-hot-toast';
-
+import { useRouter } from "next/navigation";
 
 const EmailVerificationPage = () => {
   const [code, setCode] = useState<string[]>(['', '', '', '', '', '']);
   const [isResending, setIsResending] = useState(false);
   const [resendCountdown, setResendCountdown] = useState(0);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     // Focus first input on mount
@@ -92,11 +93,11 @@ const EmailVerificationPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
-            <div className="flex-1 flex items-center justify-center p-6 md:p-12 bg-white">
+      <div className="flex-1 flex items-center justify-center p-6 md:p-12 bg-white">
         <div className="w-full max-w-md">
           {/* Logo and Header */}
           <div className="text-center mb-8">
-            <div className="flex flex-col items-center justify-center gap-3 mb-2">
+            <div className="flex flex-col items-center justify-center gap-3 mb-2 cursor-pointer" onClick={() => router.push("/")}>
               <img 
                 src="/assets/images/academialogo.png" 
                 alt="AcademiaHub Logo" 
