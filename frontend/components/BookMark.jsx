@@ -1,5 +1,6 @@
 "use client";
 import { useSaved } from "@/app/_contexts/SavedContext";
+import toast from "react-hot-toast";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 const BookMark = ({ data }) => {
   const { addToSaved, removeFromSaved, saved } = useSaved();
@@ -8,8 +9,10 @@ const BookMark = ({ data }) => {
   const toggleSave = () => {
     if (isSaved) {
       removeFromSaved(data.id);
+      toast.success(`${data.name} Project has been removed from saved`);
     } else {
       addToSaved(data);
+      toast.success(`${data.name} has been added to saved`);
     }
   };
 
