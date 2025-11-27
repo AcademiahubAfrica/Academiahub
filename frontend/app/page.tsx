@@ -4,15 +4,19 @@ import Link from "next/link";
 import Explore from "../components/ExploreSection";
 import { userImg } from "./data/userImgData";
 import ChooseUs from "../components/LandingChooseUs";
-// import LandingUserSay from "../components/LandingUserSay";
+import LandingUserSay from "../components/LandingUserSay";
 import LandingAboutUs from "../components/LandingAboutUs";
+import JoinUs from "@/components/JoinUs";
+import HowItWorks from "@/components/HowItWorks";
+import LandingFaq from "@/components/LandingFaq";
 
 export default function Home() {
   return (
     <div className="flex flex-col items-center bg-linear-to-b from-[#E9EBF3] to-white bg-zinc-50 font-sans">
       {/* Hero Section */}
       <section className="hero-section w-full max-w-[1440px] px-6 pt-12 pb-6 min-[904px]:px-12 min-[1300px]:px-16 min-[1560px]:px-20">
-        <div className="min-[904px]:flex min-[904px]:items-center min-[904px]:justify-between min-[904px]:gap-12">
+       <div className="w-full flex justify-center">
+  <div className="min-[904px]:flex min-[904px]:items-center min-[904px]:justify-between min-[904px]:gap-12">
           <div className="hero-text flex flex-col gap-6 max-[404px]:w-[282px] max-lg:mx-auto min-[904px]:w-[470px] min-[1300px]:w-[704px] min-[1560px]:w-[800px]">
             {/* Welcome Message */}
             <div className="flex items-center gap-2 rounded-[40px] shadow-[0px_4px_4px] shadow-black/25 px-4 py-2 w-fit bg-white h-[34px]">
@@ -83,7 +87,7 @@ export default function Home() {
             {/* STATS */}
             <div className="stats flex gap-8 min-[904px]:gap-12 text-left mt-6">
               <div>
-                <h1 className="max-[1300px]:font-semibold max-[1300px]:text-[36px] min-[1300px]:text-10 max-[1300px]:leading-[130%] min-[1300px]:leading-[21px] min-[1300px]:font-normal text-primary">
+                <h1 className="max-[1300px]:font-semibold max-md:text-2xl max-[1300px]:text-[36px] min-[1300px]:text-10 max-[1300px]:leading-[130%] min-[1300px]:leading-[21px] min-[1300px]:font-normal text-primary">
                   500+
                 </h1>
                 <p className="max-[1300px]:text-[14px] min-[1300px]:text-[16px] leading-[130%] max-[1300px]:font-normal min-[1300px]:font-medium min-[1300px]:mt-2.5 text-gray-700">
@@ -91,7 +95,7 @@ export default function Home() {
                 </p>
               </div>
               <div>
-                <h1 className="max-[1300px]:font-semibold max-[1300px]:text-[36px] min-[1300px]:text-10 max-[1300px]:leading-[130%] min-[1300px]:leading-[21px] min-[1300px]:font-normal text-primary">
+                <h1 className="max-md:text-2xl max-[1300px]:font-semibold max-[1300px]:text-[36px] min-[1300px]:text-10 max-[1300px]:leading-[130%] min-[1300px]:leading-[21px] min-[1300px]:font-normal text-primary">
                   1000+
                 </h1>
                 <p className="max-[1300px]:text-[14px] min-[1300px]:text-[16px] leading-[130%] max-[1300px]:font-normal min-[1300px]:font-medium min-[1300px]:mt-2.5 text-gray-700">
@@ -99,7 +103,7 @@ export default function Home() {
                 </p>
               </div>
               <div>
-                <h1 className="max-[1300px]:font-semibold max-[1300px]:text-[36px] min-[1300px]:text-10 max-[1300px]:leading-[130%] min-[1300px]:leading-[21px] min-[1300px]:font-normal text-primary">
+                <h1 className="max-md:text-2xl max-[1300px]:font-semibold max-[1300px]:text-[36px] min-[1300px]:text-10 max-[1300px]:leading-[130%] min-[1300px]:leading-[21px] min-[1300px]:font-normal text-primary">
                   100+
                 </h1>
                 <p className="max-[1300px]:text-[14px] min-[1300px]:text-[16px] leading-[130%] min-[1300px]:mt-2.5 max-[1300px]:font-normal min-[1300px]:font-medium text-gray-700">
@@ -129,12 +133,18 @@ export default function Home() {
             </picture>
           </div>
         </div>
+  </div>
+
+
       </section>
 
       <Explore limit={3}/>
       <ChooseUs />
-      {/* <LandingUserSay /> */}
+      <HowItWorks />
+      <LandingUserSay />
       <LandingAboutUs />
+      <LandingFaq />
+      <JoinUs />
     </div>
   );
 }

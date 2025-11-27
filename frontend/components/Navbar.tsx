@@ -71,7 +71,7 @@ const Navbar = () => {
             <Link
               className={`text-[14px] leading-[130%] ${
                 pathname === link.href &&
-                "bg-gradient-to-r from-primary to-[#F8BD00] bg-clip-text text-transparent"
+                "bg-linear-to-r from-primary to-[#F8BD00] bg-clip-text text-transparent"
               }`}
               href={link.href}
             >
@@ -123,7 +123,7 @@ const Navbar = () => {
               <Link
                 className={`text-[14px] leading-[130%] ${
                   pathname === link.href &&
-                  "bg-gradient-to-r from-primary to-[#F8BD00] bg-clip-text text-transparent"
+                  "bg-linear-to-r from-primary to-[#F8BD00] bg-clip-text text-transparent"
                 }`}
                 onClick={() => setOpenMenu(false)}
                 href={link.href}
