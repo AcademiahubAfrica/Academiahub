@@ -5,6 +5,8 @@ import { FaBars } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -46,6 +48,7 @@ const Navbar = () => {
     },
   ];
   const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <nav className="flex relative items-center justify-between bg-white py-5 px-6">
@@ -57,6 +60,8 @@ const Navbar = () => {
         />
         {/* Logo - Updated path to match your auth pages */}
         <Image
+          onClick={() => router.push("/")}
+          className="cursor-pointer"
           src={"/assets/images/logo.png"}
           alt="AcademiaHub logo"
           width={158}
