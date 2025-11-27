@@ -47,6 +47,7 @@ const Navbar = () => {
     },
   ];
   const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <nav className="flex relative items-center justify-between bg-white py-5 px-6">
