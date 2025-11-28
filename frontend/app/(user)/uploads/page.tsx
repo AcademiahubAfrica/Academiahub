@@ -1,5 +1,11 @@
+import UploadForm from "./UploadForm";
+
 const page = () => {
-  return <div>uploads page</div>;
+  return (
+    <main>
+      <UploadForm />
+    </main>
+  );
 };
 
 export default page;
