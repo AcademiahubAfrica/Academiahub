@@ -3,7 +3,7 @@ import Image from "next/image";
 import { whyChooseUs } from "../app/data/whyChooseUs";
 const ChooseUs = () => {
   return (
-    <section className="flex flex-col items-center min-[1290px]:mt-[175px] max-md:mt-[127px] md:mt-[73px] mb-[100px] px-4 ">
+    <section className="flex flex-col items-center min-[1290px]:mt-[175px] max-md:mt-[127px] md:mt-[73px] mb-[100px] px-4">
       <header className="text-center  min-[1253px]:mb-[19px]">
         <h1 className="max-[1253px]:font-medium max-[1253px]:text-[24px] leading-[130%] max-[1253px]:mb-4 min-[1253px]:mb-[19px] min-[1253px]:text-[32px] min-[1253px]:font-bold">
           Why Choose Us
