@@ -3,6 +3,8 @@ import CardSection from "@/components/CardSection";
 import Image from "next/image";
 import logoIcon from "@/public/assets/images/Aicon.png";
 import ResearchFilters from "@/components/ResearchFilters";
+import { userPagesMetadata } from "@/app/data/Exports";
+export const metadata = userPagesMetadata.dashboard;
 const Page = () => {
   return (
     <div className="w-full">

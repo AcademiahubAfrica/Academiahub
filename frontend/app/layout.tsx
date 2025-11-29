@@ -38,22 +38,26 @@ export default function RootLayout({
     "/reset-password",
     "/profile-setup",
     "/verify-email",
-    "/user-registration"
+    "/user-registration",
   ];
 
-  const isUserPage =
-    pathname.startsWith("/dashboard") ||
-    pathname.startsWith("/analytics") ||
-    pathname.startsWith("/downloads") ||
-    pathname.startsWith("/uploads") ||
-    pathname.startsWith("/saved") ||
-    pathname.startsWith("/inbox");
+  const userPage = [
+    "/dashboard",
+    "/analytics",
+    "/downloads",
+    "/uploads",
+    "/saved",
+    "/inbox",
+    "/profile",
+    "/settings",
+  ];
   const isAuthPage = authPages.includes(pathname);
-
+  const isUserPage = userPage.includes(pathname);
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased p-6 pb-0`}
+        // please use padding in your own pages
+        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
         <AppProvider>
           {!isAuthPage && !isUserPage && <Navbar />}
