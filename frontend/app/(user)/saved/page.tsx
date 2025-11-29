@@ -5,7 +5,9 @@ import Search from "./Search";
 import CardSection from "@/components/CardSection";
 import { RiGalleryView2 } from "react-icons/ri";
 import { FaBars } from "react-icons/fa";
+import { userPagesMetadata } from "@/app/data/Exports";
 
+export const metadata = userPagesMetadata.saved;
 const Page = () => {
   const { saved } = useSaved();
   return (

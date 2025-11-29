@@ -1,5 +1,7 @@
+import { userPagesMetadata } from "@/app/data/Exports";
 import EmptySection from "@/components/EmptySection";
 
+export const metadata = userPagesMetadata.inbox;
 const Page = () => {
   return (
     <div className="mt-10">
