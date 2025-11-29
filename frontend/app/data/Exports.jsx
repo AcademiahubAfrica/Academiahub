@@ -49,7 +49,7 @@ export const accountLinks = [
   {
     icon: <IoMdNotificationsOutline />,
     label: "Notification",
-    link: "/notification",
+    link: "/notifications",
   },
   {
     icon: <CiSettings />,
@@ -59,10 +59,46 @@ export const accountLinks = [
   {
     icon: <BiSupport />,
     label: "Help & Support",
-    link: "/help",
+    link: "/support",
   },
   {
     icon: <GoSignOut />,
     label: "Sign Out",
   },
 ];
+
+// central metadata for (user) folder
+export const userPagesMetadata = {
+  dashboard: {
+    title: "Dashboard – User",
+    description: "Overview of your activity.",
+  },
+  analytics: {
+    title: "Analytics – User",
+    description: "Performance metrics and insights.",
+  },
+  downloads: {
+    title: "Downloads – User",
+    description: "Your downloaded research and files.",
+  },
+  uploads: {
+    title: "Uploads – User",
+    description: "Upload research and academic materials.",
+  },
+  saved: {
+    title: "Saved Items – User",
+    description: "Your saved documents and materials.",
+  },
+  inbox: {
+    title: "Inbox – User",
+    description: "Messages and notifications.",
+  },
+  profile: {
+    title: "Your Profile",
+    description: "Manage your personal information.",
+  },
+  settings: {
+    title: "Settings",
+    description: "Customize your account preferences.",
+  },
+};

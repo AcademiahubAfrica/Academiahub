@@ -8,6 +8,7 @@ import { FaBars } from "react-icons/fa";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
+import Link from "next/link";
 const UserHeader = () => {
   const [open, setOpen] = useState(false);
   return (
@@ -21,7 +22,9 @@ const UserHeader = () => {
         />
       </div>
       <div className="flex items-center   gap-4.5">
-        <IoMdNotificationsOutline className="text-xl hidden lg:block" />
+        <Link href={"/notifications"}>
+          <IoMdNotificationsOutline className="text-xl hidden lg:block" />
+        </Link>
         <Avatar>
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>OC</AvatarFallback>
