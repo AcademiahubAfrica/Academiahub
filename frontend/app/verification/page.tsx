@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter } from "next/navigation";
+import Image from 'next/image';
 
 const EmailVerificationPage = () => {
   const [code, setCode] = useState<string[]>(['', '', '', '', '', '']);
@@ -41,7 +42,6 @@ const EmailVerificationPage = () => {
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Backspace' && !code[index] && index > 0) {
-      // Move to previous input on backspace
       inputRefs.current[index - 1]?.focus();
     }
   };
@@ -59,7 +59,6 @@ const EmailVerificationPage = () => {
     });
     setCode(newCode);
 
-    // Focus the next empty input or the last one
     const nextEmptyIndex = newCode.findIndex(val => val === '');
     const focusIndex = nextEmptyIndex === -1 ? 5 : nextEmptyIndex;
     inputRefs.current[focusIndex]?.focus();
@@ -84,7 +83,7 @@ const EmailVerificationPage = () => {
     // Simulate API call
     setTimeout(() => {
       setIsResending(false);
-      setResendCountdown(30); // 30 seconds countdown
+      setResendCountdown(30); 
       toast.success('Verification code sent!');
     }, 1000);
   };
@@ -98,16 +97,20 @@ const EmailVerificationPage = () => {
           {/* Logo and Header */}
           <div className="text-center mb-8">
             <div className="flex flex-col items-center justify-center gap-3 mb-2 cursor-pointer" onClick={() => router.push("/")}>
-              <img 
+              <Image 
                 src="/assets/images/academialogo.png" 
                 alt="AcademiaHub Logo" 
                 className="h-12 w-auto"
+                width={48}
+                height={48}
               />
               <div>
-                <img 
+                <Image 
                   src="/assets/images/Logoimage.png" 
                   alt="AcademiaHub Logo Text" 
                   className="h-12 w-auto"
+                  width={150}
+                  height={48}
                 />
               </div>
             </div>
@@ -142,13 +145,13 @@ const EmailVerificationPage = () => {
               disabled={!isCodeComplete}
               className="w-full bg-primary hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed text-primary-foreground font-medium py-3 rounded-xl transition-colors"
             >
-              Continue →
+              Continue 
             </button>
 
             {/* Resend Code */}
             <div className="text-center">
               <p className="body-text text-muted-foreground">
-                Didn't receive code?{' '}
+                Didn&apos;t receive code?{' '}
                 <button
                   onClick={handleResendCode}
                   disabled={isResending || resendCountdown > 0}

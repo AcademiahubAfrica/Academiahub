@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Eye, EyeOff, Lock, CheckCircle2 } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import toast from 'react-hot-toast';
+import Image from 'next/image';
+
 
 
 interface FormData {
@@ -90,7 +92,7 @@ const ResetPasswordPage = () => {
       {/* Left side - Image (hidden on mobile, sticky on desktop) */}
       <div className="hidden lg:block lg:w-1/2 lg:sticky lg:top-0 lg:h-screen">
         <div className="h-full flex items-end">
-          <img 
+          <Image 
             src="/assets/images/reset-password.png" 
             alt="Security" 
             className="w-full h-full object-cover "
@@ -104,7 +106,7 @@ const ResetPasswordPage = () => {
           {/* Logo and Header */}
           <div className="text-center mb-8">
             <div className="flex justify-center mb-6">
-              <img 
+              <Image 
                 src="/assets/images/academialogo.png" 
                 alt="AcademiaHub Logo" 
                 className="h-16 w-auto cursor-pointer"

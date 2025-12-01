@@ -4,6 +4,7 @@ import { Eye, EyeOff, User, Mail, Lock } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaMicrosoft, FaApple } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
 
 
 import { useRouter } from "next/navigation";
@@ -86,7 +87,7 @@ const SignUpPage = () => {
       {/* Left side - Image (hidden on mobile, sticky on desktop) */}
       <div className="hidden lg:block lg:w-1/2 lg:sticky lg:top-0 lg:h-screen">
         <div className="h-full flex items-end">
-          <img 
+          <Image 
             src="/assets/images/signup-image.png" 
             alt="Education" 
             className="w-full h-full object-cover object-bottom"
@@ -100,13 +101,13 @@ const SignUpPage = () => {
           {/* Logo and Header */}
           <div className="text-center mb-8">
             <div className="flex flex-col items-center justify-center gap-3 mb-2 cursor-pointer" onClick={() => router.push("/")}>
-              <img 
+              <Image 
                 src="/assets/images/academialogo.png" 
                 alt="AcademiaHub Logo" 
                 className="h-12 w-auto"
               />
               <div>
-                <img 
+                <Image 
                   src="/assets/images/Logoimage.png" 
                   alt="AcademiaHub Logo Text" 
                   className="h-12 w-auto"

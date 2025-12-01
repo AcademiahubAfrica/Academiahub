@@ -1,8 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import ChooseUs from "../../components/LandingChooseUs";
-import AdditionalBenefits from "../../components/AdditionalBenefits";
 import JoinUs from "@/components/JoinUs";
 import Footer from "@/components/Footer";
 import Testimonial from "@/components/Testimonial";
