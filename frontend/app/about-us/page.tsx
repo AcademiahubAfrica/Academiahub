@@ -1,14 +1,11 @@
 "use client";
 
-import ChooseUs from "../../components/LandingChooseUs";
-import AdditionalBenefits from "../../components/AdditionalBenefits";
 import JoinUs from "@/components/JoinUs";
 import Footer from "@/components/Footer";
+import AboutUs from "@/components/AboutUs";
 
 
-
-export default function Features() {
-
+export default function AboutUsPage() {
 
     return (
         <main className="min-h-screen bg-linear-to-b from-gray-50 to-white">
@@ -17,15 +14,14 @@ export default function Features() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 ">
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Features for Academic Success
+              About AcademiaHub
             </h1>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-                Everything you need to access, share, and discover quality academic publications in one comprehensive platform.            </p>
+                Built by students, for students. Making academic research accessible, collaborative, and rewarding.</p>
           </div>
         </div>
-      </section>      
-      <ChooseUs />
-      <AdditionalBenefits />
+      </section>  
+        <AboutUs />
       <JoinUs />
         <Footer />
     </main>
