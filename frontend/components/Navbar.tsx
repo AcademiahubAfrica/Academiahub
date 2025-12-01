@@ -38,7 +38,7 @@ const navlinks = [
   {
     id: 6,
     name: "About us",
-    href: "/aboutus",
+    href: "/about-us",
   },
   {
     id: 7,

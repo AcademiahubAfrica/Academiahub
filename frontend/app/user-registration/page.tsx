@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { User, ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useRouter } from "next/navigation";
-
+import Image from 'next/image';
 
 interface FormData {
   fullName: string;
@@ -40,7 +40,6 @@ const ProfileSetupPage = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
-
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -89,10 +88,13 @@ const ProfileSetupPage = () => {
       {/* Left side - Image (hidden on mobile, sticky on desktop) */}
       <div className="hidden lg:block lg:w-1/2 lg:sticky lg:top-0 lg:h-screen">
         <div className="h-full flex items-end">
-          <img 
+          <Image 
             src="/assets/images/signup-image.png" 
             alt="Education" 
             className="w-full h-full object-cover object-bottom"
+            width={800}
+            height={1200}
+            priority
           />
         </div>
       </div>
@@ -103,16 +105,20 @@ const ProfileSetupPage = () => {
           {/* Logo and Header */}
           <div className="text-center mb-8">
             <div className="flex flex-col items-center justify-center gap-3 mb-6 cursor-pointer" onClick={() => router.push("/")}>
-              <img 
+              <Image 
                 src="/assets/images/academialogo.png" 
                 alt="AcademiaHub Logo" 
                 className="h-12 w-auto"
+                width={48}
+                height={48}
               />
               <div>
-                <img 
+                <Image 
                   src="/assets/images/Logoimage.png" 
                   alt="AcademiaHub Logo Text" 
                   className="h-12 w-auto"
+                  width={150}
+                  height={48}
                 />
               </div>
             </div>
