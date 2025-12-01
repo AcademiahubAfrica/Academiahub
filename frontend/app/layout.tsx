@@ -37,7 +37,7 @@ export default function RootLayout({
     "/signup",
     "/reset-password",
     "/profile-setup",
-    "/verify-email",
+    "/verification",
     "/user-registration",
   ];
 
@@ -56,7 +56,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        // please use padding in your own pages
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
         <AppProvider>
