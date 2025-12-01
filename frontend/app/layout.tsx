@@ -62,6 +62,7 @@ export default function RootLayout({
           {!isAuthPage && !isUserPage && <Navbar />}
           {children}
           <Toaster position="top-right" reverseOrder={false} />
+           {!isAuthPage && !isUserPage && <Footer />}
         </AppProvider>
       </body>
     </html>
