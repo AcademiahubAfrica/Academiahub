@@ -41,12 +41,22 @@ Quick one-time update:
   git checkout main
   git pull upstream development
 ```
+
 Make your local main pull from upstream/development by default:
 
-```
+```bash
   git fetch upstream
   git checkout main
   git branch --set-upstream-to=upstream/development main
   git pull
 ```
+
 (If your main has local commits you don't want to lose, do NOT run reset --hard.)
+
+## How to Check the Database via Prisma
+
+Run the command: 
+
+```bash
+npx prisma studio
+```
