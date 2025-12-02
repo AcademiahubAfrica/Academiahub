@@ -5,8 +5,8 @@ import { FcGoogle } from "react-icons/fc";
 import { FaMicrosoft, FaApple } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import Logo from "@/components/Logo";
+import Image from 'next/image';
+
 
 interface FormData {
   email: string;
