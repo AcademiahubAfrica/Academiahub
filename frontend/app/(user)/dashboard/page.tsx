@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { mockData } from "@/app/data/exploreMockData";
 import CardSection from "@/components/CardSection";
 import Image from "next/image";
@@ -21,7 +22,9 @@ const Page = () => {
         />
       </div>
 
-      <ResearchFilters />
+      <Suspense fallback={null}>
+        <ResearchFilters />
+      </Suspense>
 
       <h4 className="text-lg font-medium leading-[130%]">
         Research of the week
