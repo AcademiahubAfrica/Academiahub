@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { userPagesMetadata } from "@/app/data/Exports";
 import DownloadsAndLikes from "./DownloadsAndLikes";
 import ProfileSection from "./ProfileSection";
@@ -7,7 +8,9 @@ const Page = () => {
   return (
     <>
       <ProfileSection />
-      <DownloadsAndLikes />
+      <Suspense fallback={null}>
+        <DownloadsAndLikes />
+      </Suspense>
     </>
   );
 };
