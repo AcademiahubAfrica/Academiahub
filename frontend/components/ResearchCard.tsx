@@ -3,9 +3,15 @@ import Image from "next/image";
 import { FaRegComment } from "react-icons/fa";
 import { HiOutlineUpload } from "react-icons/hi";
 import { MdOutlineFileDownload } from "react-icons/md";
+import { savedResearch } from "@/app/_types/saved";
 import Like from "./Like";
 import BookMark from "./BookMark";
-const ResearchCard = ({ data }) => {
+
+type ResearchCardProps = {
+  data: savedResearch;
+};
+
+const ResearchCard = ({ data }: ResearchCardProps) => {
   return (
     <article
       className=" relative  px-1 py-1 lg::py-3 lg:px-2 border rounded-[15px] border-[#D9D9D9]  flex flex-col gap-2.5 md:gap-[18px] "

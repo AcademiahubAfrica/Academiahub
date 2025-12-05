@@ -6,6 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function loadFromLocalStorage<T>(key: string): T | undefined {
+  if (typeof window === "undefined") return undefined;
   try {
     const serialized = localStorage.getItem(key);
     if (!serialized) return undefined;
@@ -16,6 +17,7 @@ export function loadFromLocalStorage<T>(key: string): T | undefined {
   }
 }
 export function saveToLocalStorage<T>(key: string, value: T): void {
+  if (typeof window === "undefined") return;
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (err) {

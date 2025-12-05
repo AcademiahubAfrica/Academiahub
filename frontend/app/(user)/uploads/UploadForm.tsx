@@ -50,17 +50,7 @@ type FormValues = z.infer<typeof formSchema>;
 const UploadForm = () => {
   const [preview, setPreview] = useState<string | null>(null);
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-  });
-
-  const {
-    register,
-    handleSubmit,
-    control,
-    setValue,
-    formState: { errors },
-  } = form;
+  const { register, resetField, handleSubmit, control, setValue, formState: { errors }, } = useForm<FormValues>({ resolver: zodResolver(formSchema) });
 
   // --------------------
   // IMAGE CHANGE HANDLER
@@ -114,7 +104,7 @@ const UploadForm = () => {
                   <FaTimes
                     className="absolute text-primary text-4xl cursor-pointer top-2 right-2 z-10"
                     onClick={() => {
-                      setValue("image", null);
+                      resetField("image");
                       setPreview(null);
                     }}
                   />
