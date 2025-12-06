@@ -8,18 +8,24 @@ import {
 import { faqData } from "@/app/data/faqData";
 import { AccordionHeader } from "@radix-ui/react-accordion";
 
-const LandingFaq = () => {
+interface LandingFaqProps {
+	hideHeader?: boolean;
+}
+
+const LandingFaq = ({ hideHeader }: LandingFaqProps) => {
 	return (
-		<div className="mt-10 md:mt-10.5 mb-[125px]">
+		<div className="mt-10 md:mt-10.5 mb-[125px] flex justify-center">
 			<div className="w-full lg:max-w-[1000px]">
-				<header className="mb-10 md:mb-15">
-					<h1 className="font-medium text-2xl leading-[130%] text-center mt-2 md:mb-4 lg:font-bold lg:text-4xl">
-						Frequently Asked Questions
-					</h1>
-					<h3 className="font-medium text-lg lg:text-2xl lg:font-normal text-center leading-[130%]">
-						Find answers to common questions about AcademiaHub
-					</h3>
-				</header>
+				{!hideHeader && (
+					<header className="mb-10 md:mb-15">
+						<h1 className="font-medium text-2xl leading-[130%] text-center mt-2 md:mb-4 lg:font-bold lg:text-4xl">
+							Frequently Asked Questions
+						</h1>
+						<h3 className="font-medium text-lg lg:text-2xl lg:font-normal text-center leading-[130%]">
+							Find answers to common questions about AcademiaHub
+						</h3>
+					</header>
+				)}
 
 				<div className="w-full lg:max-w-[1000px]">
 					<Accordion
