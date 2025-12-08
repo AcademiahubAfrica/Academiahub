@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../lib/generated/prisma"
 }
 
@@ -25,7 +25,7 @@ model User {
   name     String?
   email    String    @unique
   image    String?
-  gender   Gender
+  gender   Gender?
   password String?
   Profile  Profile[]
 }
