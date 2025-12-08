@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 import { Eye, EyeOff, User, Mail, Lock } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { FaMicrosoft, FaApple } from "react-icons/fa";
@@ -67,10 +68,32 @@ const SignUpPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
-    if (validateForm()) {
-      console.log("Form submitted:", formData);
-      toast.success("Sign up successful!");
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
+
+    try {
+      const res = await fetch("/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.message ?? "Unable to sign up");
+      }
+
+      toast.success("Sign up successful! Please sign in.");
+      router.push("/login");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Sign up failed";
+      toast.error(errorMessage);
     }
   };
 
@@ -284,6 +307,7 @@ const SignUpPage = () => {
               <button
                 type="button"
                 className="w-full flex items-center justify-center gap-3 py-3 rounded-xl border border-border hover:bg-muted transition-colors"
+                onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
               >
                 <FcGoogle className="h-5 w-5" />
                 <span className="font-medium text-foreground">
