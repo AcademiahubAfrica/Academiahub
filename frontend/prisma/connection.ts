@@ -1,7 +1,7 @@
 /* This file is used to create a singleton instance of PrismaClient. It must always be added to a Next.js project
    to prevent multiple instances of PrismaClient from being created during hot reloading in development mode.
 */
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@/lib/generated/prisma";
 
 const prismaClientSingleton = () => {
   return new PrismaClient();

@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { FaMicrosoft, FaApple } from "react-icons/fa";
@@ -48,11 +49,22 @@ const SignInPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
-    if (validateForm()) {
-      console.log("Form submitted:", formData);
-      toast.success("Sign in successful!");
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
+
+    const res = await signIn("credentials", {
+      redirect: false,
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (res?.error) {
+      toast.error(res.error);
+      return;
     }
+
+    toast.success("Signed in successfully!");
+    router.push("/dashboard");
   };
 
   const handleChange = (field: keyof FormData, value: string | boolean) => {
@@ -206,6 +218,7 @@ const SignInPage = () => {
               <button
                 type="button"
                 className="w-full flex items-center justify-center gap-3 py-3 rounded-xl border border-border hover:bg-muted transition-colors"
+                onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
               >
                 <FcGoogle className="h-5 w-5" />
                 <span className="font-medium text-foreground">
