@@ -27,7 +27,7 @@ const LandingFaq = ({ hideHeader }: LandingFaqProps) => {
 					</header>
 				)}
 
-				<div className="w-full lg:max-w-[1000px]">
+				<div className="w-[90%] max-md:mx-auto lg:max-w-[1000px]">
 					<Accordion
 						type="single"
 						collapsible
@@ -38,13 +38,13 @@ const LandingFaq = ({ hideHeader }: LandingFaqProps) => {
 							<AccordionItem
 								key={index}
 								value={`item-${index}`}
-								className="rounded-md border md:max-lg:w-3xl lg:w-[1000px] border-gray-400 px-4 py-2"
+								className="rounded-md border md:max-lg:w-2xl lg:w-[1000px] border-gray-400 px-4 py-2"
 							>
 								<AccordionHeader
 									className="w-full flex items-center justify-between py-2 text-left font-semibold text-gray-900 transition-colors duration-200 hover:text-gray-700"
 									style={{ fontSize: "clamp(16px, 4vw, 24px)" }}
 								>
-									<span className="block max-w-[500px] text-2xl">
+									<span className="block max-w-[500px] text-xl sm:text-2xl">
 										{faq.question}
 									</span>
 									<AccordionTrigger />
