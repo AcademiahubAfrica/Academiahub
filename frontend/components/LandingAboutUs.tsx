@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 const LandingAboutUs = () => {
   return (
@@ -70,10 +71,12 @@ const LandingAboutUs = () => {
                   </p>
                 </li>
               </ul>
-
-              <Button variant={"default"} size={"lg"} className="w-[272px]">
-                Learn More
-              </Button>
+              <Link href={'/about-us'}>
+                <Button variant={"default"} size={"lg"} className="w-[272px]">
+                  Learn More
+                </Button>
+              </Link>
+              
             </div>
             <div className="w-full lg:w-auto flex justify-center lg:justify-end">
               <picture className="w-full px-4 sm:px-6 md:px-8 lg:px-0">

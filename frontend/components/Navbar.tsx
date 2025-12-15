@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 
 // placed navlins array outside the component to prevent recreating it on every rerender
@@ -49,7 +49,7 @@ const navlinks = [
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
+  // const router = useRouter();
 
   return (
     <nav className="flex relative items-center justify-between bg-white py-5 px-6">
