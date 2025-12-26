@@ -1,0 +1,11 @@
+{
+  "name": "academiahub",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "devDependencies": {
+    "eslint": "^9.39.2"
+  }
+}
