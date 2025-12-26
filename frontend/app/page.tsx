@@ -46,7 +46,7 @@ export default function Home() {
 
             {/* Buttons */}
             <div className="buttons flex max-[450px]:flex-col gap-6 mt-2">
-              <Link href={"/"}>
+              <Link href={"/explore"}>
                 <Button
                   variant="default"
                   size="lg"
@@ -55,7 +55,7 @@ export default function Home() {
                   Start Exploring
                 </Button>
               </Link>
-              <Link href={"/"}>
+              <Link href={"/dashboard"}>
                 <Button
                   variant="secondary"
                   size="lg"
