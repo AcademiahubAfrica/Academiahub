@@ -21,13 +21,17 @@ enum Gender {
 }
 
 model User {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  name     String?
-  email    String    @unique
-  image    String?
-  gender   Gender?
-  password String?
-  Profile  Profile[]
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  name                String?
+  email               String    @unique
+  image               String?
+  gender              Gender?
+  password            String?
+  emailVerified       DateTime?
+  verificationCode    String?
+  codeExpiry          DateTime?
+  lastCodeRequestAt   DateTime?
+  Profile             Profile[]
 }
 
 model Profile {
