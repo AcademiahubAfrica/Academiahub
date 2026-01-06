@@ -1,22 +1,31 @@
 "use client"
 import { useState, useRef, useEffect } from 'react';
 import toast from 'react-hot-toast';
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from 'next/image';
+import { Suspense } from 'react';
 
-const EmailVerificationPage = () => {
+const EmailVerificationContent = () => {
   const [code, setCode] = useState<string[]>(['', '', '', '', '', '']);
   const [isResending, setIsResending] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
   const [resendCountdown, setResendCountdown] = useState(0);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const email = searchParams.get('email');
 
   useEffect(() => {
+    // Redirect if no email provided
+    if (!email) {
+      router.push('/signup');
+      return;
+    }
     // Focus first input on mount
     if (inputRefs.current[0]) {
       inputRefs.current[0].focus();
     }
-  }, []);
+  }, [email, router]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -64,28 +73,62 @@ const EmailVerificationPage = () => {
     inputRefs.current[focusIndex]?.focus();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const verificationCode = code.join('');
-    if (verificationCode.length === 6) {
-      console.log('Verification code submitted:', verificationCode);
-      toast.success('Email verified successfully!');
-    } else {
+    if (verificationCode.length !== 6) {
       toast.error('Please enter the complete 6-digit code');
+      return;
+    }
+
+    setIsVerifying(true);
+    try {
+      const res = await fetch('/api/auth/verify-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, code: verificationCode }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Verification failed');
+      }
+
+      toast.success('Email verified successfully!');
+      router.push('/login?verified=true');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Verification failed';
+      toast.error(errorMessage);
+    } finally {
+      setIsVerifying(false);
     }
   };
 
-  const handleResendCode = () => {
-    if (resendCountdown > 0) return;
-    
+  const handleResendCode = async () => {
+    if (resendCountdown > 0 || isResending) return;
+
     setIsResending(true);
-    console.log('Resending verification code...');
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsResending(false);
-      setResendCountdown(30); 
+    try {
+      const res = await fetch('/api/auth/resend-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Failed to resend code');
+      }
+
+      setResendCountdown(60);
       toast.success('Verification code sent!');
-    }, 1000);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to resend code';
+      toast.error(errorMessage);
+    } finally {
+      setIsResending(false);
+    }
   };
 
   const isCodeComplete = code.every(digit => digit !== '');
@@ -116,7 +159,7 @@ const EmailVerificationPage = () => {
             </div>
             <h1 className="text-3xl font-semibold text-foreground mt-4 pb-6">Verify your email</h1>
             <p className="body-text text-foreground/70 mt-2">
-              Enter the 6 digit code we sent to your email to complete reset your password
+              Enter the 6 digit code we sent to <strong>{email}</strong> to complete your registration
             </p>
           </div>
 
@@ -142,10 +185,10 @@ const EmailVerificationPage = () => {
             {/* Continue Button */}
             <button
               onClick={handleSubmit}
-              disabled={!isCodeComplete}
+              disabled={!isCodeComplete || isVerifying}
               className="w-full bg-primary hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed text-primary-foreground font-medium py-3 rounded-xl transition-colors"
             >
-              Continue 
+              {isVerifying ? 'Verifying...' : 'Continue'}
             </button>
 
             {/* Resend Code */}
@@ -167,6 +210,18 @@ const EmailVerificationPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const EmailVerificationPage = () => {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    }>
+      <EmailVerificationContent />
+    </Suspense>
   );
 };
 

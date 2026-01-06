@@ -1,23 +1,50 @@
-import { NextRequest, NextResponse } from "next/server";    
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/connection";
 import argon2 from "argon2";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { sendVerificationEmail, generateVerificationCode, getCodeExpiry } from "@/lib/email";
 
 // Create user
 export async function POST(req:NextRequest) {
     const { password, ...body } = await req.json();
     const hashedPassword = await argon2.hash(password);
-    console.log(body);
     try {
+        // Check if user already exists
+        const existingUser = await prisma.user.findUnique({
+            where: { email: body.email }
+        });
+
+        if (existingUser) {
+            return NextResponse.json(
+                { message: "A user with this email already exists" },
+                { status: 409 }
+            );
+        }
+
+        // Generate verification code
+        const verificationCode = generateVerificationCode();
+        const codeExpiry = getCodeExpiry();
+
         const user = await prisma.user.create({
-            data: { 
-                ...body, 
-                password: hashedPassword
+            data: {
+                ...body,
+                password: hashedPassword,
+                verificationCode,
+                codeExpiry,
+                lastCodeRequestAt: new Date(),
              },
-        })
-        return  NextResponse.json(user, {status: 201})
-    } catch (_error) {
+        });
+
+        // Send verification email
+        await sendVerificationEmail(body.email, verificationCode);
+
+        return NextResponse.json(
+            { message: "User created. Please verify your email.", email: user.email },
+            { status: 201 }
+        );
+    } catch (error) {
+        console.error("Signup error:", error);
         return NextResponse.json(
             {message:"Something went wrong"},
             {status: 501}

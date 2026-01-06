@@ -1,12 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { FaMicrosoft, FaApple } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from 'next/image';
+import { Suspense } from 'react';
 
 
 interface FormData {
@@ -20,7 +21,7 @@ interface FormErrors {
   password?: string;
 }
 
-const SignInPage = () => {
+const SignInContent = () => {
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
@@ -28,9 +29,17 @@ const SignInPage = () => {
   });
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    // Show success message if coming from email verification
+    if (searchParams.get('verified') === 'true') {
+      toast.success('Email verified! You can now sign in.');
+    }
+  }, [searchParams]);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -59,6 +68,11 @@ const SignInPage = () => {
     });
 
     if (res?.error) {
+      if (res.error === "EMAIL_NOT_VERIFIED") {
+        toast.error("Please verify your email first");
+        router.push(`/verification?email=${encodeURIComponent(formData.email)}`);
+        return;
+      }
       toast.error(res.error);
       return;
     }
@@ -269,6 +283,18 @@ const SignInPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const SignInPage = () => {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    }>
+      <SignInContent />
+    </Suspense>
   );
 };
 
