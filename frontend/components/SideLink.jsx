@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 const SideLink = ({ icon, label, link }) => {
   const pathName = usePathname();
   return (
@@ -37,7 +38,10 @@ export function AccountLinks({ link, label, icon }) {
           <p className="capitalize">{label}</p>
         </Link>
       ) : (
-        <Button className=" flex items-center hover:text-primary pl-0!  bg-transparent text-black hover:bg-transparent transition duration-150 gap-2.5">
+        <Button
+          onClick={() => signOut({ callbackUrl: "/" })}
+          className=" flex items-center hover:text-primary pl-0!  bg-transparent text-black hover:bg-transparent transition duration-150 gap-2.5"
+        >
           {icon}
           {label}
         </Button>
