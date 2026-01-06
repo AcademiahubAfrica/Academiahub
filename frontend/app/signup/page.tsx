@@ -84,13 +84,14 @@ const SignUpPage = () => {
         }),
       });
 
+      const data = await res.json().catch(() => null);
+
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
         throw new Error(data?.message ?? "Unable to sign up");
       }
 
-      toast.success("Sign up successful! Please sign in.");
-      router.push("/login");
+      toast.success("Sign up successful! Please verify your email.");
+      router.push(`/verification?email=${encodeURIComponent(formData.email)}`);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Sign up failed";
       toast.error(errorMessage);
