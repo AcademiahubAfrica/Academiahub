@@ -37,7 +37,12 @@ export const authOptions:NextAuthOptions = {
             }
             const isValid = await argon2.verify(user.password, credentials.password);
             if (!isValid) throw new Error("Invalid email or password");
-            
+
+            // Check if email is verified
+            if (!user.emailVerified) {
+                throw new Error("EMAIL_NOT_VERIFIED")
+            }
+
         try {
             return user
         } catch (_error) {
