@@ -20,10 +20,17 @@ enum Gender {
   OTHER
 }
 
+enum Category {
+  RESEARCH
+  SEMINAR
+  PROJECT
+  ANALYSIS
+}
+
 model User {
-  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
   name                String?
-  email               String    @unique
+  email               String     @unique
   image               String?
   gender              Gender?
   password            String?
@@ -32,6 +39,7 @@ model User {
   codeExpiry          DateTime?
   lastCodeRequestAt   DateTime?
   Profile             Profile[]
+  Document            Document[]
 }
 
 model Profile {
@@ -52,4 +60,23 @@ type Bio {
   downloads  Int
   uploads    Int
   likes      Int
+}
+
+model Document {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  category    Category
+  institution String
+  year        String
+  fileUrl     String
+  fileKey     String
+  fileName    String
+  fileSize    Int
+  downloads   Int      @default(0)
+  likes       Int      @default(0)
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
