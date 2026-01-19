@@ -27,17 +27,22 @@ import { HiOutlineUpload } from "react-icons/hi";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import Image from "next/image";
 import { z } from "zod";
 import { FaTimes } from "react-icons/fa";
+import { useUploadThing } from "@/lib/uploadthing/uploadthing";
+import { useRouter } from "next/navigation";
 
 // --------------------
 //   ZOD SCHEMA
 // --------------------
 const formSchema = z.object({
-  image: z
+  file: z
     .custom<File>()
-    .refine((file) => file instanceof File, "Please upload an image"),
+    .refine((file) => file instanceof File, "Please upload a PDF document")
+    .refine(
+      (file) => file instanceof File && file.type === "application/pdf",
+      "Only PDF files are allowed"
+    ),
   title: z.string().min(3, "Title is required"),
   description: z.string().min(10, "Description is required"),
   category: z.string().min(1, "Please select a category"),
@@ -48,31 +53,89 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const UploadForm = () => {
-  const [preview, setPreview] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const router = useRouter();
 
   const { register, resetField, handleSubmit, control, setValue, formState: { errors }, } = useForm<FormValues>({ resolver: zodResolver(formSchema) });
 
+  const { startUpload } = useUploadThing("pdfUploader", {
+    onUploadError: (error) => {
+      setUploadError(error.message);
+      setIsUploading(false);
+    },
+  });
+
   // --------------------
-  // IMAGE CHANGE HANDLER
+  // FILE CHANGE HANDLER
   // --------------------
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    setUploadError(null);
 
     if (!file) return;
 
-    // Accept only one image
-    setValue("image", file);
+    if (file.type !== "application/pdf") {
+      setUploadError("Only PDF files are allowed");
+      return;
+    }
 
-    // Preview
-    const imgUrl = URL.createObjectURL(file);
-    setPreview(imgUrl);
+    setValue("file", file);
+    setSelectedFile(file);
   };
 
   // --------------------
   // SUBMIT HANDLER
   // --------------------
-  const onSubmit = (data: FormValues) => {
-    console.log("Form Submitted:", data);
+  const onSubmit = async (data: FormValues) => {
+    setIsUploading(true);
+    setUploadError(null);
+
+    try {
+      // Upload file to UploadThing
+      const uploadResult = await startUpload([data.file]);
+
+      if (!uploadResult || uploadResult.length === 0) {
+        throw new Error("Upload failed. Please try again.");
+      }
+
+      const uploadedFile = uploadResult[0];
+
+      // Create document record in database
+      const response = await fetch("/api/documents", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: data.title,
+          description: data.description,
+          category: data.category,
+          institution: data.institution,
+          year: data.year,
+          fileUrl: uploadedFile.ufsUrl,
+          fileKey: uploadedFile.key,
+          fileName: uploadedFile.name,
+          fileSize: uploadedFile.size,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to save document");
+      }
+
+      // Success - redirect to uploads page or show success message
+      router.push("/uploads?success=true");
+      router.refresh();
+    } catch (error) {
+      setUploadError(
+        error instanceof Error ? error.message : "An error occurred"
+      );
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -85,47 +148,55 @@ const UploadForm = () => {
         </FieldDescription>
 
         <FieldGroup>
-          {/* IMAGE UPLOAD */}
+          {/* PDF UPLOAD */}
           <Field>
-            <FieldLabel htmlFor="image">Cover image / Thumbnail</FieldLabel>
+            <FieldLabel htmlFor="file">Document (PDF)</FieldLabel>
 
-            <div className="relative min-h-[158px] lg:min-h-[342px] border-dashed border-grey border rounded-lg flex items-center justify-center overflow-hidden">
+            <div className="relative min-h-[158px] lg:min-h-[200px] border-dashed border-grey border rounded-lg flex items-center justify-center overflow-hidden">
               <Input
-                id="image"
+                id="file"
                 type="file"
-                accept="image/*"
+                accept=".pdf,application/pdf"
                 className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                onChange={handleImageChange}
+                onChange={handleFileChange}
+                disabled={isUploading}
               />
 
-              {/* If preview exists show it */}
-              {preview ? (
+              {/* If file is selected show its info */}
+              {selectedFile ? (
                 <>
                   <FaTimes
-                    className="absolute text-primary text-4xl cursor-pointer top-2 right-2 z-10"
+                    className="absolute text-primary text-2xl cursor-pointer top-2 right-2 z-10"
                     onClick={() => {
-                      resetField("image");
-                      setPreview(null);
+                      resetField("file");
+                      setSelectedFile(null);
+                      setUploadError(null);
                     }}
                   />
 
-                  <Image
-                    src={preview}
-                    alt="Preview"
-                    fill
-                    className="object-cover"
-                  />
+                  <div className="flex flex-col items-center gap-2 text-center p-4">
+                    <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <span className="text-primary font-bold text-sm">PDF</span>
+                    </div>
+                    <p className="font-medium truncate max-w-[250px]">
+                      {selectedFile.name}
+                    </p>
+                    <small className="text-grey">
+                      {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
+                    </small>
+                  </div>
                 </>
               ) : (
                 <div className="flex flex-col items-center gap-2 text-center">
                   <HiOutlineUpload size={32} />
-                  <p>Click to upload cover image</p>
-                  <small>PNG, JPEG up to 10MB</small>
+                  <p>Click to upload PDF document</p>
+                  <small>PDF up to 16MB</small>
                 </div>
               )}
             </div>
 
-            {errors.image && <FieldError>{errors.image.message}</FieldError>}
+            {errors.file && <FieldError>{errors.file.message}</FieldError>}
+            {uploadError && <FieldError>{uploadError}</FieldError>}
           </Field>
 
           {/* TITLE */}
@@ -218,7 +289,9 @@ const UploadForm = () => {
             </div>
           </div>
 
-          <Button type="submit">Upload</Button>
+          <Button type="submit" disabled={isUploading}>
+            {isUploading ? "Uploading..." : "Upload"}
+          </Button>
         </FieldGroup>
       </FieldSet>
     </form>
