@@ -1,0 +1,116 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import prisma from "@/prisma/connection";
+
+export async function POST(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const {
+      title,
+      description,
+      category,
+      institution,
+      year,
+      fileUrl,
+      fileKey,
+      fileName,
+      fileSize,
+    } = body;
+
+    // Validate required fields
+    if (!title || !description || !category || !institution || !year || !fileUrl || !fileKey || !fileName) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    // Map category string to enum
+    const categoryMap: Record<string, "RESEARCH" | "SEMINAR" | "PROJECT" | "ANALYSIS"> = {
+      research: "RESEARCH",
+      seminar: "SEMINAR",
+      project: "PROJECT",
+      analysis: "ANALYSIS",
+    };
+
+    const categoryEnum = categoryMap[category.toLowerCase()];
+    if (!categoryEnum) {
+      return NextResponse.json(
+        { error: "Invalid category" },
+        { status: 400 }
+      );
+    }
+
+    const document = await prisma.document.create({
+      data: {
+        title,
+        description,
+        category: categoryEnum,
+        institution,
+        year,
+        fileUrl,
+        fileKey,
+        fileName,
+        fileSize: fileSize || 0,
+        authorId: session.user.id,
+      },
+    });
+
+    return NextResponse.json(document, { status: 201 });
+  } catch (error) {
+    console.error("Error creating document:", error);
+    return NextResponse.json(
+      { error: "Failed to create document" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const authorId = searchParams.get("authorId");
+    const category = searchParams.get("category");
+
+    const where: Record<string, unknown> = {};
+
+    if (authorId) {
+      where.authorId = authorId;
+    }
+
+    if (category) {
+      where.category = category.toUpperCase();
+    }
+
+    const documents = await prisma.document.findMany({
+      where,
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return NextResponse.json(documents);
+  } catch (error) {
+    console.error("Error fetching documents:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch documents" },
+      { status: 500 }
+    );
+  }
+}
