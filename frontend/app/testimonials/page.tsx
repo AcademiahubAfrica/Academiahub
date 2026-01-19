@@ -1,7 +1,6 @@
 "use client";
 
 import JoinUs from "@/components/JoinUs";
-import Footer from "@/components/Footer";
 import Testimonial from "@/components/Testimonial";
 
 
@@ -25,7 +24,6 @@ export default function Testimonials() {
       </section>  
       <Testimonial />
       <JoinUs />
-        <Footer />
     </main>
     )
 }
