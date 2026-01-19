@@ -1,7 +1,6 @@
 "use client";
 
 import JoinUs from "@/components/JoinUs";
-import Footer from "@/components/Footer";
 import LandingFaq from "@/components/LandingFaq";
 
 
@@ -23,7 +22,6 @@ export default function FAQ() {
       </section>  
     <LandingFaq hideHeader={true} />
       <JoinUs />
-        <Footer />
     </main>
     )
 }

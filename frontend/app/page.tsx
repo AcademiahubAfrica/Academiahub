@@ -9,7 +9,6 @@ import LandingAboutUs from "../components/LandingAboutUs";
 import JoinUs from "@/components/JoinUs";
 import HowItWorks from "@/components/HowItWorks";
 import LandingFaq from "@/components/LandingFaq";
-import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -146,7 +145,6 @@ export default function Home() {
       <LandingAboutUs />
       <LandingFaq />
       <JoinUs />
-      <Footer />
     </div>
   );
 }

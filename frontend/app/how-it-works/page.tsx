@@ -1,7 +1,6 @@
 "use client";
 import SetupSteps from "@/components/SetupSteps";
 import JoinUs from "@/components/JoinUs";
-import Footer from "@/components/Footer";
 
 export default function HowItWorks() {
 
@@ -21,7 +20,6 @@ export default function HowItWorks() {
       </section>    
         <SetupSteps />  
         <JoinUs />
-        <Footer />
     </main>
     )
 }
