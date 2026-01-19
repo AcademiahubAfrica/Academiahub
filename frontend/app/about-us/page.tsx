@@ -1,7 +1,6 @@
 "use client";
 
 import JoinUs from "@/components/JoinUs";
-import Footer from "@/components/Footer";
 import AboutUs from "@/components/AboutUs";
 
 
@@ -23,7 +22,6 @@ export default function AboutUsPage() {
       </section>  
         <AboutUs />
       <JoinUs />
-        <Footer />
     </main>
     )
 }

@@ -3,7 +3,6 @@
 import ChooseUs from "../../components/LandingChooseUs";
 import AdditionalBenefits from "../../components/AdditionalBenefits";
 import JoinUs from "@/components/JoinUs";
-import Footer from "@/components/Footer";
 
 
 
@@ -27,7 +26,6 @@ export default function Features() {
       <ChooseUs />
       <AdditionalBenefits />
       <JoinUs />
-        <Footer />
     </main>
     )
 }
