@@ -13,29 +13,31 @@ import { Input } from "./ui/input";
 import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
+	const date = new Date();
+	const currentYear = date.getFullYear();
 	return (
 		<footer className="bg-black w-full text-white">
-			<div className="px-6 lg:px-[39px] pt-[98px] pb-[66px]">
+			<div className="px-6 lg:px-9 pt-25 pb-17">
 				<section className="flex flex-col gap-20">
 					
 					{/* MAIN FOOTER COLUMNS */}
-					<div className="flex flex-wrap gap-[52px] lg:gap-44 w-full justify-center">
+					<div className="flex flex-wrap gap-13 lg:gap-44 w-full justify-center">
 
-						<div className="first-item max-w-[323px]">
-							<header className="mb-[127px]">
+						<div className="first-item max-w-81">
+							<header className="mb-31">
 								<Image
 									src={"/assets/images/logo-white.png"}
 									alt="AcademiaHub logo"
 									width={180}
 									height={50}
 								/>
-								<p className="font-normal text-sm leading-[130%] mt-[25px]">
+								<p className="font-normal text-sm leading-[130%] mt-6.25">
 									Browse the highest-rated projects and papers recommended by
 									students and academic supervisors.
 								</p>
 							</header>
 
-							<div className="flex flex-col gap-[15px]">
+							<div className="flex flex-col gap-3.75">
 								<div className="flex gap-4">
 									<AiOutlineMail className="text-white text-[24px]" />
 									<p className="font-normal text-sm leading-[130%]">support@Academiahub.com</p>
@@ -52,7 +54,7 @@ const Footer = () => {
 						</div>
 
 						<div>
-							<h3 className="font-bold text-[20px] mb-[25px]">Platform</h3>
+							<h3 className="font-bold text-[20px] mb-6.25">Platform</h3>
 							<ul className="flex flex-col gap-5">
 								<li><Link className="text-[14px]" href="/">Home</Link></li>
 								<li><Link className="text-[14px]" href="/explore">Explore</Link></li>
@@ -63,7 +65,7 @@ const Footer = () => {
 						</div>
 
 						<div>
-							<h3 className="font-bold text-[20px] mb-[25px]">Support</h3>
+							<h3 className="font-bold text-[20px] mb-6.25">Support</h3>
 							<ul className="flex flex-col gap-5">
 								<li className="text-[14px]">Help Center</li>
 								<li className="text-[14px]">Contact Us</li>
@@ -71,7 +73,7 @@ const Footer = () => {
 						</div>
 
 						<div>
-							<h3 className="font-bold text-[20px] mb-[25px]">Legal & Support</h3>
+							<h3 className="font-bold text-[20px] mb-6.25">Legal & Support</h3>
 							<ul className="flex flex-col gap-5">
 								<li className="text-[14px]">Terms of Service</li>
 								<li className="text-[14px]">Privacy Policy</li>
@@ -79,14 +81,14 @@ const Footer = () => {
 							</ul>
 						</div>
 
-						<div className="max-w-[377px]">
-							<h3 className="font-bold text-[20px] mb-[25px]">Stay Updated</h3>
+						<div className="max-w-94">
+							<h3 className="font-bold text-[20px] mb-6.25">Stay Updated</h3>
 							<p className="text-[14px] leading-[130%]">
 								Get notified about new features, institutions and academic resources
 							</p>
 							<Input
 								placeholder="Email Address"
-								className="bg-white rounded-3xl text-black placeholder:text-black text-[16px] mt-[30px] w-[80%]"
+								className="bg-white rounded-3xl text-black placeholder:text-black text-[16px] mt-7.5 w-[80%]"
 							/>
 						</div>
 
@@ -113,7 +115,7 @@ const Footer = () => {
 						</div>
 
 						<p className="font-normal text-sm text-center mt-1 opacity-80">
-							© 2025 AcademiaHubAfrica. All rights reserved.
+							©{currentYear} AcademiaHubAfrica. All rights reserved.
 						</p>
 					</div>
 
