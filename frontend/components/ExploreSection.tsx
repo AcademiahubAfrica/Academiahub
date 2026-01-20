@@ -19,27 +19,27 @@ const ExploreSection = ({
   const displayData = limit ? mockData.slice(0, limit) : mockData;
 
   return (
-    <section className="flex flex-col items-center min-[1290px]:mt-[175px]">
-      <header className="text-center mt-[30px] flex flex-col items-center gap-2">
-        <h1 className="max-lg:font-medium max-lg:text-[24px] max-sm:w-[200px] leading-[130%] lg:font-bold lg:text-[32px]">
+    <section className="flex flex-col items-center min-[1290px]:mt-43.75">
+      <header className="text-center mt-7.5 flex flex-col items-center gap-2">
+        <h1 className="max-lg:font-medium max-lg:text-[20px]  leading-[130%] lg:font-bold lg:text-[32px]">
           Explore and Find What You Need
         </h1>
-        <h3 className="max-lg:font-medium max-lg:text-[18px] max-lg:leading-[130%] lg:font-normal lg:text-[24px] ">
+        <h3 className="max-lg:font-medium max-lg:text-sm max-lg:leading-[130%] lg:font-normal lg:text-[24px] ">
           Search through thousands of publications by topic, university or field
           of study
         </h3>
         
         {showSearch && (
-          <div className="flex gap-[9.06px] items-stretch mt-[37px] mb-8 min-[1290px]:mb-[60px] min-[1290px]:w-[1275px] min-[1290px]:justify-between">
+          <div className="flex gap-[9.06px] items-stretch mt-9.5 mb-8 min-[1290px]:mb-15 min-[1290px]:w-318.75 min-[1290px]:justify-between">
             <input
               type="search"
-              className="max-md:w-[239px] md:max-[1290px]:w-[539px] min-[1290px]:w-[961px]  border-[#D9D9D9] border rounded-[40px] p-[11px] md:pt-[22px] pb-[23px]"
+              className="max-md:w-59 md:max-[1290px]:w-134 min-[1290px]:w-240  border-[#D9D9D9] border rounded-[40px] p-2.75 h-11 md:pt-5 pb-5"
               placeholder="Search for Projects, Schools...."
             />
             <Button
               variant="default"
               size="sm"
-              className="h-11 md:w-[150px] md:h-14"
+              className="h-11 md:w-37 md:h-14"
             >
               Search
             </Button>
@@ -48,23 +48,23 @@ const ExploreSection = ({
       </header>
 
       <div>
-        <h3 className="font-medium text-[18px] leading-[130%] mb-5 md:pl-10 lg:pl-0">
+        <h3 className="font-medium text-[18px] leading-[130%] mb-5 md:pl-10 lg:pl-0 max-md:text-center">
           Suggested publications
         </h3>
-        <div className="publication-list flex max-sm:flex-col sm:flex-row sm:flex-wrap items-center sm:justify-center gap-[50px]">
+        <div className="publication-list flex max-sm:flex-col sm:flex-row sm:flex-wrap items-center sm:justify-center gap-12.5">
           {displayData.map((data) => (
             <section
-              className="max-[1290px]:w-[306px] min-[1290px]:w-[367px] py-3 px-2 rounded-[15px] border-[#D9D9D9] border flex flex-col max-[1290px]:gap-2.5 min-[1290px]:gap-[18px] "
+              className="max-[1290px]:w-76 min-[1290px]:w-91.7 py-3 px-2 rounded-[15px] border-[#D9D9D9] border flex flex-col max-[1290px]:gap-2.5 min-[1290px]:gap-4.5 "
               key={data.id}
             >
               <Image
-                className="rounded-t-[15px] min-[1290px]:w-[351px]"
+                className="rounded-t-[15px] min-[1290px]:w-87"
                 src={data.imagePath}
                 width={290}
                 height={246}
                 alt="Publication image"
               />
-              <div className="flex flex-col gap-2.5 w-[298px]">
+              <div className="flex flex-col gap-2.5 w-74">
                 <h4 className="font-medium  max-[1290px]:text-[16px] min-[1290px]:text-[18px] leading-[130%]">
                   {data.name}
                 </h4>
@@ -79,7 +79,7 @@ const ExploreSection = ({
                     />
                   </div>
                   <div>
-                    <p className="text-[14px] leading-[130%]">
+                    <p className="text-sm leading-[130%]">
                       {data.username}
                     </p>
                     <p className="text-[#AEAEAE] text-[14px] leading-[130%]">
@@ -103,9 +103,9 @@ const ExploreSection = ({
       {showViewAllButton && (
         <Link href="/explore">
           <Button
-            variant={"default"}
+            variant={"outline2"}
             size={"lg"}
-            className="w-[272px] h-14 font-medium text-[16px] leading-[130%] mt-9"
+            className="w-68 border-primary text-primary h-11 font-medium text-[16px] leading-[130%] mt-9"
           >
             Explore full library
           </Button>
