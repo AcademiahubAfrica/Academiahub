@@ -2,6 +2,7 @@
 
 import JoinUs from "@/components/JoinUs";
 import LandingFaq from "@/components/LandingFaq";
+import ContactSupport from "@/components/ContactSupport"; 
 
 
 export default function FAQ() {
@@ -21,6 +22,7 @@ export default function FAQ() {
         </div>
       </section>  
     <LandingFaq hideHeader={true} />
+    <ContactSupport />
       <JoinUs />
     </main>
     )
