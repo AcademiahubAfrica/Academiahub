@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Toaster } from "react-hot-toast";
 
-// moved these arrays to prevent recreation on rerenders and also to allow export as i'm using userPages in robots.ts
+// moved these arrays to prevent recreation on rerenders
 // List of paths where navbar/footer should be hidden (auth pages)
 const authPages = [
   "/login",

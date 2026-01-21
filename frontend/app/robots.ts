@@ -1,4 +1,3 @@
-import { userPages } from "@/components/LayoutWrapper";
 import { siteUrl } from "@/lib/jsonld/organisation";
 import { MetadataRoute } from "next";
 
@@ -7,7 +6,18 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/_next/", ...userPages],
+      disallow: [
+        "/api/",
+        "/_next/",
+        "/dashboard",
+        "/analytics",
+        "/downloads",
+        "/uploads",
+        "/saved",
+        "/inbox",
+        "/profile",
+        "/settings",
+      ],
     },
     sitemap: `${siteUrl}/sitemap.xml`,
   };
