@@ -1,7 +1,6 @@
 import JoinUs from "@/components/JoinUs";
 import LandingFaq from "@/components/LandingFaq";
-import ContactSupport from "@/components/ContactSupport";
-import { faqsMetadata } from "../data/metadataExports";
+import ContactSupport from "@/components/ContactSupport"; 
 
 export const metadata = faqsMetadata;
 export default function FAQ() {
@@ -19,11 +18,10 @@ export default function FAQ() {
             </p>
           </div>
         </div>
-
-        <LandingFaq hideHeader={true} />
-        <JoinUs />
-        <ContactSupport />
-      </section>
+      </section>  
+    <LandingFaq hideHeader={true} />
+    <ContactSupport />
+      <JoinUs />
     </main>
   );
 }
