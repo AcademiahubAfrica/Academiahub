@@ -1,4 +1,6 @@
-export const siteUrl = "https://academiahubafrica.vercel.app/";
+export const siteUrl = process.env.NEXTAUTH_URL as string;
+
+console.log(siteUrl);
 export const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "EducationalOrganization",
