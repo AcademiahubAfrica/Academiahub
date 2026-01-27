@@ -21,10 +21,10 @@ const Footer = () => {
 				<section className="flex flex-col gap-20">
 					
 					{/* MAIN FOOTER COLUMNS */}
-					<div className="flex flex-wrap gap-13 lg:gap-44 w-full justify-center">
+					<div className="grid grid-cols-1 max-sm:justify-center sm:grid-cols-2 lg:grid-cols-3 lg:space-y-2 flex-wrap gap-13 lg:space-x-48 w-full ">
 
 						<div className="first-item max-w-81">
-							<header className="mb-31">
+							<header className="mb-16">
 								<Image
 									src={"/assets/images/logo-white.png"}
 									alt="AcademiaHub logo"

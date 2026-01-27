@@ -30,7 +30,7 @@ const ExploreSection = ({
         </h3>
         
         {showSearch && (
-          <div className="flex gap-[9.06px] items-stretch mt-9.5 mb-8 min-[1290px]:mb-15 min-[1290px]:w-318.75 min-[1290px]:justify-between">
+          <div className="flex gap-[9.06px] items-stretch mt-9.5 mb-8 min-[1290px]:mb-15 min-[1290px]:w-318.75">
             <input
               type="search"
               className="max-md:w-59 md:max-[1290px]:w-134 min-[1290px]:w-240  border-[#D9D9D9] border rounded-[40px] p-2.75 h-11 md:pt-5 pb-5"
@@ -39,7 +39,7 @@ const ExploreSection = ({
             <Button
               variant="default"
               size="sm"
-              className="h-11 md:w-37 md:h-14"
+              className="h-11 md:w-37 "
             >
               Search
             </Button>
