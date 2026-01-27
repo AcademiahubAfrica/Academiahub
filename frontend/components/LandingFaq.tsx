@@ -41,10 +41,10 @@ const LandingFaq = ({ hideHeader }: LandingFaqProps) => {
 								className="rounded-md border md:max-lg:w-2xl lg:w-250 border-gray-400 px-4 py-2"
 							>
 								<AccordionHeader
-									className="w-full text-sm flex items-center h-8 justify-between py-2 text-left font-semibold text-gray-900 transition-colors duration-200 hover:text-gray-700"
+									className="w-full text-sm flex items-center h-8 justify-between py-2 md:py-5 text-left font-semibold text-gray-900 transition-colors duration-200 hover:text-gray-700"
 									style={{ fontSize: "clamp(14px, 4vw, 24px)" }}
 								>
-									<span className="block max-w-125 text-base sm:text-2xl">
+									<span className="block max-w-200 text-base sm:text-xl">
 										{faq.question}
 									</span>
 									<AccordionTrigger />
