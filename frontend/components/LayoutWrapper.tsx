@@ -22,6 +22,8 @@ export const userPages = [
   "/analytics",
   "/downloads",
   "/uploads",
+  "/support",
+  "/notifications",
   "/saved",
   "/inbox",
   "/profile",

@@ -1,23 +1,23 @@
 import { mockData } from "@/app/data/exploreMockData";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { HiOutlineUpload } from "react-icons/hi";
 import { IoTrashOutline } from "react-icons/io5";
+import { RxUpload } from "react-icons/rx";
 
 const DownloadCard = () => {
   return (
     <section className="grid grid-cols-2 gap-4 lg:grid-cols-3">
       {mockData.map((data) => (
         <article
-          className=" relative  px-1 py-1 lg::py-3 lg:px-2 border rounded-[15px] border-[#D9D9D9]  flex flex-col gap-2.5 md:gap-[18px] "
+          className=" relative  px-1 py-1 lg::py-3 lg:px-2 border rounded-[15px] border-[#D9D9D9]  flex flex-col gap-2.5 md:gap-4.5"
           key={data.id}
         >
-          <span className="absolute right-2 top-2 md:top-5 z-30 md:right-5 rounded-full md:w-11 w-5 md:h-11 h-5 cursor-pointer bg-white flex items-center justify-center">
-            <HiOutlineUpload />
+          <span className="absolute right-3 top-3 md:top-5 z-30 md:right-5 rounded-full md:w-11 w-5.75 md:h-11 h-5.75 cursor-pointer bg-white flex items-center justify-center">
+            <RxUpload className="md:w-4 md:h-4  w-2.25 h-2.25 " />
           </span>
-          <div className="relative h-[118.48px] sm:h-[246px] w-full">
+          <div className="relative h-[118.48px] sm:h-61.5 w-full">
             <Image
-              className="rounded-t-[15px] object-cover  max-w-[351px]"
+              className="rounded-t-[15px] object-cover  max-w-86.75"
               fill
               src={data.imagePath}
               alt="Publication image"
@@ -25,7 +25,7 @@ const DownloadCard = () => {
           </div>
           {/* content */}
           <div className="flex flex-col gap-2.5 w-full">
-            <h3 className="font-medium text-[8px]  md:text-lg leading-[130%]">
+            <h3 className="font-medium text-[8px] capitalize  md:text-lg leading-[130%]">
               {data.name}
             </h3>
             <div className="flex items-center  gap-1.5 mb-2">
@@ -49,17 +49,23 @@ const DownloadCard = () => {
             {/* description  */}
             <div className="space-y-1">
               <span className="flex items-center text-[8px] md:text-sm gap-2">
-                <small className="text-grey  leading-[130%]">Department:</small>
+                <small className="text-grey md:text-sm  leading-[130%]">
+                  Department:
+                </small>
                 <small className="text-[8px] md:text-sm">
                   Electrical Engineering
                 </small>
               </span>
-              <span className="flex items-center text-[8px] md:text-sm gap-2">
-                <small className="text-grey  leading-[130%]">Downloaded:</small>
+              <span className="flex items-center text-[8px] md:text-sm! gap-2">
+                <small className="text-grey md:text-sm   leading-[130%]">
+                  Downloaded:
+                </small>
                 <small className="text-[8px] md:text-sm">Oct 5, 2025</small>
               </span>
               <span className="flex items-center text-[8px] md:text-sm gap-2">
-                <small className="text-grey  leading-[130%]">Size:</small>
+                <small className="text-grey md:text-sm  leading-[130%]">
+                  Size:
+                </small>
                 <small className="text-[8px] md:text-sm">28 mb</small>
               </span>
             </div>

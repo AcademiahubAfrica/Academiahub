@@ -11,6 +11,61 @@ export const rootLayoutMetaData: Metadata = {
     "AcademiaHub Africa is a comprehensive academic ecosystem that connects students, lecturers, and researchers across African universities. The platform integrates a knowledge marketplace, collaborative research tools, an academic social network, and career development opportunities to advance scholarship, innovation, and professional growth across the continent.",
   keywords: [
     "AcademiaHub",
+
+    "monetize lecture notes Africa",
+    "sell academic research Africa",
+    "student research monetization platform",
+    "paid academic notes marketplace Africa",
+    "research revenue sharing platform",
+    "academic content monetization ecosystem",
+
+    // Research & Collaboration Tools
+    "cross-institution research Africa",
+    "pan-African academic collaboration",
+    "virtual research labs Africa",
+    "real-time academic collaboration tools",
+    "university-verified research network",
+    "collaborative research revenue model",
+    "joint academic publishing platform",
+
+    // Social & Networking Infrastructure
+    "academic social network Africa",
+    "student researcher networking Africa",
+    "lecturer-student collaboration platform",
+    "academic mentor matching Africa",
+    "research reputation system Africa",
+    "publication credibility scoring platform",
+
+    // Industry & Career Bridges
+    "academia to industry bridge Africa",
+    "academic career pipeline Africa",
+    "research-to-industry platform Africa",
+    "student research career hub",
+    "academic talent discovery Africa",
+
+    // Verification & Discovery Systems
+    "university-verified academic platform",
+    "academic content rating system",
+    "peer-review driven reputation platform",
+    "AI academic discovery Africa",
+    "personalized research discovery engine",
+
+    // User Intent & Infrastructure
+    "how African students monetize research",
+    "platform for selling academic notes in Africa",
+    "collaborative research tools for African universities",
+    "secure academic marketplace for students",
+    "pan-African digital research infrastructure",
+    "AcademiaHub Africa ecosystem",
+    "Academia Hub Africa marketplace",
+    "AcademiaHub pan-African platform",
+    "AcademiaHub Africa research network",
+    "AcademiaHub academic economy",
+    "AcademiaHub knowledge monetization",
+    "AcademiaHub student earning platform",
+
+    // Marketplace & Monetization Features
+    "academic knowledge marketplace Africa",
     "African universities",
     "academic collaboration Africa",
     "research platform Africa",
@@ -58,7 +113,6 @@ export const rootLayoutMetaData: Metadata = {
     "STEM students learning hub",
     "African university students",
   ],
-
   category: "Education",
 
   applicationName: "AcademiaHub",
