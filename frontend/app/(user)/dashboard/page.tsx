@@ -9,8 +9,8 @@ export const metadata = userPagesMetadata.dashboard;
 const Page = () => {
   return (
     <div className="w-full">
-      <div className="h-[163px] hidden  w-full bg-linear-to-r from-primary-500! lg:flex justify-between to-primary-900">
-        <h2 className="hero-text mt-5.5 ml-[27px] text-transparent bg-clip-text bg-linear-to-r from-white to-[#999999]">
+      <div className="h-40.75 hidden  w-full bg-linear-to-r from-primary-500! lg:flex justify-between to-primary-900">
+        <h2 className="hero-text mt-5.5 ml-6.75 text-transparent bg-clip-text bg-linear-to-r from-white to-[#999999]">
           Discover academic research and projects{" "}
         </h2>
 

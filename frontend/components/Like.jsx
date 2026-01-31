@@ -9,18 +9,18 @@ const Like = ({ data }) => {
   return (
     <ClickSpark sparkColor="red">
       {!isLiked ? (
-        <div className="flex items-end gap-[3px]">
+        <div className="flex items-end gap-0.75">
           <Heart
-            className="cursor-pointer w-3.5 h-3.5 lg:w-[18px] lg:h-[18px]"
+            className="cursor-pointer w-3.5 h-3.5 lg:w-4.5 lg:h-4.5"
             onClick={() => setIsLiked((prev) => !prev)}
           />
 
           <small>{likeCount}</small>
         </div>
       ) : (
-        <div className="flex items-end gap-[3px]">
+        <div className="flex items-end gap-0.75">
           <FcLike
-            className="cursor-pointer text-sm md:text-lg"
+            className="cursor-pointer w-3.5 h-3.5 lg:w-4.5 lg:h-4.5"
             onClick={() => setIsLiked((prev) => !prev)}
           />
 
