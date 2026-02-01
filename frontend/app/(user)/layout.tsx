@@ -15,20 +15,22 @@ export default async function UserLayout({
   }
   return (
     <SidebarProvider>
-      <div className="h-screen w-full max-w-360! mx-auto bg-gray-50 flex max-sm:px-1">
+      <div className="h-screen overflow-x-hidden w-screen max-w-360! mx-auto bg-gray-50 flex max-sm:px-1">
         {/* DESKTOP SIDEBAR */}
         <div className="hidden md:block">
           <Sidebar />
         </div>
 
         {/* RIGHT SIDE (HEADER + OUTLET) */}
-        <div className="flex-1 flex flex-col md:ml-12 lg:ml-62.5">
-          <div className="md:fixed top-0 md:w-[calc(100%-58px)]  lg:w-[calc(100%-250px)]  z-20 backdrop:blur-lg">
+        <div className="flex-1 flex flex-col md:ml-12 xl:ml-62.5">
+          <div className="fixed top-0 md:w-[calc(100%-52px)] px-2 z-50  lg:w-full lg:sticky w-full  backdrop:blur-lg">
             <UserHeader />
           </div>
 
           {/* OUTLET (scrollable) */}
-          <main className="flex-1 lg:ml-4 md:mt-14 p-2 pb-10">{children}</main>
+          <main className="flex-1 mt-16 lg:ml-4 md:mt-14 lg:mt-4 p-2 pb-10">
+            {children}
+          </main>
         </div>
       </div>
     </SidebarProvider>

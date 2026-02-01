@@ -38,9 +38,9 @@ const ResearchFilters = () => {
   }
 
   return (
-    <div className="flex items-center my-2 min-h-16 justify-between ">
+    <div className="flex  md:mt-0 items-center my-2 min-h-16 justify-between ">
       {/* CATEGORY FILTER */}
-      <div className="lg:flex items-center flex-wrap gap-[31px] hidden">
+      <div className="lg:flex items-center flex-wrap gap-7.75 hidden">
         {filterButtons.map(({ label, variant }) => (
           <Button
             key={label}
@@ -58,7 +58,7 @@ const ResearchFilters = () => {
           value={filterBy}
           onValueChange={(value) => updateParam("category", value)}
         >
-          <SelectTrigger className="w-[145px] cursor-pointer border border-input">
+          <SelectTrigger className="w-36.25 cursor-pointer border border-input">
             <SelectValue placeholder="All" defaultValue={filterBy} />
           </SelectTrigger>
 
@@ -75,7 +75,7 @@ const ResearchFilters = () => {
       {/* SORT BY (Most recent, etc.) */}
       <div>
         <Select value={sortBy} onValueChange={(v) => updateParam("sort", v)}>
-          <SelectTrigger className="w-[145px] cursor-pointer border border-input">
+          <SelectTrigger className="w-36.25 cursor-pointer border border-input">
             <SelectValue placeholder="Most recent" defaultValue={sortBy} />
           </SelectTrigger>
 
