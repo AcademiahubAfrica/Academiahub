@@ -9,8 +9,10 @@ import LandingAboutUs from "../components/LandingAboutUs";
 import JoinUs from "@/components/JoinUs";
 import HowItWorks from "@/components/HowItWorks";
 import LandingFaq from "@/components/LandingFaq";
+import HeroButtons from "@/HeroButtons";
 
 export default function Home() {
+	
 	return (
 		<div className="flex flex-col items-center bg-linear-to-b from-[#E9EBF3] to-white bg-zinc-50 font-sans">
 			{/* Hero Section */}
@@ -44,7 +46,7 @@ export default function Home() {
 							</h4>
 
 							{/* Buttons */}
-							<div className="buttons flex max-sm:flex-col gap-2 ">
+							{/* <div className="buttons flex max-sm:flex-col gap-2 ">
 								<Link href={"/explore"}>
 									<Button
 										variant="default"
@@ -63,7 +65,8 @@ export default function Home() {
 										Share Publication
 									</Button>
 								</Link>
-							</div>
+							</div> */}
+							<HeroButtons />
 
 							{/* Images */}
 							<div className="mt-1">
