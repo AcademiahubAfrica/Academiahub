@@ -1,6 +1,5 @@
-import { Button } from "@/components/ui/button";
+
 import Image from "next/image";
-import Link from "next/link";
 import Explore from "../components/ExploreSection";
 import { userImg } from "./data/userImgData";
 import ChooseUs from "../components/LandingChooseUs";

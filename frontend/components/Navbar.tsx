@@ -65,7 +65,7 @@ const Navbar = () => {
       </div>
 
       {/* Nav Links */}
-      <ul className="hidden min-[1140px]:flex gap-[30px] ">
+      <ul className="hidden min-[1140px]:flex gap-7.5 ">
         {navlinks.map((link) => (
           <li key={link.id}>
             <Link
@@ -82,12 +82,12 @@ const Navbar = () => {
       </ul>
 
       {/* CTA Buttons  */}
-      <div className="buttons hidden md:flex items-center gap-[18px]">
+      <div className="buttons hidden md:flex items-center gap-4.5">
         <Link href={"/signup"}>
           <Button
             variant="default"
             size="lg"
-            className="font-normal cursor-pointer text-[14px] leading-[130%] w-[150px]"
+            className="font-normal cursor-pointer text-[14px] leading-[130%] w-37.5"
           >
             Join for free
           </Button>
@@ -96,7 +96,7 @@ const Navbar = () => {
           <Button
             variant="secondary"
             size="lg"
-            className="font-medium cursor-pointer border border-primary text-[16px] leading-[130%] w-[150px]"
+            className="font-medium cursor-pointer border border-primary text-[16px] leading-[130%] w-37.5"
           >
             Log in
           </Button>
@@ -113,11 +113,11 @@ const Navbar = () => {
 
       {/* SIDE NAV Menu */}
       <div
-        className={`z-50 side-nav top-0 bg-white fixed h-full left-0 min-[1140px]:hidden max-md:w-[220px] md:w-60 flex ${
+        className={`z-50 side-nav top-0 bg-white fixed h-full left-0 min-[1140px]:hidden max-md:w-55 md:w-60 flex ${
           openMenu ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-700`}
       >
-        <ul className="flex flex-col gap-10 mt-11 ml-[25px]">
+        <ul className="flex flex-col gap-10 mt-11 ml-6.25">
           {navlinks.map((link) => (
             <li key={link.id}>
               <Link
