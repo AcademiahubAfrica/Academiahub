@@ -14,7 +14,7 @@ type ResearchCardProps = {
 const ResearchCard = ({ data }: ResearchCardProps) => {
   return (
     <article
-      className=" relative  px-1 py-1 lg:py-2.75 lg:px-3 max-w-91.75 border rounded-[15px] border-[#D9D9D9]   "
+      className=" relative w-full  px-1 py-1 lg:py-2.75 lg:px-3 max-w-91.75 border rounded-[15px] border-[#D9D9D9]   "
       key={data.id}
     >
       <span className="absolute right-3 top-3 md:top-5 z-30 md:right-5 rounded-full md:w-11 w-5.75 md:h-11 h-5.75 cursor-pointer bg-white flex items-center justify-center">
@@ -52,7 +52,7 @@ const ResearchCard = ({ data }: ResearchCardProps) => {
           </div>
         </div>
         {/* stats section */}
-        <div className="flex items-center py-2 gap-2 mb-1.5 justify-between lg:justify-around lg:gap-12.5 ">
+        <div className="flex items-center py-2 gap-2 mb-1.5 justify-between lg:justify-around lg:gap-12.5  px-2">
           <Like data={data} />
           <div className="flex items-end gap-0.75">
             <FaRegComment className="cursor-pointer text-black w-3.5 h-3.5 lg:w-4.5 lg:h-5" />

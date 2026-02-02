@@ -6,7 +6,7 @@ import { RxUpload } from "react-icons/rx";
 
 const DownloadCard = () => {
   return (
-    <section className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+    <section className="grid grid-cols-2 gap-4 md:grid-cols-3">
       {mockData.map((data) => (
         <article
           className=" relative  px-1 py-1 lg::py-3 lg:px-2 border rounded-[15px] border-[#D9D9D9]  flex flex-col gap-2.5 md:gap-4.5"

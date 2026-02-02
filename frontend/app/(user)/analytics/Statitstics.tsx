@@ -31,21 +31,21 @@ const stats = [
 ];
 const Statitstics = () => {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 xl:gap-8">
+    <div className="grid grid-cols-2 mt-12 md:mt-0 lg:grid-cols-4 gap-5 xl:gap-8">
       {stats.map(({ label, percentage, value, icon }, index) => (
         <div className="rounded-[20px] p-4" key={index}>
-          <p className="mb-[5px] font-medium">{label}</p>
+          <p className="mb-1.25 font-medium">{label}</p>
           {percentage < 0 ? (
             <span className="flex sm:items-center gap-0.5">
               <IoTrendingDown size={12} className="text-red-500" />
-              <small className="leading-[21px] text-red-500 font-normal">
+              <small className="leading-5.25 text-red-500 font-normal">
                 {percentage}% from last month{" "}
               </small>
             </span>
           ) : (
             <span className="flex sm:items-center gap-0.5">
               <IoTrendingUp size={12} className="text-green-500" />
-              <small className="leading-[21px] text-green-500 font-normal">
+              <small className="leading-5.25 text-green-500 font-normal">
                 +{percentage}% from last month{" "}
               </small>
             </span>
