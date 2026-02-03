@@ -1,6 +1,4 @@
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Link from "next/link";
 import Explore from "../components/ExploreSection";
 import { userImg } from "./data/userImgData";
 import ChooseUs from "../components/LandingChooseUs";
@@ -9,6 +7,7 @@ import LandingAboutUs from "../components/LandingAboutUs";
 import JoinUs from "@/components/JoinUs";
 import HowItWorks from "@/components/HowItWorks";
 import LandingFaq from "@/components/LandingFaq";
+import HeroButtons from "@/components/HeroButtons";
 
 export default function Home() {
 	return (
@@ -43,27 +42,8 @@ export default function Home() {
 								share your work with the community.
 							</h4>
 
-							{/* Buttons */}
-							<div className="buttons flex max-sm:flex-col gap-2 ">
-								<Link href={"/explore"}>
-									<Button
-										variant="default"
-										size="lg"
-										className="w-full h-11 bg-linear-to-r from-primary "
-									>
-										Start Exploring
-									</Button>
-								</Link>
-								<Link href={"/dashboard"}>
-									<Button
-										variant="secondary"
-										size="lg"
-										className="w-full h-11 border border-primary shadow-[0_5px_4px] shadow-[#E9EBF3]"
-									>
-										Share Publication
-									</Button>
-								</Link>
-							</div>
+							
+							<HeroButtons />
 
 							{/* Images */}
 							<div className="mt-1">
