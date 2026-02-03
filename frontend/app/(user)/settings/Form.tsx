@@ -46,9 +46,9 @@ const Form = () => {
             />
           </Field>
 
-          {/* Instituetion */}
+          {/* Institution */}
           <Field className="">
-            <FieldLabel htmlFor="institution">Instituetion</FieldLabel>
+            <FieldLabel htmlFor="institution">Institution</FieldLabel>
             <Input
               id="institution"
               className="bg-[#FAFAFA]"
