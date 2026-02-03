@@ -1,24 +1,20 @@
 'use client'
 import React, {useEffect, useState} from 'react'
-import { Button } from './components/ui/button'
+import { Button } from './ui/button'
 import Link from 'next/link'
 
 const HeroButtons = () => {
-  const [windowWidth, setWindowWidth] = useState<number | undefined>(undefined)
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
   const handleResize = () => {
     setWindowWidth(window.innerWidth)
 	}
   useEffect(()=>{
     window.addEventListener('resize', handleResize)
-
-		return(()=>{
-			window.removeEventListener('resize',handleResize)
-		})
   },[])
 
 
-  if (windowWidth && windowWidth < 768 ) {
+  if (windowWidth < 768 ) {
 		return (
 			<div className="buttons flex max-sm:flex-col gap-2 ">
 								<Link href={"/signup"}>
