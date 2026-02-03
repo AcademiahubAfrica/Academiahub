@@ -10,7 +10,7 @@ const page = () => {
     <main>
       <Header />
       <Statitstics />
-      <div className="flex flex-col lg:flex-row lg:justify-between">
+      <div className="flex flex-col  lg:flex-row lg:justify-between">
         <MyChart />
         <RecentActivities />
       </div>

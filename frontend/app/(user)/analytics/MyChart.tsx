@@ -34,13 +34,13 @@ const chartConfig = {
 
 export default function MyChart() {
   return (
-    <section className="px-4 py-2 basis-[58%]">
+    <section className="md:px-4 py-2  basis-[58%]">
       <div className="flex justify-between items-center mb-2">
         <h3 className="text-lg font-semibold">Analytics</h3>
         <Button variant="outline2">Yearly</Button>
       </div>
 
-      <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+      <ChartContainer config={chartConfig} className="min-h-50 w-full">
         <AreaChart data={chartData}>
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
 

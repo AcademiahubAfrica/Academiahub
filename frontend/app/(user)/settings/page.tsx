@@ -7,7 +7,7 @@ const page = () => {
   return (
     <>
       <Header />
-      <div className="pl-[91px]">
+      <div className="lg:pl-22.75">
         <Form />
       </div>
     </>
