@@ -1,4 +1,4 @@
-import JoinUs from "@/components/JoinUs";
+import JoinUs from "@/components/landing/JoinUs";
 import Testimonial from "@/components/Testimonial";
 import { testimonialsMetadata } from "../data/metadataExports";
 

@@ -4,7 +4,7 @@ import {
 	AiOutlineMessage,
 	AiOutlineSetting,
 	AiOutlineUpload,
-  AiOutlineUser,
+	AiOutlineUser,
 } from "react-icons/ai";
 import Image from "next/image";
 import EmptySection from "@/components/EmptySection";
@@ -38,12 +38,12 @@ const page = () => {
 				<h1 className="font-medium text-2xl">Notifications</h1>
 			</header>
 
-      {
-        notifications.length === 0 && <EmptySection
+			{notifications.length === 0 && (
+				<EmptySection
 					title="No notification yet"
 					text="When someone interacts with your content, you'll see it here"
 				/>
-      }
+			)}
 
 			<div>
 				{notifications.map((n) => (

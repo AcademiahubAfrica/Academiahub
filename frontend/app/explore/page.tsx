@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { mockData } from "../data/exploreMockData";
-import JoinUs from "@/components/JoinUs";
+import JoinUs from "@/components/landing/JoinUs";
 
 export default function ExplorePage() {
   const [searchQuery, setSearchQuery] = useState("");

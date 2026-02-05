@@ -1,5 +1,5 @@
-import JoinUs from "@/components/JoinUs";
-import LandingFaq from "@/components/LandingFaq";
+import JoinUs from "@/components/landing/JoinUs";
+import LandingFaq from "@/components/landing/LandingFaq";
 import ContactSupport from "@/components/ContactSupport";
 import { faqsMetadata } from "../data/metadataExports";
 
