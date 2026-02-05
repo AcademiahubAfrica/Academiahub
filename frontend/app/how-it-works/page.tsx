@@ -1,5 +1,5 @@
 import SetupSteps from "@/components/SetupSteps";
-import JoinUs from "@/components/JoinUs";
+import JoinUs from "@/components/landing/JoinUs";
 import { howItWorksMetadata } from "../data/metadataExports";
 
 export const metadata = howItWorksMetadata;

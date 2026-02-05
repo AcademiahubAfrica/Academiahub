@@ -1,4 +1,4 @@
-import JoinUs from "@/components/JoinUs";
+import JoinUs from "@/components/landing/JoinUs";
 import AboutUs from "@/components/AboutUs";
 import { aboutUsMetadata } from "../data/metadataExports";
 

@@ -4,7 +4,8 @@ import {
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from "./ui/accordion";
+} from "../ui/accordion";
+
 import { faqData } from "@/app/data/faqData";
 import { AccordionHeader } from "@radix-ui/react-accordion";
 
