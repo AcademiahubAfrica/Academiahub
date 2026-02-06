@@ -2,7 +2,7 @@
 import React from "react";
 import { useSaved } from "@/app/_contexts/SavedContext";
 import CardSection from "@/components/CardSection";
-import EmptySection from "@/components/EmptySection";
+import EmptySection from "@/components/user/notifications/EmptySection";
 const SavedList = () => {
 	const { saved } = useSaved();
 	return (
