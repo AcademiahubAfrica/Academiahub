@@ -1,8 +1,7 @@
-import { Suspense } from "react";
-import { faqData } from "@/app/data/faqData";
-import FAQContent from "@/components/faqs/faqContent";
-
-export const metadata = faqData;
+import JoinUs from "@/components/landing/JoinUs";
+import LandingFaq from "@/components/landing/LandingFaq";
+import ContactSupport from "@/components/ContactSupport";
+import { faqsMetadata } from "../data/metadataExports";
 
 export default function FAQ() {
   return (

@@ -1,6 +1,6 @@
-import { Suspense } from "react";
-import { howItWorksMetadata } from "@/app/data/metadataExports";
-import HowItWorksContent from "@/components/how-it-works/howItWorksContent";
+import SetupSteps from "@/components/SetupSteps";
+import JoinUs from "@/components/landing/JoinUs";
+import { howItWorksMetadata } from "../data/metadataExports";
 
 export const metadata = howItWorksMetadata;
 

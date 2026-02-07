@@ -1,6 +1,6 @@
-import { Suspense } from "react";
-import { testimonialsMetadata } from "@/app/data/metadataExports";
-import TestimonialsContent from "@/components/testimonials/testimonialsContent";
+import JoinUs from "@/components/landing/JoinUs";
+import Testimonial from "@/components/Testimonial";
+import { testimonialsMetadata } from "../data/metadataExports";
 
 export const metadata = testimonialsMetadata;
 
