@@ -43,7 +43,7 @@ const additionalBenefits = [
 
 const AdditionalBenefits = () => {
   return (
-    <section className="w-full bg-gradient-to-b from-gray-100 to-gray-200 py-16 px-4">
+    <section className="w-full bg-linear-to-b from-gray-100 to-gray-200 py-16 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <header className="text-center mb-12">

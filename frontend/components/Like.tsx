@@ -3,9 +3,17 @@ import ClickSpark from "@/components/ClickSpark";
 import { Heart } from "lucide-react";
 import { useState } from "react";
 import { FcLike } from "react-icons/fc";
-const Like = ({ data }) => {
+
+interface LikeProps {
+  data: {
+    likes?: number;
+  };
+}
+
+const Like = ({ data }: LikeProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const likeCount = data.likes || 0;
+  
   return (
     <ClickSpark sparkColor="red">
       {!isLiked ? (
@@ -14,7 +22,6 @@ const Like = ({ data }) => {
             className="cursor-pointer w-3.5 h-3.5 lg:w-4.5 lg:h-4.5"
             onClick={() => setIsLiked((prev) => !prev)}
           />
-
           <small>{likeCount}</small>
         </div>
       ) : (
@@ -23,8 +30,7 @@ const Like = ({ data }) => {
             className="cursor-pointer w-3.5 h-3.5 lg:w-4.5 lg:h-4.5"
             onClick={() => setIsLiked((prev) => !prev)}
           />
-
-          <small>{isLiked && likeCount + 1}</small>
+          <small>{likeCount + 1}</small>
         </div>
       )}
     </ClickSpark>

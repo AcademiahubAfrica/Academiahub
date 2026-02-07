@@ -1,5 +1,11 @@
+import { savedResearch } from "@/app/_types/saved";
 import ResearchCard from "./ResearchCard";
-const CardSection = ({ displayData }) => {
+
+interface CardSectionProps {
+  displayData: savedResearch[];
+}
+
+const CardSection = ({ displayData }: CardSectionProps) => {
   return (
     <section className="grid grid-cols-2 gap-4   md:grid-cols-3">
       {displayData.map((data) => (

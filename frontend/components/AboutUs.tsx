@@ -7,13 +7,13 @@ const AboutUs = () => {
   return (
     <div className="w-full bg-gray-50">
       <div className="w-full py-16 lg:py-24">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+        <div className="max-w-350 mx-auto px-6 lg:px-12">
           
           {/* Our Story Section */}
           <section className="mb-20">
             <div className="flex flex-col lg:flex-row lg:gap-12 xl:gap-16 items-center justify-between">
               {/* Text Content */}
-              <div className="flex flex-col gap-6 mb-8 lg:mb-0 w-full lg:max-w-[641px]">
+              <div className="flex flex-col gap-6 mb-8 lg:mb-0 w-full lg:max-w-160.25">
                 <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
                   Our Story
                 </h2>
@@ -36,7 +36,7 @@ const AboutUs = () => {
                     srcSet="/assets/images/LandingPage/tablet-about-img.png"
                   />
                   <Image
-                    className="w-full lg:max-w-[500px] xl:max-w-[620px] h-auto rounded-2xl"
+                    className="w-full lg:max-w-125 xl:max-w-155 h-auto rounded-2xl"
                     src={"/assets/images/LandingPage/about-img.png"}
                     alt="A man and woman laughing in front of their Educational Institution"
                     width={327}

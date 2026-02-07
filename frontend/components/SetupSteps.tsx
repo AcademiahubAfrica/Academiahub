@@ -76,7 +76,7 @@ const SetupSteps = () => {
               {/* Text Content */}
               <div className="flex-1 space-y-6">
                 {/* Step Badge */}
-                <div className="inline-block bg-gradient-to-r from-blue-800 to-blue-900 text-white px-8 py-3 rounded-full text-lg font-semibold">
+                <div className="inline-block bg-linear-to-r from-blue-800 to-blue-900 text-white px-8 py-3 rounded-full text-lg font-semibold">
                   {step.stepNumber}
                 </div>
 
@@ -95,7 +95,7 @@ const SetupSteps = () => {
                   {step.features.map((feature, index) => (
                     <li key={index} className="flex items-start gap-3">
                       <FaCheck 
-                        className="w-6 h-6 text-white bg-blue-900 rounded-full p-1.5 flex-shrink-0 mt-0.5" 
+                        className="w-6 h-6 text-white bg-blue-900 rounded-full p-1.5 shrink-0 mt-0.5" 
                       />
                       <span className="text-gray-800 text-sm">
                         {feature}
@@ -107,7 +107,7 @@ const SetupSteps = () => {
 
               {/* Image Card */}
               <div className="flex-1 w-full max-w-md">
-                <div className="bg-white rounded-3xl shadow-xl border-b-4 border-blue-900 p-8 min-h-[500px] flex flex-col items-center justify-center">
+                <div className="bg-white rounded-3xl shadow-xl border-b-4 border-blue-900 p-8 min-h-125 flex flex-col items-center justify-center">
                   <div className="relative w-full h-64 mb-6">
                     <Image
                       src={step.imagePath}

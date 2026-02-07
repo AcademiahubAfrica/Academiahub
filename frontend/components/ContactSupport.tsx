@@ -3,8 +3,8 @@ import Link from "next/link";
 
 const ContactSupport = () => {
 	return (
-		<section className="w-full py-[90px] px-4 sm:px-6 lg:px-[194px]">
-			<div className="max-w-[1052px] mx-auto bg-gray-300 rounded-md px-8 py-25 md:px-16 md:py-20 text-center shadow-lg">
+		<section className="w-full py-22.5 px-4 sm:px-6 lg:px-48.5">
+			<div className="max-w-263 mx-auto bg-gray-300 rounded-md px-8 py-25 md:px-16 md:py-20 text-center shadow-lg">
 				<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
 					Still Have Questions?
 				</h2>
