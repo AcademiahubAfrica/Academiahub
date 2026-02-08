@@ -1,5 +1,5 @@
 import { userPagesMetadata } from "@/app/data/Exports";
-import Header from "../analytics/Header";
+import Header from "../../../components/user/analytics/Header";
 import Form from "./Form";
 
 export const metadata = userPagesMetadata.settings;
