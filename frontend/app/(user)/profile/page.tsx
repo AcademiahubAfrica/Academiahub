@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { userPagesMetadata } from "@/app/data/Exports";
-import DownloadsAndLikes from "../../../components/user/profile/DownloadsAndLikes";
-import ProfileSection from "../../../components/user/profile/ProfileSection";
+import ProfileSection from "@/components/user/profile/ProfileSection";
+import DownloadsAndLikes from "@/components/user/profile/DownloadsAndLikes";
 
 export const metadata = userPagesMetadata.profile;
 const Page = () => {
