@@ -1,6 +1,6 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import DownloadCard from "../downloads/DownloadCard";
+import DownloadCard from "../../../app/(user)/downloads/DownloadCard";
 
 const filterOptions = [
   {
