@@ -1,69 +1,59 @@
-"use client";
-import React, { useEffect, useState } from "react";
+
 import { Button } from "../ui/button";
 import Link from "next/link";
 
 const HeroButtons = () => {
-	const [windowWidth, setWindowWidth] = useState<number | undefined>(undefined);
+  return (
+    <div className="buttons flex flex-col md:flex-row gap-2">
+      
+      {/* Mobile Buttons */}
+      <div className="flex flex-col gap-2 md:hidden w-full">
+        <Link href="/signup">
+          <Button
+            variant="default"
+            size="lg"
+            className="w-full h-11 bg-linear-to-r from-primary"
+          >
+            Join for Free
+          </Button>
+        </Link>
 
-	const handleResize = () => {
-		setWindowWidth(window.innerWidth);
-	};
-	useEffect(() => {
-		window.addEventListener("resize", handleResize);
+        <Link href="/login">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="w-full h-11 border border-primary shadow-[0_5px_4px] shadow-[#E9EBF3]"
+          >
+            Log in
+          </Button>
+        </Link>
+      </div>
 
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, []);
+      {/* Desktop Buttons */}
+      <div className="hidden md:flex gap-2 w-full">
+        <Link href="/explore" className="w-full">
+          <Button
+            variant="default"
+            size="lg"
+            className="w-full h-11 bg-linear-to-r from-primary"
+          >
+            Start Exploring
+          </Button>
+        </Link>
 
-	if (windowWidth && windowWidth < 768) {
-		return (
-			<div className="buttons flex max-sm:flex-col gap-2 ">
-				<Link href={"/signup"}>
-					<Button
-						variant="default"
-						size="lg"
-						className="w-full h-11 bg-linear-to-r from-primary "
-					>
-						Join for Free
-					</Button>
-				</Link>
-				<Link href={"/login"}>
-					<Button
-						variant="secondary"
-						size="lg"
-						className="w-full h-11 border border-primary shadow-[0_5px_4px] shadow-[#E9EBF3]"
-					>
-						Log in
-					</Button>
-				</Link>
-			</div>
-		);
-	}
+        <Link href="/dashboard" className="w-full">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="w-full h-11 border border-primary shadow-[0_5px_4px] shadow-[#E9EBF3]"
+          >
+            Share Publication
+          </Button>
+        </Link>
+      </div>
 
-	return (
-		<div className="buttons flex max-sm:flex-col gap-2 ">
-			<Link href={"/explore"}>
-				<Button
-					variant="default"
-					size="lg"
-					className="w-full h-11 bg-linear-to-r from-primary "
-				>
-					Start Exploring
-				</Button>
-			</Link>
-			<Link href={"/dashboard"}>
-				<Button
-					variant="secondary"
-					size="lg"
-					className="w-full h-11 border border-primary shadow-[0_5px_4px] shadow-[#E9EBF3]"
-				>
-					Share Publication
-				</Button>
-			</Link>
-		</div>
-	);
+    </div>
+  );
 };
 
 export default HeroButtons;
