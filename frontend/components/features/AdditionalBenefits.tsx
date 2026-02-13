@@ -1,4 +1,3 @@
-import React from 'react';
 import { Zap, Lock, Globe, TrendingUp, FileText, MessageCircle } from 'lucide-react';
 
 // Benefits data
