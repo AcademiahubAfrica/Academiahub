@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Star } from 'lucide-react';
-import { testimonialsData } from '../app/data/testimonialsData';
+import { testimonialsData } from '../../app/data/testimonialsData';
 
 const Testimonials = () => {
   const renderStars = (rating: number) => {
