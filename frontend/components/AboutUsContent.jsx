@@ -1,4 +1,3 @@
-import React from 'react';
 import Image from 'next/image';
 import { BiTargetLock } from 'react-icons/bi';
 import { AiOutlineEye } from 'react-icons/ai';
