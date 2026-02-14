@@ -1,8 +1,8 @@
 import { RiGalleryView2 } from "react-icons/ri";
 import { FaBars } from "react-icons/fa";
-import DownloadCard from "./DownloadCard";
 import { userPagesMetadata } from "@/app/data/Exports";
 import Search from "@/components/user/shared/Search";
+import DownloadCard from "@/components/user/dashboard/DownloadCard";
 export const metadata = userPagesMetadata.downloads;
 const page = () => {
   return (

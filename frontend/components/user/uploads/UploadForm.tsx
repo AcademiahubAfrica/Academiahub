@@ -41,7 +41,7 @@ const formSchema = z.object({
     .refine((file) => file instanceof File, "Please upload a PDF document")
     .refine(
       (file) => file instanceof File && file.type === "application/pdf",
-      "Only PDF files are allowed"
+      "Only PDF files are allowed",
     ),
   title: z.string().min(3, "Title is required"),
   description: z.string().min(10, "Description is required"),
@@ -58,7 +58,14 @@ const UploadForm = () => {
   const [uploadError, setUploadError] = useState<string | null>(null);
   const router = useRouter();
 
-  const { register, resetField, handleSubmit, control, setValue, formState: { errors }, } = useForm<FormValues>({ resolver: zodResolver(formSchema) });
+  const {
+    register,
+    resetField,
+    handleSubmit,
+    control,
+    setValue,
+    formState: { errors },
+  } = useForm<FormValues>({ resolver: zodResolver(formSchema) });
 
   const { startUpload } = useUploadThing("pdfUploader", {
     onUploadError: (error) => {
@@ -131,7 +138,7 @@ const UploadForm = () => {
       router.refresh();
     } catch (error) {
       setUploadError(
-        error instanceof Error ? error.message : "An error occurred"
+        error instanceof Error ? error.message : "An error occurred",
       );
     } finally {
       setIsUploading(false);
@@ -176,7 +183,9 @@ const UploadForm = () => {
 
                   <div className="flex flex-col items-center gap-2 text-center p-4">
                     <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <span className="text-primary font-bold text-sm">PDF</span>
+                      <span className="text-primary font-bold text-sm">
+                        PDF
+                      </span>
                     </div>
                     <p className="font-medium truncate max-w-[250px]">
                       {selectedFile.name}
