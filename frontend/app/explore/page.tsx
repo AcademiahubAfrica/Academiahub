@@ -1,9 +1,7 @@
-import ExploreContent from '@/components/explore/exploreContent'
+import ExploreContent from "@/components/explore/exploreContent";
 
 const ExplorePage = () => {
-  return (
-    <ExploreContent />     
-  )
-}
+  return <ExploreContent />;
+};
 
-export default ExplorePage
+export default ExplorePage;
