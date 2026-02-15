@@ -1,8 +1,14 @@
 "use client";
 import { useSaved } from "@/app/_contexts/SavedContext";
+import { savedResearch } from "@/app/_types/saved";
 import toast from "react-hot-toast";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
-const BookMark = ({ data }) => {
+
+interface BookMarkProps {
+  data: savedResearch;
+}
+
+const BookMark = ({ data }: BookMarkProps) => {
   const toastOptions = {
     duration: 4000,
     className:
