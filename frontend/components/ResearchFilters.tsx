@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/select";
 
 const filterButtons = [
-  { label: "all", variant: "ghost2" },
-  { label: "engineering", variant: "outline2" },
-  { label: "medicine", variant: "outline2" },
-  { label: "agriculture", variant: "outline2" },
-  { label: "art", variant: "outline2" },
+  { label: "all", variant: "ghost2" as const },
+  { label: "engineering", variant: "outline2" as const },
+  { label: "medicine", variant: "outline2" as const },
+  { label: "agriculture", variant: "outline2" as const },
+  { label: "art", variant: "outline2" as const },
 ];
 
 const sortOptions = [
@@ -31,8 +31,8 @@ const ResearchFilters = () => {
   const filterBy = searchParams.get("category") || "all";
   const sortBy = searchParams.get("sort") || "recent";
 
-  function updateParam(key, value) {
-    const params = new URLSearchParams(searchParams);
+  function updateParam(key: string, value: string) {
+    const params = new URLSearchParams(searchParams.toString());
     params.set(key, value);
     router.push(`${pathname}?${params.toString()}`);
   }
