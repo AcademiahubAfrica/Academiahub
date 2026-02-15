@@ -3,9 +3,17 @@ import ClickSpark from "@/components/ClickSpark";
 import { Heart } from "lucide-react";
 import { useState } from "react";
 import { FcLike } from "react-icons/fc";
-const Like = ({ data }) => {
-  const [isLiked, setIsLiked] = useState(false);
+
+interface LikeProps {
+  data: {
+    likes?: number;
+  };
+}
+
+const Like = ({ data }: LikeProps) => {
+  const [isLiked, setIsLiked] = useState<boolean>(false);
   const likeCount = data.likes || 0;
+  
   return (
     <ClickSpark sparkColor="red">
       {!isLiked ? (

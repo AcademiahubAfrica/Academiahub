@@ -3,7 +3,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-const SideLink = ({ icon, label, link }) => {
+import { ReactNode } from "react";
+
+interface SideLinkProps {
+  icon: ReactNode;
+  label: string;
+  link: string;
+}
+
+const SideLink = ({ icon, label, link }: SideLinkProps) => {
   const pathName = usePathname();
   return (
     <li
@@ -24,7 +32,13 @@ const SideLink = ({ icon, label, link }) => {
 
 export default SideLink;
 
-export function AccountLinks({ link, label, icon }) {
+interface AccountLinksProps {
+  icon: ReactNode;
+  label: string;
+  link?: string;
+}
+
+export function AccountLinks({ link, label, icon }: AccountLinksProps) {
   const pathName = usePathname();
 
   return (

@@ -12,10 +12,10 @@ import { useSidebar } from "./SidebarContext";
 
 const CollaspeSide = () => {
   const { isExpanded, toggleSidebar } = useSidebar();
-  const [defaultOpen, setDefaultOpen] = useState("");
+  const [defaultOpen, setDefaultOpen] = useState<string>("");
 
   useEffect(() => {
-    // Check if the screen is md (768px) or larger
+    
     function checkScreenSize() {
       if (window.innerWidth >= 768) {
         setDefaultOpen("item-1");
@@ -27,7 +27,7 @@ const CollaspeSide = () => {
 
   return (
     <Accordion
-      key={defaultOpen} // Required to apply defaultValue after initial mount
+      key={defaultOpen} 
       type="single"
       collapsible
       defaultValue={defaultOpen}
@@ -35,7 +35,6 @@ const CollaspeSide = () => {
     >
       <AccordionItem value="item-1">
         <AccordionTrigger
-          open={isExpanded}
           onClick={toggleSidebar}
           className={"text-grey"}
         >
