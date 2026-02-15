@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { FaRegComment } from "react-icons/fa";
-import { HiOutlineUpload } from "react-icons/hi";
+import { RxUpload } from "react-icons/rx";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { savedResearch } from "@/app/_types/saved";
 import Like from "./Like";
@@ -14,26 +14,26 @@ type ResearchCardProps = {
 const ResearchCard = ({ data }: ResearchCardProps) => {
   return (
     <article
-      className=" relative  px-1 py-1 lg::py-3 lg:px-2 border rounded-[15px] border-[#D9D9D9]  flex flex-col gap-2.5 md:gap-[18px] "
+      className=" relative w-full  px-1 py-1 lg:py-2.75 lg:px-3 max-w-91.75 border rounded-[15px] border-[#D9D9D9]   "
       key={data.id}
     >
-      <span className="absolute right-2 top-2 md:top-5 z-30 md:right-5 rounded-full md:w-11 w-5 md:h-11 h-5 cursor-pointer bg-white flex items-center justify-center">
-        <HiOutlineUpload />
+      <span className="absolute right-3 top-3 md:top-5 z-30 md:right-5 rounded-full md:w-11 w-5.75 md:h-11 h-5.75 cursor-pointer bg-white flex items-center justify-center">
+        <RxUpload className="md:w-4 md:h-4  w-2.25 h-2.25 " />
       </span>
-      <div className="relative h-[118.48px] sm:h-[246px] w-full">
+      <div className="relative h-[118.48px] sm:h-61.5 w-full">
         <Image
-          className="rounded-t-[15px] object-cover  max-w-[351px]"
+          className="rounded-t-[15px] object-cover  "
           fill
           src={data.imagePath}
           alt="Publication image"
         />
       </div>
       {/* content */}
-      <div className="flex flex-col gap-2.5 w-full">
+      <div className=" mt-4  w-full">
         <h3 className="font-medium text-[8px]  md:text-lg leading-[130%]">
           {data.name}
         </h3>
-        <div className="flex items-center  gap-1.5 mb-4 lg:mb-9">
+        <div className="flex items-center  mt-4.5  gap-1.5 mb-4 ">
           <div className="w-5 h-5 md:w-10 md:h-10 relative">
             <Image
               className="rounded-full "
@@ -52,14 +52,14 @@ const ResearchCard = ({ data }: ResearchCardProps) => {
           </div>
         </div>
         {/* stats section */}
-        <div className="flex items-center gap-2 max-md:justify-between lg:gap-12.5 relative">
+        <div className="flex items-center py-2 gap-2 mb-1.5 justify-between lg:justify-around lg:gap-12.5  px-2">
           <Like data={data} />
-          <div className="flex items-end gap-[3px]">
-            <FaRegComment className="cursor-pointer w-3.5 h-3.5 lg:w-[18px] lg:h-[18px]" />
+          <div className="flex items-end gap-0.75">
+            <FaRegComment className="cursor-pointer text-black w-3.5 h-3.5 lg:w-4.5 lg:h-5" />
             <small>{data?.comments}</small>
           </div>
-          <div className="flex items-end gap-[3px]">
-            <MdOutlineFileDownload className="cursor-pointer text-sm md:text-lg" />
+          <div className="flex items-end gap-0.75">
+            <MdOutlineFileDownload className="cursor-pointer text-black text-sm md:text-lg" />
             <small>{data?.downloads}</small>
           </div>
           <BookMark data={data} />
@@ -68,7 +68,7 @@ const ResearchCard = ({ data }: ResearchCardProps) => {
       <Button
         variant="default"
         size="lg"
-        className="w-full md:h-9 h-7 flex items-center justify-center text-sm font-medium md:text-[16px] leading-[130%]"
+        className="w-full md:h-9 lg:h-11 h-7 flex items-center justify-center text-sm font-medium md:text-[16px] leading-[130%]"
       >
         View Details
       </Button>

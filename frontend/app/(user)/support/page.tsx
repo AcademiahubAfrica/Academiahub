@@ -2,7 +2,7 @@ import { RiQuestionnaireLine } from "react-icons/ri";
 
 const page = () => {
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div className="flex flex-col h-full items-center justify-center px-2 gap-4">
       <RiQuestionnaireLine className="text-4xl md:text-5xl lg:text-7xl" />
       <p>Help & Support</p>
       <a href="mailto:academiahub@gmail.com">
