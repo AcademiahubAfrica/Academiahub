@@ -8,6 +8,8 @@
 
 [Checking Database via Prisma (Temporary)](#checking-database-via-prisma)
 
+[STRIDE Threat Model for Messaging Feature](#️-stride-threat-model--dm-messaging)
+
 ## Setting Up the Development Environment
 
 1. Fork the repository.
