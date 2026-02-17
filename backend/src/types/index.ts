@@ -1,11 +1,14 @@
-import { Request } from "express";
 import { Conversation } from "../generated/prisma";
 
-// ─── Authenticated Express Request ──────────────────────
+// ─── Augment Express Request globally ───────────────────
 
-export interface AuthenticatedRequest extends Request {
-  userId: string;
-  conversation?: Conversation;
+declare global {
+  namespace Express {
+    interface Request {
+      userId: string;
+      conversation?: Conversation;
+    }
+  }
 }
 
 // ─── Socket.IO Event Types ──────────────────────────────

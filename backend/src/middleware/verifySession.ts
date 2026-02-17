@@ -1,8 +1,8 @@
 import { promisify } from "util";
 import crypto from "crypto";
-import { Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { jwtDecrypt } from "jose";
-import { AuthenticatedRequest } from "../types";
+import "../types";
 
 const hkdf = promisify(crypto.hkdf);
 
@@ -26,7 +26,7 @@ async function getDerivedEncryptionKey(secret: string): Promise<Uint8Array> {
  * Extracts userId from the decrypted payload and attaches it to req.userId.
  */
 export async function verifySession(
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
