@@ -1,6 +1,6 @@
-import { Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
+import "../types";
 import prisma from "../lib/prisma";
-import { AuthenticatedRequest } from "../types";
 
 /**
  * Middleware that verifies the authenticated user is a participant
@@ -10,7 +10,7 @@ import { AuthenticatedRequest } from "../types";
  * Attaches the conversation to req.conversation on success.
  */
 export async function requireParticipant(
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
