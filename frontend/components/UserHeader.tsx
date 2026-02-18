@@ -11,8 +11,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import NameSkeleton from "./NameSkeleton";
+import { usePathname } from "next/navigation";
+import ChatHeader from "./user/inbox/ChatHeader";
 const UserHeader = () => {
   const [open, setOpen] = useState(false);
+
+  const pathName = usePathname();
+  console.log(pathName);
 
   const { data: session, status } = useSession();
   const user = session?.user;
@@ -55,37 +60,43 @@ const UserHeader = () => {
         />
       </div>
 
-      <Sheet open={open} onOpenChange={setOpen}>
-        <div className="flex md:hidden w-full flex-row-reverse px-1 items-center justify-between ">
-          <div className="flex items-center gap-1.25">
-            <Link href={"/notifications"}>
-              <IoMdNotificationsOutline className="text-xl md:hidden " />
-            </Link>
-            <SheetTrigger>
-              <FaBars className="lg:hidden text-xl" />
-            </SheetTrigger>
-          </div>
-
-          <div className="flex md:hidden items-center gap-1.25">
-            <Link href={"/profile"}>
-              <Avatar>
-                <AvatarImage src={userImage} />
-                <AvatarFallback>{userInitials}</AvatarFallback>
-              </Avatar>
-            </Link>
-
-            {status === "loading" ? (
-              <NameSkeleton />
-            ) : (
-              <h3 className="heading-3">{userName}</h3>
-            )}
-          </div>
+      {pathName === "/inbox" ? (
+        <div className="md:hidden w-full">
+          <ChatHeader />
         </div>
+      ) : (
+        <Sheet open={open} onOpenChange={setOpen}>
+          <div className="flex md:hidden w-full flex-row-reverse px-1 items-center justify-between ">
+            <div className="flex items-center gap-1.25">
+              <Link href={"/notifications"}>
+                <IoMdNotificationsOutline className="text-xl md:hidden " />
+              </Link>
+              <SheetTrigger>
+                <FaBars className="lg:hidden text-xl" />
+              </SheetTrigger>
+            </div>
 
-        <SheetContent side="left" className="pt-6 [&>button]:hidden">
-          <Sidebar />
-        </SheetContent>
-      </Sheet>
+            <div className="flex md:hidden items-center gap-1.25">
+              <Link href={"/profile"}>
+                <Avatar>
+                  <AvatarImage src={userImage} />
+                  <AvatarFallback>{userInitials}</AvatarFallback>
+                </Avatar>
+              </Link>
+
+              {status === "loading" ? (
+                <NameSkeleton />
+              ) : (
+                <h3 className="heading-3">{userName}</h3>
+              )}
+            </div>
+          </div>
+
+          <SheetContent side="left" className="pt-6 [&>button]:hidden">
+            <Sidebar />
+          </SheetContent>
+        </Sheet>
+      )}
     </header>
   );
 };
