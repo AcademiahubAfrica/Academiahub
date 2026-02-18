@@ -28,9 +28,7 @@ export default async function UserLayout({
           </div>
 
           {/* OUTLET (scrollable) */}
-          <main className="flex-1 mt-16 lg:ml-4 md:mt-14 lg:mt-4 p-2 pb-10">
-            {children}
-          </main>
+          <main className="flex-1 mt-4  lg:ml-4  lg:mt-0 p-2">{children}</main>
         </div>
       </div>
     </SidebarProvider>
