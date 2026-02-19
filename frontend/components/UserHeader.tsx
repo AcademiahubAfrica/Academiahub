@@ -17,7 +17,6 @@ const UserHeader = () => {
   const [open, setOpen] = useState(false);
 
   const pathName = usePathname();
-  console.log(pathName);
 
   const { data: session, status } = useSession();
   const user = session?.user;

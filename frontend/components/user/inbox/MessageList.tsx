@@ -24,31 +24,31 @@ const messages = [
     id: 4,
     date: "2026-02-18T13:45:00.000Z",
     ownMessage: false,
-    message: "I like how simplified it was , very straight to the point.",
+    message: "data:simplified it was , very straight to the point.",
   },
   {
     id: 5,
     date: "2026-02-18T13:45:00.000Z",
     ownMessage: true,
-    message: "I like how simplified it was , very straight to the point.",
+    message: "http:simplified it was , very straight to the point.",
   },
   {
     id: 6,
     date: "2026-02-18T13:45:00.000Z",
     ownMessage: false,
-    message: "I like how simplified it was , very straight to the point.",
+    message: "javascript:simplified it was , very straight to the point.",
   },
   {
     id: 7,
     date: "2026-02-18T13:45:00.000Z",
     ownMessage: true,
-    message: "I like how simplified it was , very straight to the point.",
+    message: "https://buildwithochife.vercel.app/ shdhhjdhjkssdjsdj",
   },
   {
     id: 8,
     date: new Date().toISOString(),
     ownMessage: false,
-    message: "yes",
+    message: "yes checkout https://google.com",
   },
 ];
 function MessageList() {
