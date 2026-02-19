@@ -124,6 +124,11 @@
   --color-primary-900: #080e22;
 
   --color-black: #171717;
+
+  /* fonts */
+  --font-geist-sans: var(--font-geist-sans);
+  --font-geist-mono: var(--font-geist-mono);
+  --font-primary: var(--font-ibm-plex-sans);
 }
 
 .font-inter {
@@ -170,7 +175,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50 leading-[100%] tracking-normal;
+    @apply border-border outline-ring/50  font-primary leading-[100%] tracking-normal;
   }
   body {
     @apply bg-background text-foreground;
