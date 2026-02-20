@@ -4,9 +4,10 @@ import ConversationList from "./ConversationList";
 import ChatThread from "./ChatThread";
 import { useSearchParams } from "next/navigation";
 import { useConversations } from "@/lib/messaging/hooks";
+import ErrorState from "./ErrorState";
 
 const InboxView = () => {
-  const {data, isLoading,isError, error} = useConversations()
+  const {data, isLoading,isError, error, refetch} = useConversations()
 	const searchParams = useSearchParams();
 	const conversationId = searchParams.get("c");
 
@@ -19,15 +20,11 @@ const InboxView = () => {
   }
 
   if (isError) {
-    console.log(error)
     return (
-      <div className="mt-10">Something went wrong <br /> retry</div>
+      <ErrorState onRetry={refetch} error={error} />
     )
   }
 
-  if (error) {
-    
-  }
 
    if (!data || data.length === 0) {
       return (
