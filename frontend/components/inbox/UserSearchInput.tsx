@@ -56,7 +56,6 @@ export default function UserSearchInput({ onSelect }: UserSearchInputProps) {
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setRawQuery(val);
