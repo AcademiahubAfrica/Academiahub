@@ -9,6 +9,8 @@ import ConversationListSkeleton from "./ConversationListSkeleton";
 import ChatThreadSkeleton from "./ChatThreadSkeleton";
 import EmptyConversation from "./EmptyConversation";
 import EmptyChatThread from "./EmptyChatThread";
+import { FakeConversations } from "./ConversationList";
+import { ConversationListItem } from "@/app/_types/messaging";
 
 const InboxView = () => {
   const { data, isLoading, isError, error, refetch } = useConversations();
