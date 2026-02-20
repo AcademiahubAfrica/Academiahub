@@ -3,7 +3,7 @@ import MessageList from "./MessageList";
 
 const ChatThread = () => {
   return (
-    <section className="border  border-grey rounded-tr-[15px]">
+    <section className="border border-grey rounded-tr-[15px]">
       <div className="hidden md:block">
         <ChatHeader />
       </div>
