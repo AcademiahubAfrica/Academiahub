@@ -7,31 +7,16 @@ import { useState } from "react";
 import { isUnread } from "@/lib/messaging/utils";
 
 interface ConversationListProps {
-	fakeConversations: FakeConversations[];
+	conversations?: ConversationListItem[];
 }
 
-export interface FakeConversations {
-	id: string;
-	lastMessage: {
-		id: string;
-		senderId: string;
-		content: string;
-	};
-	createdAt: string;
-	lastReadMessageId: string;
-	otherParticipant: {
-		id: string;
-		image: string;
-		name: string;
-	};
-}
 
-const ConversationList = ({ fakeConversations }: ConversationListProps) => {
+
+const ConversationList = ({ conversations }: ConversationListProps) => {
 	const [search, setSearch] = useState("");
 	const [filter, setFilter] = useState<"all" | "unread">("all");
 
-	const filteredConversations = fakeConversations
-  .filter((conversation) => {
+	const filteredConversations = conversations?.filter((conversation) => {
     
     if (filter === "unread") {
 				// Change conversation.id to currentUserId
@@ -43,7 +28,7 @@ const ConversationList = ({ fakeConversations }: ConversationListProps) => {
     
     if (!search.trim()) return true;
 
-    return conversation.otherParticipant.name
+    return conversation?.otherParticipant.name || ''
       .toLowerCase()
       .includes(search.toLowerCase());
   });
@@ -75,7 +60,7 @@ const ConversationList = ({ fakeConversations }: ConversationListProps) => {
 			</header>
 
 			<section className="mb-6 flex flex-col gap-4">
-				{filteredConversations.map((conversation) => (
+				{filteredConversations?.map((conversation) => (
 						<ConversationItem
 							key={conversation.id}
 							id={conversation.id}
