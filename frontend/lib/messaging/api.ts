@@ -8,6 +8,14 @@ import type {
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL!;
 
+export class ApiError extends Error {
+  status: number;
+  constructor(status: number, message: string) {
+    super(message);
+    this.status = status;
+  }
+}
+
 async function authFetch<T>(path: string, options?: RequestInit): Promise<T> {
   const tokenRes = await fetch("/api/auth/token");
   if (!tokenRes.ok) throw new Error("Not authenticated");
@@ -24,7 +32,7 @@ async function authFetch<T>(path: string, options?: RequestInit): Promise<T> {
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.error ?? `Request failed (${res.status})`);
+    throw new ApiError(res.status, body.error ?? `Request failed (${res.status})`);
   }
 
   return res.json();
