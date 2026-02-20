@@ -21,7 +21,11 @@ export default function TypingIndicator({
   const label = partnerName ? `${partnerName} is typing` : "Typing";
 
   return (
-    <div className="flex items-center gap-2 px-4 py-2" aria-live="polite" aria-label={label}>
+    <div
+      className="flex items-center gap-2 px-4 py-2"
+      aria-live="polite"
+      aria-label={label}
+    >
       {/* Bubble */}
       <div className="bg-gray-100 rounded-2xl px-4 py-2 flex items-center gap-1.5">
         <span className="text-xs text-muted-foreground mr-1">{label}</span>
