@@ -1,19 +1,39 @@
 "use client";
 import {  ConversationListItem } from "@/app/_types/messaging";
 import { Input } from "@/components/ui/input";
-// import { error } from "console";
-// import Error from "next/error";
 import { FaSearch } from "react-icons/fa";
+import ConversationItem from "./ConversationItem";
+
 
 interface ConversationListProps {
-  conversations: ConversationListItem[]
+  fakeConversations: FakeConversations[]
 }
-const ConversationList = ({conversations}: ConversationListProps) => {
 
+export interface FakeConversations{
+		id: string,
+		lastMessage: {
+			id:  string,
+			senderId: string
+			content: string
+		},
+		createdAt: string,
+		lastReadMessageId: string,
+		otherParticipant: {
+			id: string,
+			image: string,
+			name: string
+		}
+
+	}
+
+const ConversationList = ({fakeConversations}: ConversationListProps) => {
+
+	
+	
   
 	
 	return (
-		<div className="mt-10 lg:mt-5 p-5">
+		<div className="mt-10 lg:mt-5 p-5 max-md:max-w-97.5 md:max-w-87.5">
 			<header className="">
 				<h2 className="font-semibold text-lg leading-5 mb-7">Inbox</h2>
 				<div className="relative mb-3">
@@ -32,9 +52,9 @@ const ConversationList = ({conversations}: ConversationListProps) => {
 				</div>
 			</header>
 
-			<section className="mb-6">
-				{conversations?.map((conversation) => (
-					<div key={conversation.id}>{conversation.id}</div>
+			<section className="mb-6 flex flex-col gap-4">
+				{fakeConversations.map((conversation: FakeConversations) => (
+			    <ConversationItem key={conversation.id} id={conversation.id} conversation={conversation} />
 				))}
 			</section>
 		</div>
