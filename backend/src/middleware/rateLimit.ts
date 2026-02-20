@@ -8,7 +8,7 @@ import "../types";
 export const searchLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 20,
-  keyGenerator: (req) => req.userId || req.ip || "unknown",
+  keyGenerator: (req) => req.userId || "unknown",
   message: { error: "Too many requests. Please try again later." },
   standardHeaders: true,
   legacyHeaders: false,
@@ -21,7 +21,7 @@ export const searchLimiter = rateLimit({
 export const conversationCreateLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 10,
-  keyGenerator: (req) => req.userId || req.ip || "unknown",
+  keyGenerator: (req) => req.userId || "unknown",
   message: { error: "Too many requests. Please try again later." },
   standardHeaders: true,
   legacyHeaders: false,
