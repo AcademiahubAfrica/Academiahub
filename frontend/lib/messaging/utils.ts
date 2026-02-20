@@ -1,5 +1,4 @@
 import { ConversationListItem } from "@/app/_types/messaging";
-import { FakeConversations } from "@/components/user/inbox/ConversationList";
 
 export const getInitials = (name:string) => {
  return name?.slice(0, 2).toUpperCase()
@@ -17,7 +16,7 @@ export const truncateText = (text: string, maxLen = 23) => {
   return text.length > maxLen ? text.slice(0, maxLen) + "..." : text;
 }
 
-export const isUnread = (conversation: FakeConversations | undefined, currentUserId: string): boolean => {
+export const isUnread = (conversation: ConversationListItem | undefined, currentUserId: string): boolean => {
    const lastMessage = conversation?.lastMessage;
 
    if(!lastMessage) return false;

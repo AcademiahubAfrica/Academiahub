@@ -5,11 +5,10 @@ import { formatRelativeTime, getInitials, isUnread, truncateText } from '@/lib/m
 import { ConversationListItem } from '@/app/_types/messaging'
 import { usePresence } from '@/lib/messaging/hooks'
 import { useState } from 'react'
-import { FakeConversations } from './ConversationList'
 
 interface ConversationItemProps {
   id: string,
-  conversation: FakeConversations
+  conversation: ConversationListItem
 }
 const ConversationItem = ({id, conversation}:ConversationItemProps) => {
   const [isActive, setIsActive] = useState(true)
@@ -24,8 +23,8 @@ if (onlineUsers.has(conversation?.otherParticipant.id || '')) {
       {/* Avatar */}
       <div className='mr-2 relative'>
         <Avatar className='h-10 w-10'>
-            <AvatarImage src={conversation.otherParticipant.image } />
-            <AvatarFallback>{getInitials(conversation.otherParticipant.name )}</AvatarFallback>
+            <AvatarImage src={conversation.otherParticipant.image || ''} />
+            <AvatarFallback>{getInitials(conversation.otherParticipant.name || '' )}</AvatarFallback>
           </Avatar>
           {
             isActive && <span className='absolute bg-green-500 w-3 h-3 bottom-0 right-0 rounded-full'></span>
@@ -36,8 +35,8 @@ if (onlineUsers.has(conversation?.otherParticipant.id || '')) {
       <div className='mr-7'>
         <h3 className='font-semibold text-base leading-5'>{conversation.otherParticipant.name}</h3>
         <div>
-           <p className=' text-xs leading-[100%] max-md:hidden'>{truncateText(conversation.lastMessage.content, 23)}</p>
-           <p className=' text-xs leading-[100%] md:hidden'>{truncateText(conversation.lastMessage.content, 30)}</p>
+           <p className=' text-xs leading-[100%] max-md:hidden'>{truncateText(conversation.lastMessage?.content || '', 23)}</p>
+           <p className=' text-xs leading-[100%] md:hidden'>{truncateText(conversation.lastMessage?.content || '', 30)}</p>
         </div>
        
       </div>
