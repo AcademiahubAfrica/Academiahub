@@ -1,37 +1,34 @@
 "use client";
-import {  ConversationListItem } from "@/app/_types/messaging";
+import { ConversationListItem } from "@/app/_types/messaging";
 import { Input } from "@/components/ui/input";
 import { FaSearch } from "react-icons/fa";
 import ConversationItem from "./ConversationItem";
-
+import { useState } from "react";
+import { isUnread } from "@/lib/messaging/utils";
 
 interface ConversationListProps {
-  fakeConversations: FakeConversations[]
+	fakeConversations: FakeConversations[];
 }
 
-export interface FakeConversations{
-		id: string,
-		lastMessage: {
-			id:  string,
-			senderId: string
-			content: string
-		},
-		createdAt: string,
-		lastReadMessageId: string,
-		otherParticipant: {
-			id: string,
-			image: string,
-			name: string
-		}
+export interface FakeConversations {
+	id: string;
+	lastMessage: {
+		id: string;
+		senderId: string;
+		content: string;
+	};
+	createdAt: string;
+	lastReadMessageId: string;
+	otherParticipant: {
+		id: string;
+		image: string;
+		name: string;
+	};
+}
 
-	}
+const ConversationList = ({ fakeConversations }: ConversationListProps) => {
+	const [filter, setFilter] = useState<"all" | "unread">("all");
 
-const ConversationList = ({fakeConversations}: ConversationListProps) => {
-
-	
-	
-  
-	
 	return (
 		<div className="mt-10 lg:mt-5 p-5 max-md:max-w-97.5 md:max-w-87.5">
 			<header className="">
@@ -42,20 +39,41 @@ const ConversationList = ({fakeConversations}: ConversationListProps) => {
 				</div>
 
 				{/* Filter buttons  */}
-				<div className="md:bg-gray-100 flex justify-between px-6 py-2 rounded-lg">
-					<button className="bg-inherit rounded-full px-9 py-1 text-sm">
+				<div className="md:bg-gray-100 flex justify-between px-6 py-3 rounded-lg mb-5">
+					<button
+						onClick={() => setFilter("all")}
+						className={` ${filter === "all" ? "bg-white shadow-[0_5px_3px] shadow-gray-500" : "bg-inherit"} transition-all duration-500 rounded-full w-22.25 py-1 text-sm`}
+					>
 						All
 					</button>
-					<button className="bg-inherit rounded-2xl px-9 py-1 text-sm">
+					<button
+						onClick={() => setFilter("unread")}
+						className={` ${filter === "unread" ? "bg-white shadow-[0_5px_3px] shadow-gray-500" : "bg-inherit"} transition-all duration-500 rounded-full w-22.25 py-1 text-sm`}
+					>
 						Unread
 					</button>
 				</div>
 			</header>
 
 			<section className="mb-6 flex flex-col gap-4">
-				{fakeConversations.map((conversation: FakeConversations) => (
-			    <ConversationItem key={conversation.id} id={conversation.id} conversation={conversation} />
-				))}
+				{fakeConversations
+					.filter((conversation) => {
+						if (filter === "all") return true;
+
+						if (filter === "unread") {
+							// Change this to currentUserId
+							return isUnread(conversation, conversation.id);
+						}
+
+						return true;
+					})
+					.map((conversation) => (
+						<ConversationItem
+							key={conversation.id}
+							id={conversation.id}
+							conversation={conversation}
+						/>
+					))}
 			</section>
 		</div>
 	);
