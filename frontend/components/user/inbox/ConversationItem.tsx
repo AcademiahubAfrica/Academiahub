@@ -36,7 +36,8 @@ if (onlineUsers.has(conversation?.otherParticipant.id || '')) {
       <div className='mr-7'>
         <h3 className='font-semibold text-base leading-5'>{conversation.otherParticipant.name}</h3>
         <div>
-           <p className=' text-xs leading-[100%]'>{truncateText(conversation.lastMessage.content)}</p>
+           <p className=' text-xs leading-[100%] max-md:hidden'>{truncateText(conversation.lastMessage.content, 23)}</p>
+           <p className=' text-xs leading-[100%] md:hidden'>{truncateText(conversation.lastMessage.content, 30)}</p>
         </div>
        
       </div>
