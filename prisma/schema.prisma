@@ -16,12 +16,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Gender {
-  MALE
-  FEMALE
-  OTHER
-}
-
 enum Category {
   RESEARCH
   SEMINAR
@@ -29,12 +23,29 @@ enum Category {
   ANALYSIS
 }
 
+enum AcademicLevel {
+  UNDERGRADUATE
+  GRADUATE
+  POSTGRADUATE
+  PHD
+  PROFESSOR
+  RESEARCHER
+  OTHER
+}
+
+enum NotificationType {
+  COMMENT
+  LIKE
+  UPLOAD
+  MESSAGE
+  SYSTEM
+}
+
 model User {
   id                String         @id @default(auto()) @map("_id") @db.ObjectId
   name              String?
   email             String         @unique
   image             String?
-  gender            Gender?
   password          String?
   emailVerified     DateTime?
   verificationCode  String?
@@ -45,6 +56,11 @@ model User {
   conversationsA    Conversation[] @relation("participantA")
   conversationsB    Conversation[] @relation("participantB")
   readReceipts      ReadReceipt[]
+  notifications     Notification[]
+  likes             Like[]
+  comments          Comment[]
+  saves             Save[]
+  downloadRecords   DownloadRecord[]
 }
 
 model Profile {
@@ -57,33 +73,94 @@ model Profile {
 }
 
 type Bio {
-  university String
-  course     String
-  aboutMe    String
-  state      String
-  country    String
-  downloads  Int
-  uploads    Int
-  likes      Int
+  institution   String
+  department    String
+  academicLevel AcademicLevel
+  aboutMe       String
+  state         String
+  country       String
 }
 
 model Document {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
-  category    Category
-  institution String
-  year        String
-  fileUrl     String
-  fileKey     String
-  fileName    String
-  fileSize    Int
-  downloads   Int      @default(0)
-  likes       Int      @default(0)
-  author      User     @relation(fields: [authorId], references: [id])
-  authorId    String   @db.ObjectId
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  description     String
+  category        Category
+  institution     String
+  year            String
+  fileUrl         String
+  fileKey         String
+  fileName        String
+  fileSize        Int
+  downloads       Int              @default(0)
+  likes           Int              @default(0)
+  author          User             @relation(fields: [authorId], references: [id])
+  authorId        String           @db.ObjectId
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  likeRecords     Like[]
+  commentRecords  Comment[]
+  saveRecords     Save[]
+  downloadRecords DownloadRecord[]
+}
+
+model Notification {
+  id         String           @id @default(auto()) @map("_id") @db.ObjectId
+  user       User             @relation(fields: [userId], references: [id])
+  userId     String           @db.ObjectId
+  type       NotificationType
+  message    String
+  actorId    String?          @db.ObjectId
+  documentId String?          @db.ObjectId
+  read       Boolean          @default(false)
+  createdAt  DateTime         @default(now())
+
+  @@index([userId, createdAt(sort: Desc)])
+}
+
+model Like {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @db.ObjectId
+  document   Document @relation(fields: [documentId], references: [id])
+  documentId String   @db.ObjectId
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, documentId])
+}
+
+model Comment {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  content    String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @db.ObjectId
+  document   Document @relation(fields: [documentId], references: [id])
+  documentId String   @db.ObjectId
+  createdAt  DateTime @default(now())
+
+  @@index([documentId, createdAt(sort: Desc)])
+}
+
+model Save {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @db.ObjectId
+  document   Document @relation(fields: [documentId], references: [id])
+  documentId String   @db.ObjectId
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, documentId])
+}
+
+model DownloadRecord {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @db.ObjectId
+  document   Document @relation(fields: [documentId], references: [id])
+  documentId String   @db.ObjectId
+  createdAt  DateTime @default(now())
+
+  @@index([userId, createdAt(sort: Desc)])
 }
 
 model Conversation {
