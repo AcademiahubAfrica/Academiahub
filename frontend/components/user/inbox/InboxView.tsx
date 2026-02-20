@@ -6,9 +6,28 @@ import { useSearchParams } from "next/navigation";
 import { useConversations } from "@/lib/messaging/hooks";
 
 const InboxView = () => {
-  const {data} = useConversations()
+  const {data, isLoading,isError, error} = useConversations()
 	const searchParams = useSearchParams();
 	const conversationId = searchParams.get("c");
+
+
+  // I'll fix and refine both the loading and error states soon.
+  if (isLoading) {
+    return(
+      <div className="mt-10">Loading....</div>
+    )
+  }
+
+  if (isError) {
+    console.log(error)
+    return (
+      <div className="mt-10">Something went wrong <br /> retry</div>
+    )
+  }
+
+  if (error) {
+    
+  }
 
    if (!data || data.length === 0) {
       return (
@@ -27,7 +46,7 @@ const InboxView = () => {
 		<>
 			<section className="hidden md:flex">
 				<div className="w-87.5">
-					<ConversationList />
+					<ConversationList conversations={data} />
 				</div>
 				<div className="flex-1">
           {
@@ -45,7 +64,7 @@ const InboxView = () => {
       <section className="md:hidden h-full">
          {
           !conversationId ? (
-            <ConversationList />
+            <ConversationList conversations ={data}/>
           ) : (
             <ChatThread />
           )

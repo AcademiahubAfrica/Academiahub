@@ -1,25 +1,15 @@
 "use client";
+import {  ConversationListItem } from "@/app/_types/messaging";
 import { Input } from "@/components/ui/input";
-import { useConversations } from "@/lib/messaging/hooks";
 // import { error } from "console";
 // import Error from "next/error";
 import { FaSearch } from "react-icons/fa";
 
-const ConversationList = () => {
-	const { data, isLoading,isError  } = useConversations();
+interface ConversationListProps {
+  conversations: ConversationListItem[]
+}
+const ConversationList = ({conversations}: ConversationListProps) => {
 
-  // I'll fix and refine both the loading and error states soon.
-  if (isLoading) {
-    return(
-      <div>Loading....</div>
-    )
-  }
-
-  if (isError) {
-    return (
-      <div>Something went wrong <br /> retry</div>
-    )
-  }
   
 	
 	return (
@@ -43,7 +33,7 @@ const ConversationList = () => {
 			</header>
 
 			<section className="mb-6">
-				{data?.map((conversation) => (
+				{conversations?.map((conversation) => (
 					<div key={conversation.id}>{conversation.id}</div>
 				))}
 			</section>
