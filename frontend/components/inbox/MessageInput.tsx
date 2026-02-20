@@ -73,7 +73,10 @@ export default function MessageInput({
 
     // STRIDE T14: 300ms cooldown
     setCooldown(true);
-    cooldownTimerRef.current = setTimeout(() => setCooldown(false), SEND_COOLDOWN_MS);
+    cooldownTimerRef.current = setTimeout(
+      () => setCooldown(false),
+      SEND_COOLDOWN_MS,
+    );
 
     await send(conversationId, trimmed);
     onSend?.(trimmed);
