@@ -11,6 +11,9 @@ import messageRoutes from "./routes/messages";
 import userRoutes from "./routes/users";
 import { errorHandler } from "./middleware/errorHandler";
 import { createSocketServer } from "./ws/handler";
+import swaggerUi from "swagger-ui-express";
+import { backendSpec } from "./docs/spec";
+import { docsAuth } from "./middleware/docsAuth";
 
 const app = express();
 
@@ -34,6 +37,20 @@ app.use("/api/users", userRoutes);
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok" });
 });
+
+// ─── API Docs ────────────────────────────────────────────
+
+if (process.env.NODE_ENV !== "production") {
+  app.get("/docs/json", (_req, res) => {
+    res.json(backendSpec);
+  });
+
+  if (process.env.NODE_ENV === "staging") {
+    app.use("/docs", docsAuth, swaggerUi.serve, swaggerUi.setup(backendSpec));
+  } else {
+    app.use("/docs", swaggerUi.serve, swaggerUi.setup(backendSpec));
+  }
+}
 
 app.use(errorHandler);
 
