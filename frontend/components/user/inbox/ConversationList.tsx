@@ -27,7 +27,26 @@ export interface FakeConversations {
 }
 
 const ConversationList = ({ fakeConversations }: ConversationListProps) => {
+	const [search, setSearch] = useState("");
 	const [filter, setFilter] = useState<"all" | "unread">("all");
+
+	const filteredConversations = fakeConversations
+  .filter((conversation) => {
+    
+    if (filter === "unread") {
+				// Change conversation.id to currentUserId
+      return isUnread(conversation, conversation.id);
+    }
+    return true;
+  })
+  .filter((conversation) => {
+    
+    if (!search.trim()) return true;
+
+    return conversation.otherParticipant.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+  });
 
 	return (
 		<div className="mt-10 lg:mt-5 p-5 max-md:max-w-97.5 md:max-w-87.5">
@@ -35,7 +54,7 @@ const ConversationList = ({ fakeConversations }: ConversationListProps) => {
 				<h2 className="font-semibold text-lg leading-5 mb-7">Inbox</h2>
 				<div className="relative mb-3">
 					<FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300 " />
-					<Input className=" max-w-100 text-gray-400 border-2 rounded-xl pr-15" />
+					<Input value={search} onChange={(e)=> setSearch(e.target.value)} className=" max-w-100 text-gray-400 border-2 rounded-xl pl-8" />
 				</div>
 
 				{/* Filter buttons  */}
@@ -56,18 +75,7 @@ const ConversationList = ({ fakeConversations }: ConversationListProps) => {
 			</header>
 
 			<section className="mb-6 flex flex-col gap-4">
-				{fakeConversations
-					.filter((conversation) => {
-						if (filter === "all") return true;
-
-						if (filter === "unread") {
-							// Change this to currentUserId
-							return isUnread(conversation, conversation.id);
-						}
-
-						return true;
-					})
-					.map((conversation) => (
+				{filteredConversations.map((conversation) => (
 						<ConversationItem
 							key={conversation.id}
 							id={conversation.id}
