@@ -78,6 +78,9 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const authorId = searchParams.get("authorId");
     const category = searchParams.get("category");
+    const q = searchParams.get("q");
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
+    const limit = Math.min(50, Math.max(1, parseInt(searchParams.get("limit") || "12")));
 
     const where: Record<string, unknown> = {};
 
@@ -85,27 +88,46 @@ export async function GET(request: NextRequest) {
       where.authorId = authorId;
     }
 
-    if (category) {
+    if (category && category !== "all") {
       where.category = category.toUpperCase();
     }
 
-    const documents = await prisma.document.findMany({
-      where,
-      include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            image: true,
+    if (q && q.trim().length > 0) {
+      where.title = { contains: q.trim(), mode: "insensitive" };
+    }
+
+    const skip = (page - 1) * limit;
+
+    const [documents, total] = await Promise.all([
+      prisma.document.findMany({
+        where,
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
           },
         },
-      },
-      orderBy: {
-        createdAt: "desc",
+        orderBy: {
+          createdAt: "desc",
+        },
+        skip,
+        take: limit,
+      }),
+      prisma.document.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      documents,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
       },
     });
-
-    return NextResponse.json(documents);
   } catch (error) {
     console.error("Error fetching documents:", error);
     return NextResponse.json(
