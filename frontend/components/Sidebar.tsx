@@ -11,7 +11,7 @@ const Sidebar = () => {
   const { isExpanded, toggleSidebar } = useSidebar();
   return (
     <aside
-      className={`h-screen fixed top-0 left-0 transition-all duration-300 w-fit md:w-12 xl:w-62.5 overflow-hidden hover:overflow-y-auto lg:border-r bg-white shadow-lg p-5  ${isExpanded ? "md:w-62.5 z-60" : "md:w-12"}`}
+      className={`h-full transition-all duration-300 w-fit md:w-12 xl:w-62.5 overflow-hidden hover:overflow-y-auto lg:border-r bg-white shadow-lg p-5  ${isExpanded ? "md:w-62.5 z-60" : "md:w-12"}`}
     >
       <Logo />
 

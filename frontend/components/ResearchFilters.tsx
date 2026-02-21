@@ -27,7 +27,7 @@ const ResearchFilters = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-
+  const pageName = pathname.split("/").pop();
   const filterBy = searchParams.get("category") || "all";
   const sortBy = searchParams.get("sort") || "recent";
 
@@ -38,55 +38,70 @@ const ResearchFilters = () => {
   }
 
   return (
-    <div className="flex  md:my-6 items-center my-4 -mb-2 min-h-16 justify-between ">
-      {/* CATEGORY FILTER */}
-      <div className="lg:flex items-center flex-wrap gap-7.75 hidden">
-        {filterButtons.map(({ label, variant }) => (
-          <Button
-            key={label}
-            variant={variant}
-            onClick={() => updateParam("category", label)}
-            className={`${filterBy === label ? "bg-primary text-white" : ""}`}
+    <div className=" mb-2 ">
+      {/* page title */}
+      <h2 className="md:hidden mt-2 mb-1.5 text-lg capitalize text-primary font-medium leading-[24px] tracking-normal">
+        {pageName}
+      </h2>
+
+      <div className="flex   items-center lg:min-h-16 lg:pl-9 min-h-7 justify-between ">
+        {/* CATEGORY FILTER */}
+        <div className="lg:flex items-center flex-wrap gap-7.75 hidden">
+          {filterButtons.map(({ label, variant }) => (
+            <Button
+              key={label}
+              variant={variant}
+              onClick={() => updateParam("category", label)}
+              className={`${filterBy === label ? "bg-primary text-white" : ""} `}
+            >
+              {label.charAt(0).toUpperCase() + label.slice(1)}
+            </Button>
+          ))}
+        </div>
+        {/* mobile */}
+        <div className="lg:hidden">
+          <Select
+            value={filterBy}
+            onValueChange={(value) => updateParam("category", value)}
           >
-            {label.charAt(0).toUpperCase() + label.slice(1)}
-          </Button>
-        ))}
-      </div>
-      {/* mobile */}
-      <div className="lg:hidden">
-        <Select
-          value={filterBy}
-          onValueChange={(value) => updateParam("category", value)}
-        >
-          <SelectTrigger className="w-36.25 cursor-pointer border border-input">
-            <SelectValue placeholder="All" defaultValue={filterBy} />
-          </SelectTrigger>
+            <SelectTrigger className="w-36.25 max-sm:h-7! max-md:bg-primary-light capitalize cursor-pointer border border-input">
+              <SelectValue placeholder="All" defaultValue={filterBy} />
+            </SelectTrigger>
 
-          <SelectContent>
-            {filterButtons.map(({ label }) => (
-              <SelectItem key={label} value={label} className="cursor-pointer">
-                {label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+            <SelectContent>
+              {filterButtons.map(({ label }) => (
+                <SelectItem
+                  key={label}
+                  value={label}
+                  className="cursor-pointer capitalize"
+                >
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      {/* SORT BY (Most recent, etc.) */}
-      <div>
-        <Select value={sortBy} onValueChange={(v) => updateParam("sort", v)}>
-          <SelectTrigger className="w-36.25 cursor-pointer border border-input">
-            <SelectValue placeholder="Most recent" defaultValue={sortBy} />
-          </SelectTrigger>
+        {/* SORT BY (Most recent, etc.) */}
+        <div>
+          <Select value={sortBy} onValueChange={(v) => updateParam("sort", v)}>
+            <SelectTrigger className="w-36.25 max-sm:h-7! max-md:bg-primary-light cursor-pointer border border-input">
+              <SelectValue placeholder="Most recent" defaultValue={sortBy} />
+            </SelectTrigger>
 
-          <SelectContent>
-            {sortOptions.map(({ label, value }) => (
-              <SelectItem key={value} value={value} className="cursor-pointer">
-                {label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+            <SelectContent>
+              {sortOptions.map(({ label, value }) => (
+                <SelectItem
+                  key={value}
+                  value={value}
+                  className="cursor-pointer capitalize"
+                >
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
     </div>
   );
