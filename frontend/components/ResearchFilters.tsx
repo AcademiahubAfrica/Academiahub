@@ -38,7 +38,7 @@ const ResearchFilters = () => {
   }
 
   return (
-    <div className="flex  md:mt-0 items-center my-2 min-h-16 justify-between ">
+    <div className="flex  md:my-6 items-center my-4 -mb-2 min-h-16 justify-between ">
       {/* CATEGORY FILTER */}
       <div className="lg:flex items-center flex-wrap gap-7.75 hidden">
         {filterButtons.map(({ label, variant }) => (

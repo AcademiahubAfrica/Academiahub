@@ -14,7 +14,7 @@ type ResearchCardProps = {
 const ResearchCard = ({ data }: ResearchCardProps) => {
   return (
     <article
-      className=" relative w-full  px-1 py-1 lg:py-2.75 lg:px-3 max-w-91.75 border rounded-[15px] border-[#D9D9D9]   "
+      className=" relative w-full  px-1 py-1 lg:py-2.75 lg:px-3  border rounded-[15px] border-[#D9D9D9]   "
       key={data.id}
     >
       <span className="absolute right-3 top-3 md:top-5 z-30 md:right-5 rounded-full md:w-11 w-5.75 md:h-11 h-5.75 cursor-pointer bg-white flex items-center justify-center">
