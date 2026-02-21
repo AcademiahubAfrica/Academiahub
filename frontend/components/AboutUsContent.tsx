@@ -1,13 +1,12 @@
-import Image from 'next/image';
-import { BiTargetLock } from 'react-icons/bi';
-import { AiOutlineEye } from 'react-icons/ai';
+import Image from "next/image";
+import { BiTargetLock } from "react-icons/bi";
+import { AiOutlineEye } from "react-icons/ai";
 
 const AboutUs = () => {
   return (
     <div className="w-full bg-gray-50">
       <div className="w-full py-16 lg:py-24">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          
           {/* Our Story Section */}
           <section className="mb-20">
             <div className="flex flex-col lg:flex-row lg:gap-12 xl:gap-16 items-center justify-between">
@@ -17,13 +16,22 @@ const AboutUs = () => {
                   Our Story
                 </h2>
                 <p className="text-base lg:text-lg text-gray-700 leading-relaxed">
-                  AcademiaHub was born from a simple observation: students across different universities were struggling to access quality research materials, while countless valuable academic projects remained locked away in institutional archives.
+                  AcademiaHub was born from a simple observation: students
+                  across different universities were struggling to access
+                  quality research materials, while countless valuable academic
+                  projects remained locked away in institutional archives.
                 </p>
                 <p className="text-base lg:text-lg text-gray-700 leading-relaxed">
-                  Founded in 2025 by a group of graduate students, we set out to create a platform that would break down these barriers. What started as a small repository has grown into a thriving community of researchers, students, and academics from over 100 institutions worldwide.
+                  Founded in 2025 by a group of graduate students, we set out to
+                  create a platform that would break down these barriers. What
+                  started as a small repository has grown into a thriving
+                  community of researchers, students, and academics from over
+                  100 institutions worldwide.
                 </p>
                 <p className="text-base lg:text-lg text-gray-700 leading-relaxed">
-                  Today, we&apos;re proud to facilitate knowledge sharing, foster collaboration, and support the academic journeys of thousands of students every day.
+                  Today, we&apos;re proud to facilitate knowledge sharing,
+                  foster collaboration, and support the academic journeys of
+                  thousands of students every day.
                 </p>
               </div>
 
@@ -49,7 +57,6 @@ const AboutUs = () => {
           {/* Mission and Vision Section */}
           <section>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              
               {/* Mission Card */}
               <div className="bg-blue-50 rounded-3xl p-8 lg:p-10">
                 <div className="w-14 h-14 bg-blue-900 rounded-2xl flex items-center justify-center mb-6">
@@ -59,7 +66,9 @@ const AboutUs = () => {
                   Our Mission
                 </h3>
                 <p className="text-base lg:text-lg text-gray-700 leading-relaxed">
-                  To democratize access to quality academic research by creating a platform where students can freely share, discover, and collaborate on scholarly work across institutions and borders.
+                  To democratize access to quality academic research by creating
+                  a platform where students can freely share, discover, and
+                  collaborate on scholarly work across institutions and borders.
                 </p>
               </div>
 
@@ -72,13 +81,14 @@ const AboutUs = () => {
                   Our Vision
                 </h3>
                 <p className="text-base lg:text-lg text-gray-700 leading-relaxed">
-                  To become the world&apos;s leading academic collaboration platform, fostering a global community of researchers and students who advance knowledge together through open sharing and peer collaboration.
+                  To become the world&apos;s leading academic collaboration
+                  platform, fostering a global community of researchers and
+                  students who advance knowledge together through open sharing
+                  and peer collaboration.
                 </p>
               </div>
-
             </div>
           </section>
-
         </div>
       </div>
     </div>

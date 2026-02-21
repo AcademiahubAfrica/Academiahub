@@ -6,10 +6,10 @@ import { RxUpload } from "react-icons/rx";
 
 const DownloadCard = () => {
   return (
-    <section className="grid grid-cols-2 gap-4 md:grid-cols-3">
+    <section className="grid grid-cols-2 gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
       {mockData.map((data) => (
         <article
-          className=" relative  px-1 py-1 lg::py-3 lg:px-2 border rounded-[15px] border-[#D9D9D9]  flex flex-col gap-2.5 md:gap-4.5"
+          className=" relative  px-1 py-1 lg:py-3 lg:px-2 border rounded-[15px] border-[#D9D9D9]  flex flex-col gap-2.5 md:gap-4.5"
           key={data.id}
         >
           <span className="absolute right-3 top-3 md:top-5 z-30 md:right-5 rounded-full md:w-11 w-5.75 md:h-11 h-5.75 cursor-pointer bg-white flex items-center justify-center">
@@ -17,7 +17,7 @@ const DownloadCard = () => {
           </span>
           <div className="relative h-[118.48px] sm:h-61.5 w-full">
             <Image
-              className="rounded-t-[15px] object-cover  max-w-86.75"
+              className="rounded-t-[15px] object-cover "
               fill
               src={data.imagePath}
               alt="Publication image"
