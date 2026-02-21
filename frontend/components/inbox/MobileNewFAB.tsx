@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import NewConversationDialog from "./NewConversationDialog";
+import NewConversationDialog from "@/components/inbox/NewConversationDialog";
 
 interface MobileNewFABProps {
   onConversationCreated?: (conversationId: string) => void;
 }
 
 /**
- * Mobile-only — hidden on md+ screens.
+ * Mobile-only FAB — hidden on md+ screens.
  * Opens NewConversationDialog on tap.
  * Matches Figma: fixed bottom-right, h-12 w-12 rounded-full, bg-primary-500.
  */
@@ -20,7 +20,7 @@ export default function MobileNewFAB({
 
   return (
     <>
-      {/* FAB Button */}
+      {/* FAB — md:hidden per spec */}
       <button
         type="button"
         onClick={() => setDialogOpen(true)}
