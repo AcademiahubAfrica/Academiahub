@@ -26,8 +26,8 @@ const Page = () => {
         <ResearchFilters />
       </Suspense>
 
-      <div className="lg:pl-6.25">
-        <h4 className="text-lg mb-3 lg:mb-5.5 font-medium leading-[130%]">
+      <div className="lg:px-6.25 mt-4">
+        <h4 className="text-lg mb-3 lg:mb-5.5 p-2.5  w-fit bg-white rounded-2xl font-medium leading-[130%]">
           Research of the week
         </h4>
 

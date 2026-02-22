@@ -44,7 +44,7 @@ const ResearchFilters = () => {
         {pageName}
       </h2>
 
-      <div className="flex   items-center lg:min-h-16 lg:pl-9 min-h-7 justify-between ">
+      <div className="flex lg:bg-white rounded-b-2xl   items-center lg:min-h-16 lg:pl-9 min-h-7 justify-between ">
         {/* CATEGORY FILTER */}
         <div className="lg:flex items-center flex-wrap gap-7.75 hidden">
           {filterButtons.map(({ label, variant }) => (
@@ -52,7 +52,7 @@ const ResearchFilters = () => {
               key={label}
               variant={variant}
               onClick={() => updateParam("category", label)}
-              className={`${filterBy === label ? "bg-primary text-white" : ""} `}
+              className={`${filterBy === label ? "bg-primary text-white" : "border-grey"} `}
             >
               {label.charAt(0).toUpperCase() + label.slice(1)}
             </Button>

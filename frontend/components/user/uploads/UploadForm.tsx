@@ -5,7 +5,6 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
-  FieldLegend,
   FieldSet,
   FieldError,
 } from "@/components/ui/field";
@@ -146,10 +145,10 @@ const UploadForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="">
-      <FieldSet className="lg:mt-10">
-        <FieldLegend>Upload material</FieldLegend>
-        <FieldDescription>
+    <form onSubmit={handleSubmit(onSubmit)} className="h-full">
+      <FieldSet className="">
+        <h4 className="hidden md:block">Upload material</h4>
+        <FieldDescription className="text-grey max-sm:text-[10px]">
           Share your research, seminar papers, or academic projects with the
           community
         </FieldDescription>
@@ -164,7 +163,7 @@ const UploadForm = () => {
                 id="file"
                 type="file"
                 accept=".pdf,application/pdf"
-                className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+                className="absolute top-0 left-0 w-full h-full opacity-0  cursor-pointer"
                 onChange={handleFileChange}
                 disabled={isUploading}
               />
@@ -215,6 +214,7 @@ const UploadForm = () => {
             </FieldLabel>
             <Input
               id="title"
+              className="bg-[#FAFAFA] text-sm leading-3.5 tracking-normal placeholder:text-grey placeholder:text-sm placeholder:leading-3.5 placeholder:tracking-normal border-none h-12 rounded-lg shadow"
               placeholder="e.g Analysis of Renewable Energy Solutions in Nigeria."
               {...register("title")}
             />
@@ -228,6 +228,7 @@ const UploadForm = () => {
             </FieldLabel>
             <Input
               id="description"
+              className="bg-[#FAFAFA] text-sm leading-3.5 tracking-normal placeholder:text-grey placeholder:text-sm placeholder:leading-3.5 placeholder:tracking-normal border-none h-12 rounded-lg shadow"
               placeholder="Short abstract or summary"
               {...register("description")}
             />
@@ -247,7 +248,7 @@ const UploadForm = () => {
               name="category"
               render={({ field }) => (
                 <Select onValueChange={field.onChange}>
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-[#FAFAFA] text-sm leading-3.5 tracking-normal placeholder:text-grey placeholder:text-sm placeholder:leading-3.5 placeholder:tracking-normal border-none h-14 cursor-pointer rounded-lg shadow">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -278,6 +279,7 @@ const UploadForm = () => {
                 </FieldLabel>
                 <Input
                   id="institution"
+                  className="bg-[#FAFAFA] text-sm leading-3.5 tracking-normal placeholder:text-grey placeholder:text-sm placeholder:leading-3.5 placeholder:tracking-normal border-none h-12 rounded-lg shadow"
                   placeholder="e.g University of Lagos"
                   {...register("institution")}
                 />
@@ -292,7 +294,12 @@ const UploadForm = () => {
                 <FieldLabel htmlFor="year">
                   Year <span className="text-red-500">*</span>
                 </FieldLabel>
-                <Input id="year" placeholder="e.g 2025" {...register("year")} />
+                <Input
+                  id="year"
+                  className="bg-[#FAFAFA] text-sm leading-3.5 tracking-normal placeholder:text-grey placeholder:text-sm placeholder:leading-3.5 placeholder:tracking-normal border-none h-12 rounded-lg shadow"
+                  placeholder="e.g 2025"
+                  {...register("year")}
+                />
                 {errors.year && <FieldError>{errors.year.message}</FieldError>}
               </Field>
             </div>

@@ -5,7 +5,7 @@ import { RiShareForwardLine } from "react-icons/ri";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaBars } from "react-icons/fa";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import React, { useState } from "react";
+import { useState } from "react";
 import Sidebar from "./Sidebar";
 import Link from "next/link";
 import Image from "next/image";
@@ -25,7 +25,7 @@ const UserHeader = () => {
   const userInitials = userName?.slice(0, 2).toUpperCase();
 
   return (
-    <header className="sm:h-14 h-12 px-2  lg:h-18.5 w-full bg-white z-100   flex items-center justify-between lg:justify-end">
+    <header className="sm:h-14 h-12 px-2  lg:h-18.5 w-full bg-white z-100   flex items-center justify-between xl:justify-end">
       <Image
         src={"/assets/images/logoIcon.png"}
         alt="logo"

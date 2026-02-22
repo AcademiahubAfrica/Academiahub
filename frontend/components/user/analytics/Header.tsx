@@ -7,7 +7,7 @@ const Header = () => {
 
   const userName = session?.user.name;
   return (
-    <div className="h-25 hidden lg:block mt-5.5 w-full bg-white">
+    <div className="h-25  p-4 rounded-[20px]  mb-2! hidden lg:block mt-5  bg-white">
       <h1 className="mb-4 flex text-2xl text-black">
         Hi, {status === "loading" ? <NameSkeleton /> : userName}
       </h1>
