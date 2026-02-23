@@ -5,7 +5,7 @@ import { RiShareForwardLine } from "react-icons/ri";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaBars } from "react-icons/fa";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import React, { useState } from "react";
+import { useState } from "react";
 import Sidebar from "./Sidebar";
 import Link from "next/link";
 import Image from "next/image";
@@ -25,7 +25,7 @@ const UserHeader = () => {
   const userInitials = userName?.slice(0, 2).toUpperCase();
 
   return (
-    <header className="h-14 lg:h-18.5 w-full bg-white z-100   flex items-center justify-between md:pl-4">
+    <header className="sm:h-14 h-12 px-2  lg:h-18.5 w-full bg-white z-100   flex items-center justify-between xl:justify-end">
       <Image
         src={"/assets/images/logoIcon.png"}
         alt="logo"
@@ -34,9 +34,9 @@ const UserHeader = () => {
         className="xl:hidden hidden md:block  cursor-pointer object-cover"
       />
 
-      <div className="relative h-12 basis-2/3 hidden md:block "></div>
+      {/* <div className="relative h-12 basis-2/3 hidden md:block "></div> */}
 
-      <div className="md:flex hidden  items-center   gap-4.5 xl:gap-2">
+      <div className="md:flex hidden pr-7.5   items-center   gap-4.5 xl:gap-2">
         <Link href={"/notifications"}>
           <IoMdNotificationsOutline className="text-xl hidden lg:block" />
         </Link>

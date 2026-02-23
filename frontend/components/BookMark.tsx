@@ -36,12 +36,12 @@ const BookMark = ({ data }: BookMarkProps) => {
     <>
       {isSaved ? (
         <FaBookmark
-          className=" cursor-pointer w-3.5! h-4.5! md:text-lg  text-primary"
+          className=" cursor-pointer md:w-3.5! md:h-4.5! w-1.75! h-2.25!   text-primary"
           onClick={toggleSave}
         />
       ) : (
         <FaRegBookmark
-          className=" cursor-pointer text-black/95 w-3.5! h-4.5! md:text-lg "
+          className=" cursor-pointer text-black/95 md:w-3.5! md:h-4.5! w-1.75! h-2.25!  "
           onClick={toggleSave}
         />
       )}
