@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/chart";
 
 import { Button } from "@/components/ui/button";
+import AnalyticFilters from "./AnalyticFilters";
 
 const chartData = [
   { month: "January", downloads: 0 },
@@ -34,13 +35,16 @@ const chartConfig = {
 
 export default function MyChart() {
   return (
-    <section className="md:px-4 py-2  basis-[58%]">
+    <section className="md:px-4 py-2 md:py-4 bg-white rounded-[20px] lg:basis-[58%] w-[97%]">
       <div className="flex justify-between items-center mb-2">
-        <h3 className="text-lg font-semibold">Analytics</h3>
-        <Button variant="outline2">Yearly</Button>
+        <h3 className="text-lg hidden md:block font-semibold">Analytics</h3>
+        <h3 className="text-[10px] md:hidden font-bold leading-[130%]">
+          Overview
+        </h3>
+        <AnalyticFilters />
       </div>
 
-      <ChartContainer config={chartConfig} className="min-h-50 w-full">
+      <ChartContainer config={chartConfig} className="min-h-50 h-[92%] w-full ">
         <AreaChart data={chartData}>
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
 

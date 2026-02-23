@@ -14,7 +14,7 @@ type ResearchCardProps = {
 const ResearchCard = ({ data }: ResearchCardProps) => {
   return (
     <article
-      className=" relative w-full  px-1 py-1 lg:py-2.75 lg:px-3 max-w-91.75 border rounded-[15px] border-[#D9D9D9]   "
+      className=" relative w-full bg-white px-1 py-1 lg:py-2.75 lg:px-3 border rounded-[15px] border-[#D9D9D9]   "
       key={data.id}
     >
       <span className="absolute right-3 top-3 md:top-5 z-30 md:right-5 rounded-full md:w-11 w-5.75 md:h-11 h-5.75 cursor-pointer bg-white flex items-center justify-center">
@@ -30,7 +30,7 @@ const ResearchCard = ({ data }: ResearchCardProps) => {
       </div>
       {/* content */}
       <div className=" mt-4  w-full">
-        <h3 className="font-medium text-[8px]  md:text-lg leading-[130%]">
+        <h3 className="font-medium line-clamp-2 text-[8px]  md:text-lg leading-[130%]">
           {data.name}
         </h3>
         <div className="flex items-center  mt-4.5  gap-1.5 mb-4 ">
@@ -52,15 +52,21 @@ const ResearchCard = ({ data }: ResearchCardProps) => {
           </div>
         </div>
         {/* stats section */}
-        <div className="flex items-center py-2 gap-2 mb-1.5 justify-between lg:justify-around lg:gap-12.5  px-2">
-          <Like data={data} />
-          <div className="flex items-end gap-0.75">
-            <FaRegComment className="cursor-pointer text-black w-3.5 h-3.5 lg:w-4.5 lg:h-5" />
-            <small>{data?.comments}</small>
-          </div>
-          <div className="flex items-end gap-0.75">
-            <MdOutlineFileDownload className="cursor-pointer text-black text-sm md:text-lg" />
-            <small>{data?.downloads}</small>
+        <div className="flex items-center py-2 gap-2  mb-1.5 justify-between lg:justify-around lg:gap-12.5  pr-2">
+          <div className="flex items-center gap-2 sm:gap-6 md:gap-12.5">
+            <Like data={data} />
+            <div className="flex items-end gap-0.75">
+              <FaRegComment className="cursor-pointer text-black w-2.25 h-2.25 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
+              <small className="text-[6.74px] md:text-sm">
+                {data?.comments}
+              </small>
+            </div>
+            <div className="flex items-end gap-0.75">
+              <MdOutlineFileDownload className="cursor-pointer text-black w-2.25 h-2.25 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
+              <small className="text-[6.74px] md:text-sm">
+                {data?.downloads}
+              </small>
+            </div>
           </div>
           <BookMark data={data} />
         </div>
@@ -68,7 +74,7 @@ const ResearchCard = ({ data }: ResearchCardProps) => {
       <Button
         variant="default"
         size="lg"
-        className="w-full md:h-9 lg:h-11 h-7 flex items-center justify-center text-sm font-medium md:text-[16px] leading-[130%]"
+        className="w-full md:h-9 lg:h-11 h-5.25 text-[7.7px] mt-3 mb-1.5 flex items-center justify-center  font-medium md:text-[16px] leading-[130%]"
       >
         View Details
       </Button>

@@ -31,29 +31,38 @@ const stats = [
 ];
 const Statitstics = () => {
   return (
-    <div className="grid grid-cols-2 mt-12 md:mt-0 lg:grid-cols-4 gap-5 xl:gap-8">
+    <div className="grid grid-cols-2  lg:grid-cols-4 gap-2 md:gap-5 xl:gap-8">
       {stats.map(({ label, percentage, value, icon }, index) => (
-        <div className="rounded-[20px] p-4" key={index}>
-          <p className="mb-1.25 font-medium">{label}</p>
-          {percentage < 0 ? (
-            <span className="flex sm:items-center gap-0.5">
-              <IoTrendingDown size={12} className="text-red-500" />
-              <small className="leading-5.25 text-red-500 font-normal">
-                {percentage}% from last month{" "}
-              </small>
-            </span>
-          ) : (
-            <span className="flex sm:items-center gap-0.5">
-              <IoTrendingUp size={12} className="text-green-500" />
-              <small className="leading-5.25 text-green-500 font-normal">
-                +{percentage}% from last month{" "}
-              </small>
-            </span>
-          )}
+        <div
+          className="rounded-[20px] bg-white min-h-[120px]  md:min-h-[170.5px] flex flex-col justify-around  p-1 md:p-4"
+          key={index}
+        >
+          <div className="flex items-center justify-between md:flex-col md:items-start">
+            <p className="mb-1.25 font-normal text-xs md:text-[16px] max-sm:text-grey  md:font-medium">
+              {label}
+            </p>
+            {percentage < 0 ? (
+              <span className="flex items-center gap-0.5">
+                <IoTrendingDown size={12} className="text-red-500" />
+                <small className="leading-5.25 text-red-500 font-normal">
+                  {percentage}%{" "}
+                  <span className="hidden md:inline">from last month</span>
+                </small>
+              </span>
+            ) : (
+              <span className="flex items-center gap-0.5">
+                <IoTrendingUp size={12} className="text-green-500" />
+                <small className="leading-5.25 text-green-500 font-normal">
+                  +{percentage}%{" "}
+                  <span className="hidden md:inline">from last month</span>
+                </small>
+              </span>
+            )}
+          </div>
           <div className="flex items-end justify-between">
             <h3 className="font-semibold text-2xl lg:text-4xl">{value}</h3>
 
-            <span className="2xl:w-15 w-10 h-10 lg:w-12 lg:h-12 2xl:h-15 flex items-center justify-center border border-grey rounded-[10px]">
+            <span className="2xl:w-15 w-7.5 h-7.5 md:w-107.5 md:h-10 lg:w-12 lg:h-12 2xl:h-15 flex items-center justify-center border border-grey rounded-[10px]">
               {icon}
             </span>
           </div>

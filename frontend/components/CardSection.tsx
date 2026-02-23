@@ -7,7 +7,7 @@ interface CardSectionProps {
 
 const CardSection = ({ displayData }: CardSectionProps) => {
   return (
-    <section className="grid grid-cols-2 gap-4   md:grid-cols-3">
+    <section className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
       {displayData.map((data) => (
         <ResearchCard key={data.id} data={data} />
       ))}
