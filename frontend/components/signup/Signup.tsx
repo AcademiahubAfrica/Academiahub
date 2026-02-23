@@ -24,7 +24,7 @@ interface FormErrors {
 }
 
 const Signup = () => {
-    const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<FormData>({
     fullName: "",
     email: "",
     password: "",
@@ -53,8 +53,8 @@ const Signup = () => {
 
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
     }
 
     if (!formData.confirmPassword) {
@@ -92,7 +92,8 @@ const Signup = () => {
       toast.success("Sign up successful! Please verify your email.");
       router.push(`/verification?email=${encodeURIComponent(formData.email)}`);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Sign up failed";
+      const errorMessage =
+        error instanceof Error ? error.message : "Sign up failed";
       toast.error(errorMessage);
     }
   };
@@ -359,6 +360,6 @@ const Signup = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Signup
+export default Signup;

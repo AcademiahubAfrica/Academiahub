@@ -15,7 +15,7 @@ export default async function UserLayout({
   }
   return (
     <SidebarProvider>
-      <div className="h-screen w-full bg-gray-50 flex overflow-hidden">
+      <div className="h-screen w-full bg-[#FAFAFA] flex overflow-hidden">
         {/* DESKTOP SIDEBAR */}
         <div className="hidden md:block h-full">
           <Sidebar />
