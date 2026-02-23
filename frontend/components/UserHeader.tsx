@@ -76,17 +76,25 @@ const UserHeader = () => {
             </div>
 
             <div className="flex md:hidden items-center gap-1.25">
-              <Link href={"/profile"}>
-                <Avatar>
-                  <AvatarImage src={userImage} />
-                  <AvatarFallback>{userInitials}</AvatarFallback>
-                </Avatar>
-              </Link>
-
-              {status === "loading" ? (
-                <NameSkeleton />
+              {pathName === "/settings" ? (
+                <h3 className="text-lg capitalize text-primary font-medium leading-[24px] tracking-normal">
+                  Settings
+                </h3>
               ) : (
-                <h3 className="heading-3">{userName}</h3>
+                <>
+                  <Link href={"/profile"}>
+                    <Avatar>
+                      <AvatarImage src={userImage} />
+                      <AvatarFallback>{userInitials}</AvatarFallback>
+                    </Avatar>
+                  </Link>
+
+                  {status === "loading" ? (
+                    <NameSkeleton />
+                  ) : (
+                    <h3 className="heading-3">{userName}</h3>
+                  )}
+                </>
               )}
             </div>
           </div>
