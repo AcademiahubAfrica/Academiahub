@@ -44,7 +44,7 @@ const ResearchFilters = () => {
         {pageName}
       </h2>
 
-      <div className="flex lg:bg-white rounded-b-2xl   items-center lg:min-h-16 lg:pl-9 min-h-7 justify-between ">
+      <div className="flex lg:bg-white rounded-b-2xl   items-center lg:min-h-16 lg:px-9 min-h-7 justify-between ">
         {/* CATEGORY FILTER */}
         <div className="lg:flex items-center flex-wrap gap-7.75 hidden">
           {filterButtons.map(({ label, variant }) => (

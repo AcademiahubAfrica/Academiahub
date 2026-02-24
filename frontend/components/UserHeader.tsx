@@ -13,8 +13,9 @@ import { useSession } from "next-auth/react";
 import NameSkeleton from "./NameSkeleton";
 import { usePathname } from "next/navigation";
 import ChatHeader from "./user/inbox/ChatHeader";
+import { useSidebar } from "./SidebarContext";
 const UserHeader = () => {
-  const [open, setOpen] = useState(false);
+  const { openMobileSidebar, setOpenMobileSidebar } = useSidebar();
 
   const pathName = usePathname();
 
@@ -64,7 +65,7 @@ const UserHeader = () => {
           <ChatHeader />
         </div>
       ) : (
-        <Sheet open={open} onOpenChange={setOpen}>
+        <Sheet open={openMobileSidebar} onOpenChange={setOpenMobileSidebar}>
           <div className="flex md:hidden w-full flex-row-reverse px-1 items-center justify-between ">
             <div className="flex items-center gap-1.25">
               <Link href={"/notifications"}>
@@ -76,17 +77,25 @@ const UserHeader = () => {
             </div>
 
             <div className="flex md:hidden items-center gap-1.25">
-              <Link href={"/profile"}>
-                <Avatar>
-                  <AvatarImage src={userImage} />
-                  <AvatarFallback>{userInitials}</AvatarFallback>
-                </Avatar>
-              </Link>
-
-              {status === "loading" ? (
-                <NameSkeleton />
+              {pathName === "/settings" ? (
+                <h3 className="text-lg capitalize text-primary font-medium leading-[24px] tracking-normal">
+                  Settings
+                </h3>
               ) : (
-                <h3 className="heading-3">{userName}</h3>
+                <>
+                  <Link href={"/profile"}>
+                    <Avatar>
+                      <AvatarImage src={userImage} />
+                      <AvatarFallback>{userInitials}</AvatarFallback>
+                    </Avatar>
+                  </Link>
+
+                  {status === "loading" ? (
+                    <NameSkeleton />
+                  ) : (
+                    <h3 className="heading-3">{userName}</h3>
+                  )}
+                </>
               )}
             </div>
           </div>

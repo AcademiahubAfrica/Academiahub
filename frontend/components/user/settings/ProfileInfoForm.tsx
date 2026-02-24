@@ -1,17 +1,16 @@
 import {
   Field,
-  FieldDescription,
-  FieldError,
   FieldGroup,
   FieldLabel,
   FieldLegend,
-  FieldSeparator,
-  FieldSet,
 } from "@/components/ui/field";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-const Form = () => {
+// import { useSession } from "next-auth/react";
+const ProfileInfoForm = () => {
+  // const { data: session, status } = useSession();
+
   return (
     <form className="space-y-3">
       <fieldset>
@@ -28,11 +27,12 @@ const Form = () => {
                 />
                 <AvatarFallback>OC</AvatarFallback>
               </Avatar>
-              <Button type="button" className="px-2" variant={"outline2"}>
-                <FieldLabel className="" htmlFor="file">
-                  Change Profile Picture
-                </FieldLabel>
-              </Button>
+              <FieldLabel
+                className="px-4 py-2.5 rounded-4xl cursor-pointer hover:bg-primary hover:text-white duration-150 w-fit transition-all text-sm leading-4.5 tracking-normal border"
+                htmlFor="file"
+              >
+                Change Profile Picture
+              </FieldLabel>
               <input className="hidden" id="file" type="file" />
             </div>
           </Field>
@@ -41,7 +41,7 @@ const Form = () => {
             <FieldLabel htmlFor="fullName">Full Name</FieldLabel>
             <Input
               id="fullName"
-              className="bg-[#FAFAFA]"
+              className="bg-[#FAFAFA] text-sm leading-3.5 tracking-normal placeholder:text-grey placeholder:text-sm placeholder:leading-3.5 placeholder:tracking-normal border-none h-12 rounded-lg shadow"
               defaultValue={"ochife ogechukwu"}
             />
           </Field>
@@ -51,7 +51,7 @@ const Form = () => {
             <FieldLabel htmlFor="institution">Institution</FieldLabel>
             <Input
               id="institution"
-              className="bg-[#FAFAFA]"
+              className="bg-[#FAFAFA] text-sm leading-3.5 tracking-normal placeholder:text-grey placeholder:text-sm placeholder:leading-3.5 placeholder:tracking-normal border-none h-12 rounded-lg shadow"
               defaultValue={"University of Lagos"}
             />
           </Field>
@@ -60,7 +60,7 @@ const Form = () => {
             <FieldLabel htmlFor="department">Department</FieldLabel>
             <Input
               id="department"
-              className="bg-[#FAFAFA]"
+              className="bg-[#FAFAFA] text-sm leading-3.5 tracking-normal placeholder:text-grey placeholder:text-sm placeholder:leading-3.5 placeholder:tracking-normal border-none h-12 rounded-lg shadow"
               defaultValue={"Computer Science"}
             />
           </Field>
@@ -70,7 +70,7 @@ const Form = () => {
             <FieldLabel htmlFor="location">Location</FieldLabel>
             <Input
               id="location"
-              className="bg-[#FAFAFA]"
+              className="bg-[#FAFAFA] text-sm leading-3.5 tracking-normal placeholder:text-grey placeholder:text-sm placeholder:leading-3.5 placeholder:tracking-normal border-none h-12 rounded-lg shadow"
               defaultValue={"Lagos State, Nigeria"}
             />
           </Field>
@@ -79,7 +79,7 @@ const Form = () => {
             <FieldLabel htmlFor="about">About</FieldLabel>
             <Input
               id="about"
-              className="bg-[#FAFAFA]"
+              className="bg-[#FAFAFA] text-sm leading-3.5 tracking-normal placeholder:text-grey placeholder:text-sm placeholder:leading-3.5 placeholder:tracking-normal border-none h-12 rounded-lg shadow"
               defaultValue={
                 "e.g Analysis of Renewable Energy Solutions in Nigeria."
               }
@@ -95,4 +95,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default ProfileInfoForm;

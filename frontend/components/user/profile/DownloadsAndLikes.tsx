@@ -23,8 +23,8 @@ const DownloadsAndLikes = () => {
     router.push(`${pathname}?${params.toString()}`);
   }
   return (
-    <div className="mt-5">
-      <div className="flex items-center gap-2 mb-4  ">
+    <div className="mt-2 ">
+      <div className="flex items-center gap-2 md:mx-4 mb-4  ">
         {filterOptions.map(({ value }, index) => (
           <button
             className={` ${
