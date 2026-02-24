@@ -28,6 +28,7 @@ export const userPages = [
   "/inbox",
   "/profile",
   "/settings",
+  "/view",
 ];
 export default function LayoutWrapper({
   children,
