@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { signIn } from "next-auth/react";
-import { Eye, EyeOff, User, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, User, Mail, Lock, Loader2 } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { FaMicrosoft, FaApple } from "react-icons/fa";
 import toast from "react-hot-toast";
@@ -67,35 +67,41 @@ const Signup = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async () => {
+  // handle submit
+  const [isPending, startTransition] = useTransition();
+  const handleSubmit = () => {
     if (!validateForm()) return;
 
-    try {
-      const res = await fetch("/api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.fullName,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
+    startTransition(async () => {
+      try {
+        const res = await fetch("/api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.fullName,
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
 
-      const data = await res.json().catch(() => null);
+        const data = await res.json().catch(() => null);
 
-      if (!res.ok) {
-        throw new Error(data?.message ?? "Unable to sign up");
+        if (!res.ok) {
+          throw new Error(data?.message ?? "Unable to sign up");
+        }
+
+        toast.success("Sign up successful! Please verify your email.");
+        router.push(
+          `/verification?email=${encodeURIComponent(formData.email)}`,
+        );
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Sign up failed";
+        toast.error(errorMessage);
       }
-
-      toast.success("Sign up successful! Please verify your email.");
-      router.push(`/verification?email=${encodeURIComponent(formData.email)}`);
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Sign up failed";
-      toast.error(errorMessage);
-    }
+    });
   };
 
   const handleChange = (field: keyof FormData, value: string | boolean) => {
@@ -286,9 +292,17 @@ const Signup = () => {
             {/* Sign Up Button */}
             <button
               onClick={handleSubmit}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
+              disabled={isPending}
+              className={`w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors ${isPending ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
             >
-              Sign up
+              {isPending ? (
+                <span className="flex items-center justify-center gap-2">
+                  Sign up...
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </span>
+              ) : (
+                "Sign up"
+              )}
             </button>
 
             {/* Divider */}

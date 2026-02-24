@@ -1,8 +1,8 @@
-"use client";   
+"use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import Image from "next/image";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { FaMicrosoft, FaApple } from "react-icons/fa";
 import { signIn } from "next-auth/react";
@@ -19,7 +19,7 @@ interface FormErrors {
 }
 
 const Signincontent = () => {
-    const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
     rememberMe: false,
@@ -33,8 +33,8 @@ const Signincontent = () => {
 
   useEffect(() => {
     // Show success message if coming from email verification
-    if (searchParams.get('verified') === 'true') {
-      toast.success('Email verified! You can now sign in.');
+    if (searchParams.get("verified") === "true") {
+      toast.success("Email verified! You can now sign in.");
     }
   }, [searchParams]);
 
@@ -55,27 +55,35 @@ const Signincontent = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async () => {
+  // submit logic
+
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubmit = () => {
     if (!validateForm()) return;
 
-    const res = await signIn("credentials", {
-      redirect: false,
-      email: formData.email,
-      password: formData.password,
-    });
+    startTransition(async () => {
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: formData.email,
+        password: formData.password,
+      });
 
-    if (res?.error) {
-      if (res.error === "EMAIL_NOT_VERIFIED") {
-        toast.error("Please verify your email first");
-        router.push(`/verification?email=${encodeURIComponent(formData.email)}`);
+      if (res?.error) {
+        if (res.error === "EMAIL_NOT_VERIFIED") {
+          toast.error("Please verify your email first");
+          router.push(
+            `/verification?email=${encodeURIComponent(formData.email)}`,
+          );
+          return;
+        }
+        toast.error(res.error);
         return;
       }
-      toast.error(res.error);
-      return;
-    }
 
-    toast.success("Signed in successfully!");
-    router.push("/dashboard");
+      toast.success("Signed in successfully!");
+      router.push("/dashboard");
+    });
   };
 
   const handleChange = (field: keyof FormData, value: string | boolean) => {
@@ -200,9 +208,17 @@ const Signincontent = () => {
             {/* Sign In Button */}
             <button
               onClick={handleSubmit}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
+              disabled={isPending}
+              className={`w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors ${isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
             >
-              Sign in
+              {isPending ? (
+                <span className="flex items-center justify-center gap-2">
+                  Signing in...
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </span>
+              ) : (
+                "Sign in"
+              )}
             </button>
 
             {/* Divider */}
@@ -274,6 +290,6 @@ const Signincontent = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Signincontent;
