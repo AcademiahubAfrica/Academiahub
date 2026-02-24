@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -12,31 +11,22 @@ import { useSidebar } from "./SidebarContext";
 
 const CollaspeSide = () => {
   const { isExpanded, toggleSidebar } = useSidebar();
-  const [defaultOpen, setDefaultOpen] = useState<string>("");
-
-  useEffect(() => {
-    
-    function checkScreenSize() {
-      if (window.innerWidth >= 768) {
-        setDefaultOpen("item-1");
-      }
-    }
-
-    checkScreenSize();
-  }, []);
 
   return (
     <Accordion
-      key={defaultOpen} 
       type="single"
       collapsible
-      defaultValue={defaultOpen}
-      className=" min-w-4"
+      defaultValue={"item-1"}
+      className=" min-w-4 "
     >
       <AccordionItem value="item-1">
+        <AccordionTrigger className="text-grey md:hidden lg:flex">
+          Account
+        </AccordionTrigger>
+
         <AccordionTrigger
           onClick={toggleSidebar}
-          className={"text-grey"}
+          className={`hidden md:max-lg:flex ${isExpanded ? "text-grey" : "text-transparent"}`}
         >
           Account
         </AccordionTrigger>

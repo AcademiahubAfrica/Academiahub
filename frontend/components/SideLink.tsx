@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { ReactNode } from "react";
+import { useSidebar } from "./SidebarContext";
 
 interface SideLinkProps {
   icon: ReactNode;
@@ -12,12 +13,14 @@ interface SideLinkProps {
 }
 
 const SideLink = ({ icon, label, link }: SideLinkProps) => {
+  const { setOpenMobileSidebar } = useSidebar();
   const pathName = usePathname();
   return (
     <li
       className={`h-9  w-50 mx-auto flex items-center mb-2.5    hover:text-primary cursor-pointer`}
     >
       <Link
+        onClick={() => setOpenMobileSidebar(false)}
         href={link}
         className={`${
           pathName === link ? "text-primary" : ""
@@ -39,12 +42,14 @@ interface AccountLinksProps {
 }
 
 export function AccountLinks({ link, label, icon }: AccountLinksProps) {
+  const { setOpenMobileSidebar } = useSidebar();
   const pathName = usePathname();
 
   return (
     <li className="h-9  w-50 mx-auto flex items-center hover:text-primary cursor-pointer mb-2.5">
       {link ? (
         <Link
+          onClick={() => setOpenMobileSidebar(false)}
           href={link}
           className={`${
             pathName === link ? "text-primary" : ""
