@@ -9,19 +9,14 @@ import {
 } from "@/lib/messaging/utils";
 import { ConversationListItem } from "@/app/_types/messaging";
 import { usePresence } from "@/lib/messaging/hooks";
-import { useState } from "react";
-
 interface ConversationItemProps {
   id: string;
   conversation: ConversationListItem;
 }
 const ConversationItem = ({ id, conversation }: ConversationItemProps) => {
-  const [isActive, setIsActive] = useState(true);
   const onlineUsers = usePresence();
-
-  if (onlineUsers.has(conversation?.otherParticipant.id || "")) {
-    setIsActive(true);
-  }
+  const isActive = onlineUsers.has(conversation?.otherParticipant.id || "");
+  
 
   return (
     <div className="flex items-center p-5 bg-gray-100 rounded-lg">
