@@ -1,19 +1,14 @@
 name: Vercel Preview
 on:
-  pull_request:
+  pull_request_target:
     branches: [development]
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check secret
-        run: |
-          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
-            echo "VERCEL_TOKEN is empty"
-          else
-            echo "VERCEL_TOKEN is set"
-          fi
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
