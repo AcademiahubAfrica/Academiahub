@@ -40,7 +40,7 @@ export function SwaggerViewer() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="mx-auto max-w-screen-xl p-6">
+      <div className="mx-auto max-w-7xl p-6">
         <div className="mb-6 flex items-center gap-4">
           <h1 className="text-2xl font-bold text-gray-900">API Docs</h1>
           <select
