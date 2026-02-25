@@ -1,7 +1,6 @@
 import { Geist, Geist_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import AppProvider from "./AppProvider";
-import LayoutWrapper from "@/components/LayoutWrapper";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { websiteJsonLd } from "@/lib/jsonld/website";
 import { organizationJsonLd } from "@/lib/jsonld/organisation";
@@ -56,7 +55,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${ibmPlexSans.variable} antialiased`}
       >
         <AppProvider>
-          <LayoutWrapper>{children}</LayoutWrapper>
+          {children}
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
         </AppProvider>
       </body>
