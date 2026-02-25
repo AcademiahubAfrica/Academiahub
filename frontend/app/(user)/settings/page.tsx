@@ -1,25 +1,9 @@
 import { userPagesMetadata } from "@/app/data/Exports";
 import AllForms from "@/components/user/settings/AllForms";
 import SettingsHeader from "@/components/user/settings/SettingsHeader";
-import { cookies } from "next/headers";
 
 export const metadata = userPagesMetadata.settings;
-const Page = async () => {
-  // please review this before i continue
-  const cookieStore = await cookies();
-  const allCookies = cookieStore.toString();
-  const profile = await fetch(
-    `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/profile/me`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: allCookies,
-      },
-    },
-  );
-  const data = await profile.json();
-  console.log(data);
+const Page = () => {
   return (
     <main className="bg-white p-2 my-2 rounded md:mx-4 md:my-4 md:p-6 md:rounded-2xl">
       <SettingsHeader />
