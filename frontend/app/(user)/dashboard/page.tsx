@@ -1,38 +1,17 @@
 import { Suspense } from "react";
-import { mockData } from "@/app/data/exploreMockData";
-import CardSection from "@/components/CardSection";
-import Image from "next/image";
-import logoIcon from "@/public/assets/images/Aicon.png";
-import ResearchFilters from "@/components/ResearchFilters";
 import { userPagesMetadata } from "@/app/data/Exports";
+import Header from "@/components/user/dashboard/Header";
+import ResearchPageSkeleton from "@/components/user/dashboard/ResearchPageSkeleton";
+import MainContent from "@/components/user/dashboard/MainContent";
 export const metadata = userPagesMetadata.dashboard;
 const Page = () => {
   return (
     <div className="w-full">
-      <div className="h-40.75 hidden  w-full bg-linear-to-r from-primary-500! lg:flex justify-between to-primary-900">
-        <h2 className="hero-text mt-5.5 ml-6.75 text-transparent bg-clip-text bg-linear-to-r from-white to-[#999999]">
-          Discover academic research and projects{" "}
-        </h2>
+      <Header />
 
-        <Image
-          src={logoIcon}
-          width={120}
-          height={120}
-          alt="academia hub's logo icon"
-        />
-      </div>
-
-      <Suspense fallback={null}>
-        <ResearchFilters />
+      <Suspense fallback={<ResearchPageSkeleton />}>
+        <MainContent />
       </Suspense>
-
-      <div className="lg:px-6.25 mt-4">
-        <h4 className="text-lg mb-3 lg:mb-5.5 p-2.5  w-fit bg-white rounded-2xl font-medium leading-[130%]">
-          Research of the week
-        </h4>
-
-        <CardSection displayData={mockData} />
-      </div>
     </div>
   );
 };
