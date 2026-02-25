@@ -1,9 +1,9 @@
 import Image from "next/image";
-import Explore from "../components/landing/ExploreSection";
-import { userImg } from "./data/userImgData";
-import ChooseUs from "../components/landing/LandingChooseUs";
-import LandingUserSay from "../components/landing/LandingUserSay";
-import LandingAboutUs from "../components/landing/LandingAboutUs";
+import Explore from "../../components/landing/ExploreSection";
+import { userImg } from "../data/userImgData";
+import ChooseUs from "../../components/landing/LandingChooseUs";
+import LandingUserSay from "../../components/landing/LandingUserSay";
+import LandingAboutUs from "../../components/landing/LandingAboutUs";
 import JoinUs from "@/components/landing/JoinUs";
 import HowItWorks from "@/components/landing/HowItWorks";
 import LandingFaq from "@/components/landing/LandingFaq";
