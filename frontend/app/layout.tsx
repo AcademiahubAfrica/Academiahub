@@ -6,6 +6,7 @@ import { websiteJsonLd } from "@/lib/jsonld/website";
 import { organizationJsonLd } from "@/lib/jsonld/organisation";
 import { rootLayoutMetaData } from "./data/metadataExports";
 import { personsJsonLd } from "@/lib/jsonld/person";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,6 +56,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${ibmPlexSans.variable} antialiased`}
       >
         <AppProvider>
+          <Toaster position="top-right" reverseOrder={false} />
           {children}
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
         </AppProvider>

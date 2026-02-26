@@ -30,6 +30,7 @@ import { z } from "zod";
 import { FaTimes } from "react-icons/fa";
 import { useUploadThing } from "@/lib/uploadthing/uploadthing";
 import { useRouter } from "next/navigation";
+import { Textarea } from "@/components/ui/textarea";
 
 // --------------------
 //   ZOD SCHEMA
@@ -43,7 +44,10 @@ const formSchema = z.object({
       "Only PDF files are allowed",
     ),
   title: z.string().min(3, "Title is required"),
-  description: z.string().min(10, "Description is required"),
+  description: z
+    .string()
+    .min(10, "Description is required")
+    .max(1000, "Description is too long"),
   category: z.string().min(1, "Please select a category"),
   institution: z.string().min(3, "Institution is required"),
   year: z.string().min(4, "Year is required"),
@@ -226,9 +230,9 @@ const UploadForm = () => {
             <FieldLabel htmlFor="description">
               Abstract / Description <span className="text-red-500">*</span>
             </FieldLabel>
-            <Input
+            <Textarea
               id="description"
-              className="bg-[#FAFAFA] text-sm leading-3.5 tracking-normal placeholder:text-grey placeholder:text-sm placeholder:leading-3.5 placeholder:tracking-normal border-none h-12 rounded-lg shadow"
+              className="bg-[#FAFAFA] text-sm leading-6 tracking-normal placeholder:text-grey placeholder:text-sm placeholder:leading-3.5 placeholder:tracking-normal border-none min-h-12 rounded-lg shadow"
               placeholder="Short abstract or summary"
               {...register("description")}
             />

@@ -69,3 +69,9 @@ export const getMessageSeparator = (dateString: string) => {
     year: "numeric",
   });
 };
+
+export const formatToMB = (bytes: number) => {
+  if (!bytes) return "0 MB";
+  const mb = bytes / (1024 * 1024);
+  return `${mb.toFixed(2)} MB`;
+};
