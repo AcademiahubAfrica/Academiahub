@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
-import UserSearchInput from "@/components/inbox/UserSearchInput";
+import UserSearchInput from "@/components/user/inbox/UserSearchInput";
 
 interface UserSearchResult {
   id: string;
