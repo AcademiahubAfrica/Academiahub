@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import NewConversationDialog from "@/components/inbox/NewConversationDialog";
+import NewConversationDialog from "@/components/user/inbox/NewConversationDialog";
 
 interface MobileNewFABProps {
   onConversationCreated?: (conversationId: string) => void;
