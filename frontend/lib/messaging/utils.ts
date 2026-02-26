@@ -18,7 +18,7 @@ export const truncateText = (text: string, maxLen = 23) => {
 
 export const isUnread = (
   conversation: ConversationListItem | undefined,
-  currentUserId: string,
+  currentUserId: string | undefined,
 ): boolean => {
   const lastMessage = conversation?.lastMessage;
 
