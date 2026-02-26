@@ -9,19 +9,14 @@ import {
 } from "@/lib/messaging/utils";
 import { ConversationListItem } from "@/app/_types/messaging";
 import { usePresence } from "@/lib/messaging/hooks";
-import { useState } from "react";
-
 interface ConversationItemProps {
-  id: string;
+  currentUserId: string | undefined;
   conversation: ConversationListItem;
 }
-const ConversationItem = ({ id, conversation }: ConversationItemProps) => {
-  const [isActive, setIsActive] = useState(true);
+const ConversationItem = ({ currentUserId, conversation }: ConversationItemProps) => {
   const onlineUsers = usePresence();
-
-  if (onlineUsers.has(conversation?.otherParticipant.id || "")) {
-    setIsActive(true);
-  }
+  const isActive = onlineUsers.has(conversation?.otherParticipant.id || "");
+  
 
   return (
     <div className="flex items-center p-5 bg-gray-100 rounded-lg">
@@ -56,8 +51,8 @@ const ConversationItem = ({ id, conversation }: ConversationItemProps) => {
         <span className=" text-xs leading-3.5 text-muted-foreground">
           {formatRelativeTime(conversation.createdAt)}
         </span>
-        {/* I changed the type in isUnread to FakeConversatipn */}
-        {isUnread(conversation, conversation.id) && (
+       
+        {isUnread(conversation, currentUserId) && (
           <div className="bg-primary-500 w-2 h-2 rounded-full"></div>
         )}
       </div>

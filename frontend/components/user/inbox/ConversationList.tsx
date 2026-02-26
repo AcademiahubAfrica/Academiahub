@@ -5,6 +5,7 @@ import { FaSearch } from "react-icons/fa";
 import ConversationItem from "./ConversationItem";
 import { useState } from "react";
 import { isUnread } from "@/lib/messaging/utils";
+import { useSession } from "next-auth/react";
 
 interface ConversationListProps {
   conversations?: ConversationListItem[];
@@ -13,12 +14,13 @@ interface ConversationListProps {
 const ConversationList = ({ conversations }: ConversationListProps) => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | "unread">("all");
+	const {data: session} = useSession();
+	const currentUserId = session?.user?.id;
 
   const filteredConversations = conversations
     ?.filter((conversation) => {
       if (filter === "unread") {
-        // Change conversation.id to currentUserId
-        return isUnread(conversation, conversation.id);
+        return isUnread(conversation, currentUserId);
       }
       return true;
     })
@@ -26,8 +28,8 @@ const ConversationList = ({ conversations }: ConversationListProps) => {
       if (!search.trim()) return true;
 
       return (
-        conversation?.otherParticipant.name ||
-        "".toLowerCase().includes(search.toLowerCase())
+        (conversation?.otherParticipant.name ||
+        "").toLowerCase().includes(search.toLowerCase())
       );
     });
 
@@ -65,7 +67,7 @@ const ConversationList = ({ conversations }: ConversationListProps) => {
         {filteredConversations?.map((conversation) => (
           <ConversationItem
             key={conversation.id}
-            id={conversation.id}
+            currentUserId={currentUserId}
             conversation={conversation}
           />
         ))}

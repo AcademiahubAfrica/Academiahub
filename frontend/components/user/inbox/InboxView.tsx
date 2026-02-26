@@ -5,8 +5,6 @@ import ChatThread from "./ChatThread";
 import { useSearchParams } from "next/navigation";
 import { useConversations } from "@/lib/messaging/hooks";
 import ErrorState from "./ErrorState";
-import ConversationListSkeleton from "./ConversationListSkeleton";
-import ChatThreadSkeleton from "./ChatThreadSkeleton";
 import EmptyConversation from "./EmptyConversation";
 import EmptyChatThread from "./EmptyChatThread";
 
@@ -15,31 +13,30 @@ const InboxView = () => {
   const searchParams = useSearchParams();
   const conversationId = searchParams.get("c");
 
-  const renderConversationList = () => {
-    if (isError) return <ErrorState onRetry={refetch} error={error} />;
-    if (isLoading) return <ConversationListSkeleton />;
-    return <ConversationList conversations={data} />;
-  };
 
-  const renderChatThread = () => {
-    if (isLoading) return <ChatThreadSkeleton />;
-    if (!conversationId) return <EmptyChatThread />;
-    return <ChatThread />;
-  };
-
+  if (isLoading) {
+    return <p className="font-semibold text-gray-500 text-center"> Loading..</p>
+  }
+  if (isError) {
+    return <ErrorState error={error} onRetry={refetch} />
+  }
   if (!data || data?.length === 0) return <EmptyConversation />;
 
   return (
     <>
       {/* Desktop screen */}
       <section className="hidden md:flex">
-        <div className="w-87.5">{renderConversationList()}</div>
-        <div className="flex-1">{renderChatThread()}</div>
+       <div className="w-87.5"><ConversationList conversations={data} /></div>
++             <div className="flex-1">
++               {!conversationId ? <EmptyChatThread /> : <ChatThread />}
++             </div>
       </section>
 
       {/* Mobile screen */}
       <section className="md:hidden h-full">
-        {!conversationId ? renderConversationList() : renderChatThread()}
+       {!conversationId
+               ? <ConversationList conversations={data} />
+               : <ChatThread />}
       </section>
     </>
   );
