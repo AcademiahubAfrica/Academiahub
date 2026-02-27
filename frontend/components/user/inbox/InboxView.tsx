@@ -14,6 +14,10 @@ const InboxView = () => {
   const conversationId = searchParams.get("c");
  const router = useRouter();
 
+ const selectedConversation = data?.find(
+  (conversation) => conversation.id === conversationId
+);
+
  useEffect(() => {
   if (isError && error?.message?.includes("403")) {
     router.replace("/");
@@ -34,7 +38,7 @@ const InboxView = () => {
       <section className="hidden md:flex">
        <div className="w-87.5"><ConversationList conversations={data} /></div>
 +             <div className="flex-1">
-+               {!conversationId ? <EmptyChatThread /> : <ChatThread />}
++               {!conversationId ? <EmptyChatThread /> : <ChatThread conversationId={conversationId} conversation={selectedConversation} />}
 +             </div>
       </section>
 
@@ -42,7 +46,7 @@ const InboxView = () => {
       <section className="md:hidden h-full">
        {!conversationId
                ? <ConversationList conversations={data} />
-               : <ChatThread />}
+               : <ChatThread conversationId={conversationId} conversation={selectedConversation} />}
       </section>
     </>
   );
