@@ -1,54 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { Search, Loader2 } from "lucide-react";
-
-interface UserSearchResult {
-  id: string;
-  name: string;
-  email: string;
-  avatarUrl?: string;
-}
+import { useUserSearch } from "@/lib/messaging/hooks";
+import type { UserSearchResult } from "@/app/_types/messaging";
+import { getInitials } from "@/lib/messaging/utils";
 
 interface UserSearchInputProps {
   onSelect: (user: UserSearchResult) => void;
-}
-
-function useUserSearch(query: string): {
-  results: UserSearchResult[];
-  isLoading: boolean;
-  error: Error | null;
-} {
-  const [results, setResults] = useState<UserSearchResult[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (query.length < 3) {
-      setResults([]);
-      return;
-    }
-    setIsLoading(true);
-    const t = setTimeout(() => {
-      // Mock results for development
-      setResults([
-        { id: "1", name: "Anthony Jones", email: "anthony@example.com" },
-        { id: "2", name: "Chiamaka Nwosu", email: "chiamaka@example.com" },
-      ]);
-      setIsLoading(false);
-    }, 400);
-    return () => clearTimeout(t);
-  }, [query]);
-
-  return { results, isLoading, error: null };
-}
-
-function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
 }
 
 export default function UserSearchInput({ onSelect }: UserSearchInputProps) {
@@ -66,7 +25,7 @@ export default function UserSearchInput({ onSelect }: UserSearchInputProps) {
     }, 300);
   };
 
-  const { results, isLoading } = useUserSearch(debouncedQuery);
+  const { data: results = [], isLoading } = useUserSearch(debouncedQuery);
   const showResults = debouncedQuery.length >= 3;
   const showEmpty = showResults && !isLoading && results.length === 0;
 
@@ -117,20 +76,20 @@ export default function UserSearchInput({ onSelect }: UserSearchInputProps) {
                 onClick={() => onSelect(user)}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-colors text-left w-full"
               >
-                {user.avatarUrl ? (
+                {user.image ? (
                   <img
-                    src={user.avatarUrl}
-                    alt={user.name}
+                    src={user.image}
+                    alt={user.name || "User"}
                     className="h-9 w-9 rounded-full object-cover shrink-0"
                   />
                 ) : (
                   <div className="h-9 w-9 rounded-full bg-primary-500 text-white flex items-center justify-center text-xs font-semibold shrink-0">
-                    {getInitials(user.name)}
+                    {getInitials(user.name || "")}
                   </div>
                 )}
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-foreground truncate">
-                    {user.name}
+                    {user.name || "Unknown"}
                   </p>
                   <p className="text-xs text-muted-foreground truncate">
                     {user.email}
