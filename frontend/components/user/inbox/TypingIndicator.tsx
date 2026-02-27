@@ -1,20 +1,17 @@
 "use client";
 
+import { useRemoteTyping } from "@/lib/messaging/hooks";
+
 interface TypingIndicatorProps {
   conversationId: string;
   partnerName?: string;
-}
-
-function useRemoteTyping(conversationId: string): { isTyping: boolean } {
-  // In real use: listens to socket typing events for this conversation
-  return { isTyping: false };
 }
 
 export default function TypingIndicator({
   conversationId,
   partnerName,
 }: TypingIndicatorProps) {
-  const { isTyping } = useRemoteTyping(conversationId);
+  const isTyping = useRemoteTyping(conversationId);
 
   if (!isTyping) return null;
 

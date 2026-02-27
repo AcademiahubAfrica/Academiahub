@@ -3,13 +3,8 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import UserSearchInput from "@/components/user/inbox/UserSearchInput";
-
-interface UserSearchResult {
-  id: string;
-  name: string;
-  email: string;
-  avatarUrl?: string;
-}
+import { useCreateConversation } from "@/lib/messaging/hooks";
+import type { UserSearchResult } from "@/app/_types/messaging";
 
 interface NewConversationDialogProps {
   open: boolean;
@@ -17,23 +12,12 @@ interface NewConversationDialogProps {
   onConversationCreated?: (conversationId: string) => void;
 }
 
-function useCreateConversation() {
-  return {
-    create: async (recipientId: string): Promise<{ id: string }> => {
-      console.log("[useCreateConversation] create with", recipientId);
-      return { id: `conv_${recipientId}_${Date.now()}` };
-    },
-    isPending: false,
-    error: null as Error | null,
-  };
-}
-
 export default function NewConversationDialog({
   open,
   onClose,
   onConversationCreated,
 }: NewConversationDialogProps) {
-  const { create, isPending, error } = useCreateConversation();
+  const { mutateAsync: create, isPending, error } = useCreateConversation();
   const [creating, setCreating] = useState(false);
 
   if (!open) return null;
