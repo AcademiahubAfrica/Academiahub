@@ -1,8 +1,8 @@
 "use client";
-import React from "react";
+import { useEffect } from "react";
 import ConversationList from "./ConversationList";
 import ChatThread from "./ChatThread";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useConversations } from "@/lib/messaging/hooks";
 import ErrorState from "./ErrorState";
 import EmptyConversation from "./EmptyConversation";
@@ -12,6 +12,13 @@ const InboxView = () => {
   const { data, isLoading, isError, error, refetch } = useConversations();
   const searchParams = useSearchParams();
   const conversationId = searchParams.get("c");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isError && error?.message?.includes("403")) {
+      router.replace("/");
+    }
+  }, [isError, error, router]);
 
   const renderChatThread = () => {
     if (!conversationId) return <EmptyChatThread />;
