@@ -2,25 +2,11 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Paperclip, Send } from "lucide-react";
+import { useSendMessage, useTyping } from "@/lib/messaging/hooks";
 
 interface MessageInputProps {
   conversationId: string;
   onSend?: (text: string) => void;
-}
-
-function useSendMessage() {
-  return {
-    send: async (conversationId: string, text: string) => {
-      console.log("[useSendMessage] send:", { conversationId, text });
-    },
-    isSending: false,
-  };
-}
-function useTyping(conversationId: string) {
-  return {
-    startTyping: () => console.log("[useTyping] startTyping", conversationId),
-    stopTyping: () => console.log("[useTyping] stopTyping", conversationId),
-  };
 }
 
 const MAX_LENGTH = 5000;
@@ -37,7 +23,7 @@ export default function MessageInput({
   const cooldownTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const typingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { send, isSending } = useSendMessage();
+  const { send } = useSendMessage();
   const { startTyping, stopTyping } = useTyping(conversationId);
 
   // Auto-resize textarea
@@ -63,9 +49,9 @@ export default function MessageInput({
     typingTimerRef.current = setTimeout(() => stopTyping(), 3000);
   };
 
-  const handleSend = useCallback(async () => {
+  const handleSend = useCallback(() => {
     const trimmed = text.trim();
-    if (!trimmed || cooldown || isSending) return;
+    if (!trimmed || cooldown) return;
 
     setText("");
     stopTyping();
@@ -75,14 +61,14 @@ export default function MessageInput({
     setCooldown(true);
     cooldownTimerRef.current = setTimeout(() => setCooldown(false), SEND_COOLDOWN_MS);
 
-    await send(conversationId, trimmed);
+    send(conversationId, trimmed);
     onSend?.(trimmed);
 
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.focus();
     }
-  }, [text, cooldown, isSending, conversationId, send, onSend, stopTyping]);
+  }, [text, cooldown, conversationId, send, onSend, stopTyping]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -93,7 +79,7 @@ export default function MessageInput({
 
   const charsLeft = MAX_LENGTH - text.length;
   const showCounter = text.length >= COUNTER_THRESHOLD;
-  const canSend = text.trim().length > 0 && !cooldown && !isSending;
+  const canSend = text.trim().length > 0 && !cooldown;
 
   return (
     <div className="px-4 pb-4 pt-2 bg-white border-t border-gray-100">
