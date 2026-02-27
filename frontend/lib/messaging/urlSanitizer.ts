@@ -4,7 +4,6 @@ export default function parseMessageContent(
   const urlRegex = /(https:\/\/[^\s]+)/g;
 
   const parts = text.split(urlRegex);
-  console.log(parts);
 
   return parts
     .filter((part) => part.length > 0)
