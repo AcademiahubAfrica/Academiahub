@@ -1,65 +1,69 @@
+"use client";
+
+import { useRef, useEffect, useCallback } from "react";
 import { getMessageSeparator } from "@/lib/utils";
+import type { Message } from "@/app/_types/messaging";
 import MessageBubble from "./MessageBubble";
 
-const messages = [
-  {
-    id: 1,
-    date: "2025-02-18T13:45:00.000Z",
-    ownMessage: true,
-    message: "I like how simplified it was , very straight to the point.",
-  },
-  {
-    id: 2,
-    date: "2025-11-18T16:45:00.000Z",
-    ownMessage: false,
-    message: "I like how simplified it was , very straight to the point.",
-  },
-  {
-    id: 3,
-    date: "2026-02-18T13:45:00.000Z",
-    ownMessage: true,
-    message: "I like how simplified it was , very straight to the point.",
-  },
-  {
-    id: 4,
-    date: "2026-02-18T13:45:00.000Z",
-    ownMessage: false,
-    message: "data:simplified it was , very straight to the point.",
-  },
-  {
-    id: 5,
-    date: "2026-02-18T13:45:00.000Z",
-    ownMessage: true,
-    message: "http:simplified it was , very straight to the point.",
-  },
-  {
-    id: 6,
-    date: "2026-02-18T13:45:00.000Z",
-    ownMessage: false,
-    message: "javascript:simplified it was , very straight to the point.",
-  },
-  {
-    id: 7,
-    date: "2026-02-18T13:45:00.000Z",
-    ownMessage: true,
-    message: "https://buildwithochife.vercel.app/ shdhhjdhjkssdjsdj",
-  },
-  {
-    id: 8,
-    date: new Date().toISOString(),
-    ownMessage: false,
-    message: "yes checkout https://google.com",
-  },
-];
-function MessageList() {
-  return (
-    <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
-      {messages.map((message, index) => {
-        const dateLabel = getMessageSeparator(message.date);
-        const prevDateLabel =
-          index > 0 ? getMessageSeparator(messages[index - 1].date) : null;
+interface MessageListProps {
+  messages: Message[];
+  onScrollStateChange: (isAtBottom: boolean) => void;
+  onLoadMore: () => void;
+  isFetchingMore: boolean;
+  messagesEndRef: React.RefObject<HTMLDivElement | null>;
+}
 
-        // Only show the separator if it's the first message or date changed
+export default function MessageList({
+  messages,
+  onScrollStateChange,
+  onLoadMore,
+  isFetchingMore,
+  messagesEndRef,
+}: MessageListProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  // Track scroll position → report isAtBottom
+  const handleScroll = useCallback(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
+    onScrollStateChange(atBottom);
+  }, [onScrollStateChange]);
+
+  // IntersectionObserver for infinite scroll (sentinel at top)
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) onLoadMore();
+      },
+      { threshold: 0.1 },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [onLoadMore]);
+
+  return (
+    <div
+      ref={containerRef}
+      onScroll={handleScroll}
+      className="flex-1 overflow-y-auto bg-gray-50 p-4"
+    >
+      {/* Sentinel for loading older messages */}
+      <div ref={sentinelRef} className="h-1" />
+      {isFetchingMore && (
+        <div className="flex justify-center py-2">
+          <span className="h-4 w-4 rounded-full border-2 border-primary-500 border-t-transparent animate-spin" />
+        </div>
+      )}
+
+      {messages.map((message, index) => {
+        const dateLabel = getMessageSeparator(message.createdAt);
+        const prevDateLabel =
+          index > 0 ? getMessageSeparator(messages[index - 1].createdAt) : null;
         const showSeparator = dateLabel !== prevDateLabel;
 
         return (
@@ -75,8 +79,8 @@ function MessageList() {
           </div>
         );
       })}
+
+      <div ref={messagesEndRef} />
     </div>
   );
 }
-
-export default MessageList;

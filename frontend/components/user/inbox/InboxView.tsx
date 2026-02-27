@@ -13,30 +13,44 @@ const InboxView = () => {
   const searchParams = useSearchParams();
   const conversationId = searchParams.get("c");
 
+  const renderChatThread = () => {
+    if (!conversationId) return <EmptyChatThread />;
+
+    const conversation = data?.find((c) => c.id === conversationId);
+    if (!conversation) return <EmptyChatThread />;
+
+    return (
+      <ChatThread conversationId={conversationId} conversation={conversation} />
+    );
+  };
 
   if (isLoading) {
-    return <p className="font-semibold text-gray-500 text-center"> Loading..</p>
+    return <p className="font-semibold text-gray-500 text-center">Loading..</p>;
   }
+
   if (isError) {
-    return <ErrorState error={error} onRetry={refetch} />
+    return <ErrorState error={error} onRetry={refetch} />;
   }
+
   if (!data || data?.length === 0) return <EmptyConversation />;
 
   return (
     <>
       {/* Desktop screen */}
       <section className="hidden md:flex">
-       <div className="w-87.5"><ConversationList conversations={data} /></div>
-+             <div className="flex-1">
-+               {!conversationId ? <EmptyChatThread /> : <ChatThread />}
-+             </div>
+        <div className="w-87.5">
+          <ConversationList conversations={data} />
+        </div>
+        <div className="flex-1">{renderChatThread()}</div>
       </section>
 
       {/* Mobile screen */}
       <section className="md:hidden h-full">
-       {!conversationId
-               ? <ConversationList conversations={data} />
-               : <ChatThread />}
+        {!conversationId ? (
+          <ConversationList conversations={data} />
+        ) : (
+          renderChatThread()
+        )}
       </section>
     </>
   );
