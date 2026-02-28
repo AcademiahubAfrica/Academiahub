@@ -31,8 +31,9 @@ export default function ChatThread({
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [unreadWhileScrolled, setUnreadWhileScrolled] = useState(0);
 
-  // Flatten paginated history + real-time messages
-  const history = data?.pages.flatMap((p) => p.messages) ?? [];
+  // Flatten paginated history (API returns newest-first, so reverse to oldest-first)
+  // then append real-time messages at the end
+  const history = (data?.pages.flatMap((p) => p.messages) ?? []).toReversed();
   const allMessages = [
     ...history,
     ...newMessages.map((m) => ({

@@ -1,9 +1,13 @@
+"use client";
+
 import { Profile } from "@/app/_types/author";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getInitials } from "@/lib/messaging/utils";
 import Link from "next/link";
+import MessageAuthorButton from "./MessageAuthorButton";
+
 const ProfileCard = ({ profile }: { profile: Profile }) => {
   return (
     <aside className="hidden md:block border  md:top-8 md:w-1/3 bg-[#FAFAFA] self-start sticky top-24 text-center  rounded-[12px] pt-7 px-4.5">
@@ -52,7 +56,7 @@ const ProfileCard = ({ profile }: { profile: Profile }) => {
       </div>
 
       <div className="space-y-1 mb-2 lg:mb-4">
-        <Button className="w-full">Message Author</Button>
+        <MessageAuthorButton authorId={profile.id} className="w-full" label="Message Author" />
         <Button
           asChild
           className="w-full border-primary hover:bg-primary/85 hover:text-white "

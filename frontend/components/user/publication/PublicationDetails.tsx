@@ -1,10 +1,13 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Document } from "@/app/_types/documents";
 import Description from "./Description";
 import { formatToMB } from "@/lib/utils";
+import { getInitials } from "@/lib/messaging/utils";
+import MessageAuthorButton from "./MessageAuthorButton";
 const PublicationDetails = ({ details }: { details: Document }) => {
   return (
     <div className="bg-white border lg:px-4 lg:pb-8.75 pt-6.25 border-[#D9D9D9] rounded-[15px] p-3">
@@ -13,9 +16,9 @@ const PublicationDetails = ({ details }: { details: Document }) => {
       <div className="flex items-start justify-between">
         <div className="flex gap-1.5 md:gap-1 mb-2.75 items-center">
           <Avatar className="size-10 p-1 max-sm:border border-white lg:size-15">
-            <AvatarImage src={""} />
+            <AvatarImage src={details.author.image || undefined} />
             <AvatarFallback>
-              <Skeleton className="size-10 lg:size-15" />
+              {getInitials(details.author.name || "")}
             </AvatarFallback>
           </Avatar>
 
@@ -38,13 +41,13 @@ const PublicationDetails = ({ details }: { details: Document }) => {
         </div>
 
         {/* message button for mobile */}
-        <Button className="md:hidden p-1">Message</Button>
+        <MessageAuthorButton authorId={details.authorId} className="md:hidden p-1" label="Message" />
       </div>
 
       <div className="relative rounded-[12px] w-full h-[137px] md:h-[239px] mb-4.25 lg:mb-5.5">
         <Image
           src={"/assets/images/LandingPage/exploreImg-1.png"}
-          alt="name"
+          alt={details.title}
           fill
           className="object-cover object-center rounded-[12px]"
         />
