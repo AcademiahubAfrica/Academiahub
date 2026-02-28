@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   formatRelativeTime,
@@ -16,10 +18,16 @@ interface ConversationItemProps {
 const ConversationItem = ({ currentUserId, conversation }: ConversationItemProps) => {
   const onlineUsers = usePresence();
   const isActive = onlineUsers.has(conversation?.otherParticipant.id || "");
-  
+  const searchParams = useSearchParams();
+  const isSelected = searchParams.get("c") === conversation.id;
 
   return (
-    <div className="flex items-center p-5 bg-gray-100 rounded-lg">
+    <Link
+      href={`/inbox?c=${conversation.id}`}
+      className={`flex items-center p-5 rounded-lg transition-colors cursor-pointer ${
+        isSelected ? "bg-primary/10 border border-primary/20" : "bg-gray-100 hover:bg-gray-200"
+      }`}
+    >
       {/* Avatar */}
       <div className="mr-2 relative">
         <Avatar className="h-10 w-10">
@@ -49,14 +57,14 @@ const ConversationItem = ({ currentUserId, conversation }: ConversationItemProps
       {/* Timestamp */}
       <div className="flex flex-col gap-2 items-end">
         <span className=" text-xs leading-3.5 text-muted-foreground">
-          {formatRelativeTime(conversation.createdAt)}
+          {formatRelativeTime(conversation.lastMessage?.createdAt || conversation.createdAt)}
         </span>
        
         {isUnread(conversation, currentUserId) && (
           <div className="bg-primary-500 w-2 h-2 rounded-full"></div>
         )}
       </div>
-    </div>
+    </Link>
   );
 };
 
