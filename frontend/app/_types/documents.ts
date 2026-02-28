@@ -14,8 +14,8 @@ export interface Document {
   downloads: number;
   likes: number;
   authorId: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
   author: Author;
 }
 
