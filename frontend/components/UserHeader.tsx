@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import NameSkeleton from "./NameSkeleton";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "./SidebarContext";
+import { getInitials } from "@/lib/messaging/utils";
 const UserHeader = () => {
   const { openMobileSidebar, setOpenMobileSidebar } = useSidebar();
 
@@ -20,8 +21,8 @@ const UserHeader = () => {
   const { data: session, status } = useSession();
   const user = session?.user;
   const userName = user?.name || "";
-  const userImage = user?.image || "https://github.com/shadcn.png";
-  const userInitials = userName?.slice(0, 2).toUpperCase();
+  const userImage = user?.image || undefined;
+  const userInitials = getInitials(userName);
 
   return (
     <header className="sm:h-14 h-12 px-2  lg:h-18.5 w-full bg-white z-100   flex items-center justify-between xl:justify-end">
