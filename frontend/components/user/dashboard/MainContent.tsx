@@ -1,23 +1,15 @@
 import ResearchFilters from "@/components/ResearchFilters";
-import { mockData } from "@/app/data/exploreMockData";
-import { serverFetch } from "@/lib/serverFetch";
-import { Document } from "@/app/_types/documents";
+import prisma from "@/prisma/connection";
 import ResearchCard from "./ResearchCard";
 
-interface DocumentResponse {
-  documents: Document[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-}
 const MainContent = async () => {
-  const response = await serverFetch<DocumentResponse>(
-    `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/documents`,
-  );
-  console.log(response.documents[0].author);
+  let documents: Awaited<ReturnType<typeof fetchDocuments>> = [];
+
+  try {
+    documents = await fetchDocuments();
+  } catch (error) {
+    console.error("Failed to fetch documents:", error);
+  }
 
   return (
     <>
@@ -28,7 +20,7 @@ const MainContent = async () => {
         </h4>
 
         <section className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
-          {response.documents.map((data) => (
+          {documents.map((data) => (
             <ResearchCard key={data.id} data={data} />
           ))}
         </section>
@@ -36,5 +28,17 @@ const MainContent = async () => {
     </>
   );
 };
+
+async function fetchDocuments() {
+  return prisma.document.findMany({
+    include: {
+      author: {
+        select: { id: true, name: true, image: true },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+    take: 12,
+  });
+}
 
 export default MainContent;
