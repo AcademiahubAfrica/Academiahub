@@ -1,8 +1,13 @@
+"use client";
+
 import { Profile } from "@/app/_types/author";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getInitials } from "@/lib/messaging/utils";
 import Link from "next/link";
+import MessageAuthorButton from "./MessageAuthorButton";
+
 const ProfileCard = ({ profile }: { profile: Profile }) => {
   return (
     <aside className="hidden md:block border  md:top-8 md:w-1/3 bg-[#FAFAFA] self-start sticky top-24 text-center  rounded-[12px] pt-7 px-4.5">
@@ -11,21 +16,21 @@ const ProfileCard = ({ profile }: { profile: Profile }) => {
       </h2>
 
       <Avatar className="size-10  lg:size-22 mx-auto border! p-1 border-white! shadow-md">
-        <AvatarImage src={""} />
-        <AvatarFallback>
-          <Skeleton className="size-10 lg:size-22" />
-        </AvatarFallback>
+        <AvatarImage src={profile.image || undefined} />
+        <AvatarFallback>{getInitials(profile.name || "")}</AvatarFallback>
       </Avatar>
 
       <div className="mt-2.5 mb-3.5">
         <p className="text-base font-normal leading-[130%]">{profile.name}</p>
-        <p className="text-xs text-grey font-normal leading-[130%]">
-          University of Lagos.(hard coded for now)
-        </p>
+        {profile.bio?.institution && (
+          <p className="text-xs text-grey font-normal leading-[130%]">
+            {profile.bio.institution}
+          </p>
+        )}
       </div>
 
       <p className="text-xs mb-6.5 font-normal leading-[130%]">
-        {profile.bio ? profile.bio : "Author has not set a bio yet."}
+        {profile.bio?.aboutMe || "Author has not set a bio yet."}
       </p>
 
       {/* stats */}
@@ -51,7 +56,7 @@ const ProfileCard = ({ profile }: { profile: Profile }) => {
       </div>
 
       <div className="space-y-1 mb-2 lg:mb-4">
-        <Button className="w-full">Message Author</Button>
+        <MessageAuthorButton authorId={profile.id} className="w-full" label="Message Author" />
         <Button
           asChild
           className="w-full border-primary hover:bg-primary/85 hover:text-white "
