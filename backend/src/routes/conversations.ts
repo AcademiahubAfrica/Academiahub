@@ -101,7 +101,7 @@ router.get(
       });
 
       // Transform: pick the "other" participant, flatten last message
-      const result = conversations.map((convo) => {
+      const result = conversations.map((convo: typeof conversations[number]) => {
         const otherParticipant =
           convo.participantAId === userId
             ? convo.participantB
@@ -120,7 +120,7 @@ router.get(
       });
 
       // Sort by last message date (conversations with recent messages first)
-      result.sort((a, b) => {
+      result.sort((a: typeof result[number], b: typeof result[number]) => {
         const aDate = a.lastMessage?.createdAt ?? a.createdAt;
         const bDate = b.lastMessage?.createdAt ?? b.createdAt;
         return new Date(bDate).getTime() - new Date(aDate).getTime();
