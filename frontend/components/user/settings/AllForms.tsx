@@ -4,12 +4,19 @@ import ChangePasswordForm from "./ChangePasswordForm";
 import NotificationsSettings from "./NotificationsSettings";
 import PrivacySettings from "./PrivacySettings";
 import ProfileInfoForm from "./ProfileInfoForm";
+import { Bio } from "@/app/_types/author";
 
-const AllForms = () => {
+interface ProfileData {
+  name: string;
+  image: string | null;
+  bio: Bio | null;
+}
+
+const AllForms = ({ profileData }: { profileData: ProfileData }) => {
   const [activeTab, setActiveTab] = useState("profile");
 
   const tabs = [
-    { id: "profile", label: "Profile", component: <ProfileInfoForm /> },
+    { id: "profile", label: "Profile", component: <ProfileInfoForm profileData={profileData} /> },
     { id: "password", label: "Security", component: <ChangePasswordForm /> },
     {
       id: "notifications",
@@ -45,7 +52,7 @@ const AllForms = () => {
 
       {/* Desktop Content (Vertical Stack) */}
       <div className="hidden md:block space-y-20">
-        <ProfileInfoForm />
+        <ProfileInfoForm profileData={profileData} />
         <ChangePasswordForm />
         <NotificationsSettings />
         <PrivacySettings />
