@@ -15,7 +15,7 @@ import ScrollToBottom from "./ScrollToBottom";
 
 interface ChatThreadProps {
   conversationId: string;
-  conversation: ConversationListItem;
+  conversation: ConversationListItem | undefined;
 }
 
 export default function ChatThread({
@@ -65,7 +65,7 @@ export default function ChatThread({
     setUnreadWhileScrolled(0);
   }, []);
 
-  const partner = conversation.otherParticipant;
+  const partner = conversation?.otherParticipant;
 
   return (
     <section className="flex flex-col h-full border border-grey rounded-tr-[15px]">
@@ -89,7 +89,7 @@ export default function ChatThread({
 
       <TypingIndicator
         conversationId={conversationId}
-        partnerName={partner.name ?? undefined}
+        partnerName={partner?.name ?? undefined}
       />
       <MessageInput conversationId={conversationId} />
     </section>

@@ -9,16 +9,16 @@ import { getInitials } from "@/lib/messaging/utils";
 import type { UserSummary } from "@/app/_types/messaging";
 
 interface ChatHeaderProps {
-  partner: UserSummary;
-  conversationId: string;
+  partner: UserSummary | undefined;
+  conversationId: string | undefined;
 }
 export default function ChatHeader({
-  partner,
+  partner ,
   conversationId,
 }: ChatHeaderProps) {
   const router = useRouter();
   const onlineUsers = usePresence();
-  const isOnline = onlineUsers.has(partner?.id);
+  const isOnline = onlineUsers.has(partner?.id || '');
 
   return (
     <div className="px-2 md:px-9 border-b w-full flex-wrap border-grey py-2 md:py-10 flex items-center justify-between">
