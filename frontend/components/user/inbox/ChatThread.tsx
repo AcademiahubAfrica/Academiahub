@@ -34,15 +34,18 @@ export default function ChatThread({
   // Flatten paginated history (API returns newest-first, so reverse to oldest-first)
   // then append real-time messages at the end
   const history = (data?.pages.flatMap((p) => p.messages) ?? []).toReversed();
+  const historyIds = new Set(history.map((m) => m.id));
   const allMessages = [
     ...history,
-    ...newMessages.map((m) => ({
-      id: m.id,
-      conversationId: m.conversationId,
-      senderId: m.senderId,
-      content: m.content,
-      createdAt: m.createdAt,
-    })),
+    ...newMessages
+      .filter((m) => !historyIds.has(m.id))
+      .map((m) => ({
+        id: m.id,
+        conversationId: m.conversationId,
+        senderId: m.senderId,
+        content: m.content,
+        createdAt: m.createdAt,
+      })),
   ];
 
   // Auto-scroll when at bottom + new message arrives
