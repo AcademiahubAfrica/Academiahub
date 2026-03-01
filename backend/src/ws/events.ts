@@ -108,9 +108,10 @@ export async function handleMessageSend(
     // ACK to sender
     socket.emit("message:ack", { msgId: message.id });
 
-    // Push to recipient
+    // Push to both participants
     const recipientId = getOtherParticipantId(conversation, userId);
     sendToUser(recipientId, "message:new", message);
+    sendToUser(userId, "message:new", message);
   } catch (err) {
     console.error("message:send error:", err);
     socket.emit("error", { message: "Failed to send message" });
