@@ -231,7 +231,9 @@ export function useNewMessages(conversationId: string | null) {
 
     const onNewMessage = (payload: MessageNewPayload) => {
       if (payload.conversationId !== conversationId) return;
-      setMessages((prev) => [...prev, payload]);
+      setMessages((prev) =>
+        prev.some((m) => m.id === payload.id) ? prev : [...prev, payload]
+      );
     };
 
     socket.on("message:new", onNewMessage);
