@@ -28,7 +28,7 @@ export default async function UserLayout({
           </header>
 
           {/* OUTLET */}
-          <main className="flex-1 px-2 lg:p-0 lg:pb-6">{children}</main>
+          <main className="flex-1 min-h-0 px-2 lg:p-0 lg:pb-6">{children}</main>
         </div>
       </div>
     </SidebarProvider>
