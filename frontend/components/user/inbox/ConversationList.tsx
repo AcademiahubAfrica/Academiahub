@@ -34,7 +34,7 @@ const ConversationList = ({ conversations }: ConversationListProps) => {
     });
 
   return (
-    <div className="mt-10 lg:mt-5 p-5 max-md:max-w-97.5 md:max-w-87.5">
+    <div className="h-full flex flex-col mt-10 lg:mt-5 p-5 max-md:max-w-97.5 md:max-w-87.5">
       <header className="">
         <h2 className="font-semibold text-lg leading-5 mb-7">Inbox</h2>
         <div className="relative mb-3">
@@ -63,7 +63,7 @@ const ConversationList = ({ conversations }: ConversationListProps) => {
         </div>
       </header>
 
-      <section className="mb-6 flex flex-col gap-4">
+      <section className="flex-1 min-h-0 overflow-y-auto mb-6 flex flex-col gap-4">
         {filteredConversations?.map((conversation) => (
           <ConversationItem
             key={conversation.id}

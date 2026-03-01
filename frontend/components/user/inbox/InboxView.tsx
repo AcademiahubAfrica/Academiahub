@@ -40,11 +40,11 @@ const InboxView = () => {
   return (
     <>
       {/* Desktop screen */}
-      <section className="hidden md:flex">
-        <div className="w-87.5">
+      <section className="hidden md:flex h-full overflow-hidden">
+        <div className="w-87.5 h-full overflow-hidden">
           <ConversationList conversations={data} />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 h-full min-h-0">
           {!conversationId ? (
             <EmptyChatThread />
           ) : (
@@ -57,7 +57,7 @@ const InboxView = () => {
       </section>
 
       {/* Mobile screen */}
-      <section className="md:hidden h-full">
+      <section className="md:hidden h-full overflow-hidden">
         {!conversationId ? (
           <ConversationList conversations={data} />
         ) : (
