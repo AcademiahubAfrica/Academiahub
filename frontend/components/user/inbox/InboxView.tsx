@@ -68,7 +68,9 @@ const InboxView = () => {
         )}
       </section>
 
-      <MobileNewFAB onConversationCreated={handleConversationCreated} />
+      {!conversationId && (
+        <MobileNewFAB onConversationCreated={handleConversationCreated} />
+      )}
     </>
   );
 };
