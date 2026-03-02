@@ -50,7 +50,7 @@ export default function MessageList({
     <div
       ref={containerRef}
       onScroll={handleScroll}
-      className="flex-1 overflow-y-auto bg-gray-50 p-4"
+      className="flex-1 overflow-y-auto bg-gray-50 p-4 scrollbar-hide"
     >
       {/* Sentinel for loading older messages */}
       <div ref={sentinelRef} className="h-1" />
