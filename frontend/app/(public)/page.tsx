@@ -11,8 +11,8 @@ import HeroButtons from "@/components/landing/HeroButtons";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center bg-linear-to-b from-[#E9EBF3] to-white bg-zinc-50 font-sans">
-   <section className="hero-section w-full px-6 pt-12 pb-6 lg:pl-12 lg:pr-0 overflow-hidden">
+    <div className="flex flex-col items-center bg-white  font-sans">
+   <section className="hero-section w-full px-6 pt-12 pb-6 lg:pl-12 lg:pr-0 overflow-hidden bg-linear-to-b from-[#E9EBF3] to-white">
   <div className="w-full flex flex-col lg:flex-row lg:items-center">
 
     {/* TEXT COLUMN */}
