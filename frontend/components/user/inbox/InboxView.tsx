@@ -7,7 +7,6 @@ import { useConversations } from "@/lib/messaging/hooks";
 import ErrorState from "./ErrorState";
 import EmptyConversation from "./EmptyConversation";
 import EmptyChatThread from "./EmptyChatThread";
-import MobileNewFAB from "./MobileNewFAB";
 
 const InboxView = () => {
   const { data, isLoading, isError, error, refetch } = useConversations();
@@ -24,10 +23,6 @@ const InboxView = () => {
       router.replace("/");
     }
   }, [isError, error, router]);
-
-  const handleConversationCreated = (id: string) => {
-    router.push(`/inbox?c=${id}`);
-  };
 
   if (isLoading) {
     return <p className="font-semibold text-gray-500 text-center">Loading..</p>;
@@ -67,10 +62,6 @@ const InboxView = () => {
           />
         )}
       </section>
-
-      {!conversationId && (
-        <MobileNewFAB onConversationCreated={handleConversationCreated} />
-      )}
     </>
   );
 };
