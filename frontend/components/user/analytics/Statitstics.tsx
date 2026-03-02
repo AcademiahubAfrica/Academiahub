@@ -34,7 +34,7 @@ const Statitstics = () => {
     <div className="grid grid-cols-2  lg:grid-cols-4 gap-2 md:gap-5 xl:gap-8">
       {stats.map(({ label, percentage, value, icon }, index) => (
         <div
-          className="rounded-[20px] bg-white min-h-[120px]  md:min-h-[170.5px] flex flex-col justify-around  p-1 md:p-4"
+          className="rounded-[20px] bg-white min-h-30  md:min-h-[170.5px] flex flex-col justify-around  p-1 md:p-4"
           key={index}
         >
           <div className="flex items-center justify-between md:flex-col md:items-start">
