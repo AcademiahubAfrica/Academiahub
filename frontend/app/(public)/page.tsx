@@ -16,7 +16,7 @@ export default function Home() {
   <div className="w-full flex flex-col lg:flex-row lg:items-center">
 
     {/* TEXT COLUMN */}
-    <div className="hero-text flex flex-col gap-6 max-lg:mx-auto w-full lg:w-[45%] lg:flex-shrink-0 lg:pr-6">
+    <div className="hero-text flex flex-col gap-6 max-lg:mx-auto w-full lg:w-[45%] lg:shrink-0 lg:pr-6">
 
       {/* Welcome Message */}
       <div className="flex items-center gap-2 rounded-[40px] shadow-[0px_4px_4px] shadow-black/25 px-4 py-2 w-fit bg-white h-8.5">
