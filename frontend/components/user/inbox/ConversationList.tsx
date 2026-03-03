@@ -63,7 +63,7 @@ const ConversationList = ({ conversations }: ConversationListProps) => {
         </div>
       </header>
 
-      <section className="flex-1 min-h-0 overflow-y-auto mb-6 flex flex-col gap-4">
+      <section className="flex-1 min-h-0 overflow-y-auto scrollbar-hide mb-6 flex flex-col gap-4">
         {filteredConversations?.map((conversation) => (
           <ConversationItem
             key={conversation.id}
