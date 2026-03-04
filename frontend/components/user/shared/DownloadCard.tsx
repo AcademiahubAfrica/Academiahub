@@ -34,7 +34,7 @@ const DownloadCard = (data: any) => {
             />
           </div>
           <div>
-            <p className="text-[8px] font-normal md:text-sm leading-[130%] mb-0.25 md:mb-0.5">
+            <p className="text-[8px] font-normal md:text-sm leading-[130%] mb-px md:mb-0.5">
               {data.username}
             </p>
             <p className="text-grey text-[8px] md:text-sm leading-[130%]">
@@ -43,7 +43,7 @@ const DownloadCard = (data: any) => {
           </div>
         </div>
         {/* description  */}
-        <div className="md:space-y-1 space-y-0.25 font-normal">
+        <div className="md:space-y-1 space-y-px font-normal">
           <span className="flex items-center text-[8px] md:text-sm md:gap-2 gap-0.5">
             <small className="text-grey md:text-sm  leading-[130%]">
               Department:

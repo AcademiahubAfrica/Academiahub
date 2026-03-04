@@ -29,13 +29,13 @@ const ExploreSection = ({
 				</h3>
 
 				{showSearch && (
-					<div className="flex gap-[9.06px] items-stretch mt-9.5 mb-8 min-[1290px]:mb-15 min-[1290px]:w-318.75">
+					<div className="flex gap-12 items-stretch mt-9.5 mb-8 min-[1290px]:mb-15 min-[1290px]:w-318.75 bg-gray-50 p-8 rounded-xl">
 						<input
 							type="search"
-							className="max-md:w-59 md:max-[1290px]:w-134 min-[1290px]:w-240  border-[#D9D9D9] border rounded-[40px] p-2.75 h-11 md:pt-5 pb-5"
+							className="max-md:w-59 md:max-[1290px]:w-134 min-[1290px]:w-240 font-semibold border-[#D9D9D9] border rounded-lg  p-2.75 h-17 md:pt-5 pb-5"
 							placeholder="Search for Projects, Schools...."
 						/>
-						<Button variant="default" size="sm" className="h-11 md:w-37 ">
+						<Button variant="default" size="sm" className="h-16 md:w-37 text-lg">
 							Search
 						</Button>
 					</div>
@@ -43,13 +43,13 @@ const ExploreSection = ({
 			</header>
 
 			<div>
-				<h3 className="font-medium text-[18px] leading-[130%] mb-5 md:pl-10 lg:pl-0 max-md:text-center">
+				<h3 className="font-medium text-xl leading-[130%] mb-5 md:pl-10 lg:pl-0 text-center">
 					Suggested publications
 				</h3>
 				<div className="publication-list flex max-sm:flex-col sm:flex-row sm:flex-wrap items-center sm:justify-center gap-12.5">
 					{displayData.map((data) => (
 						<section
-							className="max-[1290px]:w-76 min-[1290px]:w-91.7 py-3 px-2 rounded-[15px] border-[#D9D9D9] border flex flex-col max-[1290px]:gap-2.5 min-[1290px]:gap-4.5 "
+							className="max-[1290px]:w-76 min-[1290px]:w-91.7 py-3 px-2 rounded-lg border-[#D9D9D9] border flex flex-col max-[1290px]:gap-2.5 min-[1290px]:gap-4.5 "
 							key={data.id}
 						>
 							<Image

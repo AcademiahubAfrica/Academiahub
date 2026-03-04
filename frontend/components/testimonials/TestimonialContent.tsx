@@ -33,7 +33,7 @@ const Testimonials = () => {
               className="flex flex-col gap-4 border border-[#D9D9D9] rounded-[12px] p-6 bg-white"
             >
               {/* User Info */}
-              <div className="flex flex-row gap-[11px] items-center">
+              <div className="flex flex-row gap-2.75 items-center">
                 <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gray-200">
                   <Image
                     src={testimonial.avatar}
@@ -43,7 +43,7 @@ const Testimonials = () => {
                   />
                 </div>
                 <div>
-                  <p className="font-sans font-semibold text-[16px] leading-[25px]">
+                  <p className="font-sans font-semibold text-[16px] leading-6.25">
                     {testimonial.name}
                   </p>
                   {testimonial.role && (
@@ -69,7 +69,7 @@ const Testimonials = () => {
 
         {/* Featured Testimonial Section */}
         <div className="mt-16">
-          <div className="max-w-4xl mx-auto bg-white rounded-3xl p-1 bg-gradient-to-r from-blue-900 via-yellow-400 to-blue-900 shadow-xl">
+          <div className="max-w-4xl mx-auto bg-white rounded-3xl p-1 bg-linear-to-r from-blue-900 via-yellow-400 to-blue-900 shadow-xl">
             <div className="bg-white rounded-3xl p-8 md:p-12">
               <p className="text-lg md:text-xl text-gray-900 leading-relaxed mb-6">
                 &quot;AcademiaHub has transformed how we approach academic research at our institution. The platform&apos;s collaborative features and quality control have made it an indispensable tool for our entire department.&quot;

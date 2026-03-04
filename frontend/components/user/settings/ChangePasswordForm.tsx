@@ -125,7 +125,7 @@ const ChangePasswordForm = () => {
           </Field>
 
           <div>
-            <Button className="md:w-[313px]"> Update Password</Button>
+            <Button className="md:w-78.25"> Update Password</Button>
           </div>
         </FieldGroup>
       </fieldset>

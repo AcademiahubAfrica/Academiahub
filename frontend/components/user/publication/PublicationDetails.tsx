@@ -44,7 +44,7 @@ const PublicationDetails = ({ details }: { details: Document }) => {
         <MessageAuthorButton authorId={details.authorId} className="md:hidden p-1" label="Message" />
       </div>
 
-      <div className="relative rounded-[12px] w-full h-[137px] md:h-[239px] mb-4.25 lg:mb-5.5">
+      <div className="relative rounded-[12px] w-full h-34.25 md:h-59.75 mb-4.25 lg:mb-5.5">
         <Image
           src={"/assets/images/LandingPage/exploreImg-1.png"}
           alt={details.title}
@@ -64,15 +64,15 @@ const PublicationDetails = ({ details }: { details: Document }) => {
         <Description description={details?.description} />
       </div>
       <div className="lg:px-5.25 px-1.25 py-3.25 flex items-center justify-between mb-2.5 md:mb-6.25">
-        <span className="flex text-[10px] font-normal lg:leading-4.5 leading-[130%] md:text-sm items-center gap-0.25">
+        <span className="flex text-[10px] font-normal lg:leading-4.5 leading-[130%] md:text-sm items-center gap-px">
           <p className="max-sm:tex-grey  ">Year:</p>
           <p className="">{details.year}</p>
         </span>
-        <span className="flex text-[10px] font-normal lg:leading-4.5 leading-[130%] md:text-sm items-center gap-0.25">
+        <span className="flex text-[10px] font-normal lg:leading-4.5 leading-[130%] md:text-sm items-center gap-px">
           <p className="max-sm:tex-grey ">Size:</p>
           <p className="">{formatToMB(details.fileSize)}</p>
         </span>
-        <span className="flex text-[10px] font-normal lg:leading-4.5 leading-[130%] md:text-sm items-center gap-0.25">
+        <span className="flex text-[10px] font-normal lg:leading-4.5 leading-[130%] md:text-sm items-center gap-px">
           <p className="max-sm:tex-grey ">Downloads:</p>
           <p className="">{details.downloads}</p>
         </span>
