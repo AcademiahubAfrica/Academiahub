@@ -28,4 +28,7 @@ export interface TypingPayload {
   conversationId: string;
 }
 
-// Server → Client payloads are typed inline on emit
+// Server → Client
+export interface PresenceSyncPayload {
+  onlineUserIds: string[];
+}

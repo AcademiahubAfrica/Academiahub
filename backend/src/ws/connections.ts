@@ -75,6 +75,29 @@ export function getOtherParticipantId(
 
 // ─── Presence ───────────────────────────────────────────
 
+/** Returns IDs of conversation partners who are currently online. */
+export async function getOnlinePartners(userId: string): Promise<string[]> {
+  const conversations = await prisma.conversation.findMany({
+    where: {
+      OR: [{ participantAId: userId }, { participantBId: userId }],
+    },
+    select: { participantAId: true, participantBId: true },
+  });
+
+  const onlinePartners: string[] = [];
+  const seen = new Set<string>();
+
+  for (const convo of conversations) {
+    const partnerId = getOtherParticipantId(convo, userId);
+    if (!seen.has(partnerId) && isUserOnline(partnerId)) {
+      seen.add(partnerId);
+      onlinePartners.push(partnerId);
+    }
+  }
+
+  return onlinePartners;
+}
+
 /** Broadcasts online/offline status to all conversation partners of the user. */
 export async function broadcastPresence(
   userId: string,
