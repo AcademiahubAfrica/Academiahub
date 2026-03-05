@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { usePresence } from "@/lib/messaging/hooks";
+import { usePresence } from "@/app/_contexts/PresenceContext";
 import { getInitials } from "@/lib/messaging/utils";
 import type { UserSummary } from "@/app/_types/messaging";
 

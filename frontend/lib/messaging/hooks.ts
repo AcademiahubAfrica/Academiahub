@@ -19,7 +19,6 @@ import type {
   MessagePage,
   MessageNewPayload,
   TypingEventPayload,
-  PresencePayload,
   UserSearchResult,
   Conversation,
 } from "@/app/_types/messaging";
@@ -181,36 +180,6 @@ export function useRemoteTyping(conversationId: string | null) {
   }, [socket, conversationId]);
 
   return isTyping;
-}
-
-// ─── usePresence ───────────────────────────────────────────────────────
-
-export function usePresence() {
-  const { socket } = useSocket();
-  const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    if (!socket) return;
-
-    const onPresence = (payload: PresencePayload) => {
-      setOnlineUsers((prev) => {
-        const next = new Set(prev);
-        if (payload.status === "online") {
-          next.add(payload.userId);
-        } else {
-          next.delete(payload.userId);
-        }
-        return next;
-      });
-    };
-
-    socket.on("presence", onPresence);
-    return () => {
-      socket.off("presence", onPresence);
-    };
-  }, [socket]);
-
-  return onlineUsers;
 }
 
 // ─── useNewMessages ────────────────────────────────────────────────────

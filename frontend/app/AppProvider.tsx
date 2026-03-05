@@ -4,6 +4,7 @@
 import SavedProvider from "./_contexts/SavedContext";
 import QueryProvider from "./_contexts/QueryProvider";
 import { SocketProvider } from "./_contexts/SocketContext";
+import { PresenceProvider } from "./_contexts/PresenceContext";
 import NextAuthProvider from "@/utils/providers/NextAuthProvider";
 
 const AppProvider = ({ children }: { children: React.ReactNode }) => {
@@ -12,7 +13,9 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
       <NextAuthProvider>
         <QueryProvider>
           <SocketProvider>
-            <SavedProvider>{children}</SavedProvider>
+            <PresenceProvider>
+              <SavedProvider>{children}</SavedProvider>
+            </PresenceProvider>
           </SocketProvider>
         </QueryProvider>
       </NextAuthProvider>
