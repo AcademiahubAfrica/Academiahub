@@ -172,7 +172,7 @@ export default function ExploreContent() {
                 }}
               >
                 {/* Publication Image */}
-                <div className="relative aspect-[4/3] overflow-hidden">
+                <div className="relative aspect-4/3 overflow-hidden">
                   <Image
                     src={PLACEHOLDER_IMAGES[index % PLACEHOLDER_IMAGES.length]}
                     alt={doc.title}
@@ -183,13 +183,13 @@ export default function ExploreContent() {
 
                 {/* Publication Content */}
                 <div className="p-5">
-                  <h3 className="font-semibold text-lg text-gray-900 mb-4 line-clamp-2 min-h-[3.5rem]">
+                  <h3 className="font-semibold text-lg text-gray-900 mb-4 line-clamp-2 min-h-14">
                     {doc.title}
                   </h3>
 
                   {/* Author Info */}
                   <div className="flex items-center gap-3 mb-4">
-                    <Avatar className="w-10 h-10 flex-shrink-0">
+                    <Avatar className="w-10 h-10 shrink-0">
                       <AvatarImage src={doc.author.image || undefined} />
                       <AvatarFallback>
                         {getInitials(doc.author.name || "")}

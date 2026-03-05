@@ -34,9 +34,8 @@ const ConversationList = ({ conversations }: ConversationListProps) => {
     });
 
   return (
-    <div className="h-full flex flex-col mt-10 lg:mt-5 p-5 max-md:max-w-97.5 md:max-w-87.5">
+    <div className="h-full flex flex-col mt-2 p-5 max-md:max-w-97.5 md:max-w-87.5">
       <header className="">
-        <h2 className="font-semibold text-lg leading-5 mb-7">Inbox</h2>
         <div className="relative mb-3">
           <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300 " />
           <Input

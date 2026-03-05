@@ -24,7 +24,7 @@ const PublicationPageSkeleton = () => {
           </div>
 
           {/* Cover Image */}
-          <Skeleton className="rounded-[12px] w-full h-[137px] md:h-[239px] mb-5" />
+          <Skeleton className="rounded-[12px] w-full h-34.25 md:h-59.75 mb-5" />
 
           {/* Title */}
           <Skeleton className="h-5 w-3/4 mb-4" />

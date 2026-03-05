@@ -1,7 +1,7 @@
 import { Server as HttpServer } from "http";
 import { Server, Socket } from "socket.io";
 import { verifyToken } from "../middleware/verifySession";
-import { addSocket, removeSocket, isUserOnline, broadcastPresence } from "./connections";
+import { addSocket, removeSocket, isUserOnline, broadcastPresence, getOnlinePartners } from "./connections";
 import { handleMessageSend, handleReadMark, handleTyping } from "./events";
 import { MessageSendPayload, ReadMarkPayload, TypingPayload } from "../types";
 
@@ -47,6 +47,12 @@ export function createSocketServer(httpServer: HttpServer): Server {
     broadcastPresence(userId, "online");
 
     // ─── Event Listeners ──────────────────────────────
+
+    socket.on("presence:request", () => {
+      getOnlinePartners(userId).then((onlineUserIds) => {
+        socket.emit("presence:sync", { onlineUserIds });
+      });
+    });
 
     socket.on("message:send", (payload: MessageSendPayload) => {
       handleMessageSend(socket, userId, payload);

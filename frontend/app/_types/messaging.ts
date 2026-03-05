@@ -104,6 +104,10 @@ export interface PresencePayload {
   status: "online" | "offline";
 }
 
+export interface PresenceSyncPayload {
+  onlineUserIds: string[];
+}
+
 export interface SocketErrorPayload {
   message: string;
 }
@@ -115,6 +119,7 @@ export interface ClientToServerEvents {
   "read:mark": (payload: ReadMarkPayload) => void;
   "typing:start": (payload: TypingPayload) => void;
   "typing:stop": (payload: TypingPayload) => void;
+  "presence:request": () => void;
 }
 
 export interface ServerToClientEvents {
@@ -123,5 +128,6 @@ export interface ServerToClientEvents {
   "read:update": (payload: ReadUpdatePayload) => void;
   typing: (payload: TypingEventPayload) => void;
   presence: (payload: PresencePayload) => void;
+  "presence:sync": (payload: PresenceSyncPayload) => void;
   error: (payload: SocketErrorPayload) => void;
 }

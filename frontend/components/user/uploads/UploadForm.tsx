@@ -162,7 +162,7 @@ const UploadForm = () => {
           <Field>
             <FieldLabel htmlFor="file">Document (PDF)</FieldLabel>
 
-            <div className="relative min-h-[158px] lg:min-h-[200px] border-dashed border-grey border rounded-lg flex items-center justify-center overflow-hidden">
+            <div className="relative min-h-39.5 lg:min-h-50 border-dashed border-grey border rounded-lg flex items-center justify-center overflow-hidden">
               <Input
                 id="file"
                 type="file"
@@ -190,7 +190,7 @@ const UploadForm = () => {
                         PDF
                       </span>
                     </div>
-                    <p className="font-medium truncate max-w-[250px]">
+                    <p className="font-medium truncate max-w-62.5">
                       {selectedFile.name}
                     </p>
                     <small className="text-grey">

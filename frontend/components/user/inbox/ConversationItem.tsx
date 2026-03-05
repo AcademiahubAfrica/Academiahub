@@ -10,7 +10,7 @@ import {
   truncateText,
 } from "@/lib/messaging/utils";
 import { ConversationListItem } from "@/app/_types/messaging";
-import { usePresence } from "@/lib/messaging/hooks";
+import { usePresence } from "@/app/_contexts/PresenceContext";
 interface ConversationItemProps {
   currentUserId: string | undefined;
   conversation: ConversationListItem;
@@ -41,22 +41,17 @@ const ConversationItem = ({ currentUserId, conversation }: ConversationItemProps
         )}
       </div>
 
-      <div className="mr-7">
-        <h3 className="font-semibold text-base leading-5">
+      <div className="flex-1 min-w-0 mr-2">
+        <h3 className="font-semibold text-base leading-5 truncate">
           {conversation.otherParticipant.name}
         </h3>
-        <div>
-          <p className=" text-xs leading-[100%] max-md:hidden">
-            {truncateText(conversation.lastMessage?.content || "", 23)}
-          </p>
-          <p className=" text-xs leading-[100%] md:hidden">
-            {truncateText(conversation.lastMessage?.content || "", 30)}
-          </p>
-        </div>
+        <p className="text-xs leading-[100%] truncate">
+          {conversation.lastMessage?.content || ""}
+        </p>
       </div>
       {/* Timestamp */}
-      <div className="flex flex-col gap-2 items-end">
-        <span className=" text-xs leading-3.5 text-muted-foreground">
+      <div className="shrink-0 flex flex-col gap-2 items-end">
+        <span className="text-xs leading-3.5 text-muted-foreground whitespace-nowrap">
           {formatRelativeTime(conversation.lastMessage?.createdAt || conversation.createdAt)}
         </span>
        
