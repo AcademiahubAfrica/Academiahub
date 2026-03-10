@@ -11,96 +11,100 @@ import HeroButtons from "@/components/landing/HeroButtons";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center bg-white  font-sans">
-   <section className="hero-section w-full px-6 pt-12 pb-6 lg:pl-12 lg:pr-0 overflow-hidden bg-linear-to-b from-[#E9EBF3] to-white">
-  <div className="w-full flex flex-col lg:flex-row lg:items-center">
+    <div className="flex flex-col items-center bg-white font-sans">
 
-    {/* TEXT COLUMN */}
-    <div className="hero-text flex flex-col gap-6 max-lg:mx-auto w-full lg:w-[45%] lg:shrink-0 lg:pr-6">
+      <section className="hero-section w-full px-4 sm:px-6 pt-10 sm:pt-12 pb-6 lg:pl-12 lg:pr-0 overflow-hidden bg-linear-to-b from-[#E9EBF3] to-white">
+        <div className="w-full flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-0">
 
-      {/* Welcome Message */}
-      <div className="flex items-center gap-2 rounded-[40px] shadow-[0px_4px_4px] shadow-black/25 px-4 py-2 w-fit bg-white h-8.5">
-        <Image src="/assets/images/star-icon.png" alt="star icon" width={16} height={16} />
-        <p className="text-[12px] leading-[130%] bg-[linear-gradient(90deg,#1e3a8a_0%,#f8bd00_15%,#1e3a8a_36%)] bg-clip-text text-transparent">
-          Welcome to Academiahub
-        </p>
-      </div>
+          {/* TEXT COLUMN */}
+          <div className="flex flex-col gap-5 sm:gap-6 w-full lg:w-1/2 xl:w-[45%] lg:shrink-0 lg:pr-8 max-lg:mx-auto">
 
-      {/* Hero Heading */}
-      <h1 className="text-primary font-semibold text-[36px] min-[1300px]:text-[48px] leading-[130%] mt-2">
-        Access and Share{" "}
-        <span className="text-accent-normal">Approved</span>{" "}
-        Publications with Ease
-      </h1>
+            {/* Welcome Badge */}
+            <div className="flex items-center gap-2 rounded-full shadow-sm shadow-black/25 px-4 py-1.5 w-fit bg-white">
+              <Image src="/assets/images/star-icon.png" alt="star icon" width={16} height={16} />
+              <p className="text-xs leading-snug bg-[linear-gradient(90deg,#1e3a8a_0%,#f8bd00_15%,#1e3a8a_36%)] bg-clip-text text-transparent whitespace-nowrap">
+                Welcome to Academiahub
+              </p>
+            </div>
 
-      <h4 className="text-[16px] min-[1300px]:text-[24px] font-medium leading-[150%] text-gray-700 -mt-2">
-        Discover a vast library of quality academic publications and share
-        your work with the community.
-      </h4>
+            {/* Hero Heading */}
+            <h1 className="text-primary font-semibold text-3xl sm:text-4xl lg:text-[2.6rem] xl:text-[3rem] leading-tight mt-1">
+              Access and Share{" "}
+              <span className="text-accent-normal">Approved</span>{" "}
+              Publications with Ease
+            </h1>
 
-      <HeroButtons />
-
-      {/* User Images */}
-      <div className="mt-1">
-        <div className="flex pl-10">
-          {userImg.map((img) => (
-            <Image
-              className="-ml-10"
-              key={img.id}
-              src={img.imagePath}
-              alt="users"
-              width={60}
-              height={60}
-            />
-          ))}
-        </div>
-        <p className="text-[14px] min-[1300px]:text-[16px] mt-3 leading-[130%] text-primary font-normal">
-          Be part of a Growing Academic Network
-        </p>
-      </div>
-
-      {/* Stats */}
-      <div className="flex gap-4 min-[904px]:gap-12 text-left -mt-2">
-        {[
-          { value: "500+", label: "Active Users" },
-          { value: "1000+", label: "Projects available" },
-          { value: "100+", label: "Institutions" },
-        ].map(({ value, label }) => (
-          <div key={label}>
-            <p className="font-semibold text-2xl md:text-[36px] min-[1300px]:text-[40px] leading-[130%]">
-              {value}
+            {/* Subheading */}
+            <p className="text-sm sm:text-base lg:text-lg xl:text-xl font-medium leading-relaxed text-gray-700 -mt-1">
+              Discover a vast library of quality academic publications and share
+              your work with the community.
             </p>
-            <p className="text-sm min-[1300px]:text-[16px] leading-[130%] font-medium min-[1300px]:mt-2.5">
-              {label}
-            </p>
+
+            <HeroButtons />
+
+            {/* User Images + CTA text */}
+            <div className="mt-1">
+              <div className="flex pl-10">
+                {userImg.map((img) => (
+                  <Image
+                    className="-ml-10"
+                    key={img.id}
+                    src={img.imagePath}
+                    alt="users"
+                    width={60}
+                    height={60}
+                  />
+                ))}
+              </div>
+              <p className="text-sm sm:text-base mt-3 leading-snug text-primary font-normal">
+                Be part of a Growing Academic Network
+              </p>
+            </div>
+
+            {/* Stats */}
+            <div className="flex flex-wrap gap-6 sm:gap-8 lg:gap-10 text-left -mt-1">
+              {[
+                { value: "500+", label: "Active Users" },
+                { value: "1000+", label: "Projects available" },
+                { value: "100+", label: "Institutions" },
+              ].map(({ value, label }) => (
+                <div key={label} className="min-w-20">
+                  <p className="font-semibold text-2xl sm:text-3xl xl:text-[2.5rem] leading-tight">
+                    {value}
+                  </p>
+                  <p className="text-xs sm:text-sm xl:text-base font-medium mt-1 leading-snug">
+                    {label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
           </div>
-        ))}
-      </div>
-    </div>
 
-    {/* IMAGE COLUMN — bleeds to right edge */}
-    <div className="w-full lg:w-[55%] mt-12 lg:mt-0 flex items-center">
-      <picture>
-        <source
-          media="(min-width: 1024px)"
-          srcSet="/assets/images/LandingPage/desktop-hero-img.png"
-        />
-        <source
-          media="(min-width: 640px)"
-          srcSet="/assets/images/LandingPage/tablet-hero-img.png"
-        />
-        <Image
-          className="w-full h-auto max-w-92.5 mx-auto sm:max-w-131 lg:max-w-none lg:mx-0 lg:w-full lg:rounded-l-2xl"
-          src="/assets/images/LandingPage/hero-img.png"
-          alt="Hero image"
-          width={704}
-          height={651}
-        />
-      </picture>
-    </div>
+          {/* IMAGE COLUMN */}
+          <div className="w-full lg:w-1/2 xl:w-[55%] flex items-center justify-center lg:justify-end">
+            <picture>
+              <source
+                media="(min-width: 1024px)"
+                srcSet="/assets/images/LandingPage/desktop-hero-img.svg"
+              />
+              <source
+                media="(min-width: 640px)"
+                srcSet="/assets/images/LandingPage/desktop-hero-img.svg"
+              />
+              <Image
+                className="w-full h-auto max-w-90 sm:max-w-130 lg:max-w-none lg:w-full lg:rounded-l-2xl"
+                src="/assets/images/LandingPage/desktop-hero-img.svg"
+                alt="Hero image"
+                width={704}
+                height={651}
+              />
+            </picture>
+          </div>
 
-  </div>
-</section>
+        </div>
+      </section>
+
       <Explore limit={3} />
       <ChooseUs />
       <HowItWorks />
