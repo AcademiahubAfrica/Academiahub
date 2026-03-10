@@ -26,7 +26,7 @@ const UserHeader = () => {
   const userInitials = getInitials(userName);
 
   return (
-    <header className="sm:h-14 h-12 px-2  lg:h-18.5 w-full bg-white z-100   flex items-center justify-between xl:justify-end">
+    <header className="sm:h-14 h-12 px-2  lg:h-18.5 w-full bg-white z-100   flex items-center justify-between xl:justify-end ">
       <Image
         src={"/assets/images/logoIcon.png"}
         alt="logo"
@@ -61,7 +61,7 @@ const UserHeader = () => {
       </div>
 
       <Sheet open={openMobileSidebar} onOpenChange={setOpenMobileSidebar}>
-        <div className="flex md:hidden w-full flex-row-reverse px-1 items-center justify-between ">
+        <div className="flex md:hidden w-full max-md:w-[20%]  flex-row-reverse px-1 items-center max-sm:gap-2 gap-7 ">
           <div className="flex items-center gap-1.25">
             <Link href={"/notifications"}>
               <IoMdNotificationsOutline className="text-xl md:hidden " />
