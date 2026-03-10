@@ -61,7 +61,7 @@ const UserHeader = () => {
       </div>
 
       <Sheet open={openMobileSidebar} onOpenChange={setOpenMobileSidebar}>
-        <div className="flex md:hidden w-full max-md:w-[20%]  flex-row-reverse px-1 items-center max-sm:gap-2 gap-7 ">
+        <div className="flex md:hidden w-full  flex-row-reverse px-1 items-center gap-7 ">
           <div className="flex items-center gap-1.25">
             <Link href={"/notifications"}>
               <IoMdNotificationsOutline className="text-xl md:hidden " />
