@@ -13,6 +13,7 @@ import NameSkeleton from "./NameSkeleton";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "./SidebarContext";
 import { getInitials } from "@/lib/messaging/utils";
+import SearchBar from "./user/SearchBar";
 const UserHeader = () => {
   const { openMobileSidebar, setOpenMobileSidebar } = useSidebar();
 
@@ -25,7 +26,7 @@ const UserHeader = () => {
   const userInitials = getInitials(userName);
 
   return (
-    <header className="sm:h-14 h-12 px-2  lg:h-18.5 w-full bg-white z-100   flex items-center justify-between xl:justify-end">
+    <header className="sm:h-14 h-12 px-2  lg:h-18.5 w-full bg-white z-100   flex items-center justify-between xl:justify-end ">
       <Image
         src={"/assets/images/logoIcon.png"}
         alt="logo"
@@ -33,7 +34,7 @@ const UserHeader = () => {
         width={20}
         className="xl:hidden hidden md:block  cursor-pointer object-cover"
       />
-
+      <SearchBar />
       {/* <div className="relative h-12 basis-2/3 hidden md:block "></div> */}
 
       <div className="md:flex hidden pr-7.5   items-center   gap-4.5 xl:gap-2">
@@ -60,7 +61,7 @@ const UserHeader = () => {
       </div>
 
       <Sheet open={openMobileSidebar} onOpenChange={setOpenMobileSidebar}>
-        <div className="flex md:hidden w-full flex-row-reverse px-1 items-center justify-between ">
+        <div className="flex md:hidden w-full  flex-row-reverse px-1 items-center gap-7 ">
           <div className="flex items-center gap-1.25">
             <Link href={"/notifications"}>
               <IoMdNotificationsOutline className="text-xl md:hidden " />

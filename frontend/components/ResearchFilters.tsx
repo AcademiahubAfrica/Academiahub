@@ -11,10 +11,10 @@ import {
 
 const filterButtons = [
   { label: "all", variant: "ghost2" as const },
-  { label: "engineering", variant: "outline2" as const },
-  { label: "medicine", variant: "outline2" as const },
-  { label: "agriculture", variant: "outline2" as const },
-  { label: "art", variant: "outline2" as const },
+  { label: "RESEARCH", variant: "outline2" as const },
+  { label: "SEMINAR", variant: "outline2" as const },
+  { label: "FINAL YEAR PROJECT", variant: "outline2" as const },
+  { label: "ANALYSIS", variant: "outline2" as const },
 ];
 
 const sortOptions = [
@@ -52,9 +52,9 @@ const ResearchFilters = () => {
               key={label}
               variant={variant}
               onClick={() => updateParam("category", label)}
-              className={`${filterBy === label ? "bg-primary text-white" : "border-grey"} `}
+              className={`${filterBy === label ? "bg-primary text-white" : "border-grey "} `}
             >
-              {label.charAt(0).toUpperCase() + label.slice(1)}
+              {label.charAt(0).toUpperCase() + label.slice(1).toLowerCase()}
             </Button>
           ))}
         </div>
