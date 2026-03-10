@@ -34,9 +34,18 @@ const FilterDocuments = ({documents}: FilterDocumentsProp) => {
 
    const filterDocuments = () => {
     const category = searchParams.get("category")
-    
-   const filteredDocuments = !category || category === 'all' ? documents :  documents.filter(d => category === d.category)
+    const search = searchParams.get("search")
 
+   const filteredDocuments =  documents.filter((doc) => {
+
+  const categoryMatch =
+    !category || category === "all" || doc.category === category
+
+  const searchMatch =
+    !search || doc.title.toLowerCase().includes(search.toLowerCase())
+
+  return categoryMatch && searchMatch
+})
     return filteredDocuments
   }
 

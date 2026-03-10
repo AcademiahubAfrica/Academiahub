@@ -13,6 +13,7 @@ import NameSkeleton from "./NameSkeleton";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "./SidebarContext";
 import { getInitials } from "@/lib/messaging/utils";
+import SearchBar from "./user/SearchBar";
 const UserHeader = () => {
   const { openMobileSidebar, setOpenMobileSidebar } = useSidebar();
 
@@ -33,7 +34,7 @@ const UserHeader = () => {
         width={20}
         className="xl:hidden hidden md:block  cursor-pointer object-cover"
       />
-
+      <SearchBar />
       {/* <div className="relative h-12 basis-2/3 hidden md:block "></div> */}
 
       <div className="md:flex hidden pr-7.5   items-center   gap-4.5 xl:gap-2">
