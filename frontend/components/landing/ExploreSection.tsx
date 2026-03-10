@@ -18,7 +18,7 @@ const ExploreSection = ({
 	const displayData = limit ? mockData.slice(0, limit) : mockData;
 
 	return (
-		<section className="flex flex-col items-center min-[1290px]:mt-43.75">
+		<section className="flex flex-col items-center min-[1290px]:mt-43.75 p-3">
 			<header className="text-center mt-7.5 flex flex-col items-center gap-2">
 				<h1 className="max-lg:font-medium max-lg:text-[20px]  leading-[130%] lg:font-bold lg:text-[32px]">
 					Explore and Find What You Need
@@ -29,13 +29,13 @@ const ExploreSection = ({
 				</h3>
 
 				{showSearch && (
-					<div className="flex gap-12 items-stretch mt-9.5 mb-8 min-[1290px]:mb-15 min-[1290px]:w-318.75 bg-gray-50 p-8 rounded-xl">
+					<div className="flex sm:gap-12 gap-6 items-stretch mt-9.5 mb-8 min-[1290px]:mb-15 min-[1290px]:w-318.75 bg-gray-50  rounded-xl">
 						<input
 							type="search"
-							className="max-md:w-59 md:max-[1290px]:w-134 min-[1290px]:w-240 font-semibold border-[#D9D9D9] border rounded-lg  p-2.75 h-17 md:pt-5 pb-5"
+							className="max-sm:w-50 max-sm:h-10 sm:max-[1290px]:w-134 min-[1290px]:w-240 font-semibold border-[#D9D9D9] border rounded-lg  p-2.75 sm:h-13 lg:h-17 md:pt-5 pb-5 max-md:text-xs "
 							placeholder="Search for Projects, Schools...."
 						/>
-						<Button variant="default" size="sm" className="h-16 md:w-37 text-lg">
+						<Button variant="default" size="sm" className="lg:h-16 sm:h-13 h-10 sm:w-37 sm:text-lg text-sm">
 							Search
 						</Button>
 					</div>
@@ -49,7 +49,7 @@ const ExploreSection = ({
 				<div className="publication-list flex max-sm:flex-col sm:flex-row sm:flex-wrap items-center sm:justify-center gap-12.5">
 					{displayData.map((data) => (
 						<section
-							className="max-[1290px]:w-76 min-[1290px]:w-91.7 py-3 px-2 rounded-lg border-[#D9D9D9] border flex flex-col max-[1290px]:gap-2.5 min-[1290px]:gap-4.5 "
+							className="max-[1290px]:w-76 min-[1290px]:w-91 py-3 px-2 rounded-lg border-[#D9D9D9] border flex flex-col max-[1290px]:gap-2.5 min-[1290px]:gap-4.5 "
 							key={data.id}
 						>
 							<Image
