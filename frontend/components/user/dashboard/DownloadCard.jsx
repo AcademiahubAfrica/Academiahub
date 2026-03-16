@@ -1,13 +1,19 @@
-import { mockData } from "@/app/data/exploreMockData";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { IoTrashOutline } from "react-icons/io5";
 import { RxUpload } from "react-icons/rx";
+import { getCategoryImage } from "@/lib/categoryImage";
 
-const DownloadCard = () => {
+const DownloadCard = ({ documents = [] }) => {
+  if (documents.length === 0) {
+    return (
+      <p className="text-center text-gray-500 py-8">No downloads yet</p>
+    );
+  }
+
   return (
     <section className="grid lg:px-6.25 grid-cols-2 gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
-      {mockData.map((data) => (
+      {documents.map((data) => (
         <article
           className=" relative bg-white px-1 py-1 lg:py-3 lg:px-2 border rounded-[15px] border-[#D9D9D9]  flex flex-col gap-0.5 md:gap-4.5"
           key={data.id}
@@ -19,27 +25,27 @@ const DownloadCard = () => {
             <Image
               className="rounded-t-[15px] object-cover "
               fill
-              src={data.imagePath}
+              src={getCategoryImage(data.category || "")}
               alt="Publication image"
             />
           </div>
           {/* content */}
           <div className="flex flex-col gap-0.75 md:gap-2.5 w-full">
             <h3 className="font-medium text-[8px] capitalize  md:text-lg leading-[130%]">
-              {data.name}
+              {data.title}
             </h3>
             <div className="flex items-center  md:gap-1.5 gap-0.5 mb-0.75 md:mb-2">
               <div className="w-5 h-5 md:w-10 md:h-10 relative">
                 <Image
                   className="rounded-full "
                   fill
-                  src={data.userPfp}
+                  src={data.author?.image || "/assets/images/user/default-avatar.png"}
                   alt="user's profile picture"
                 />
               </div>
               <div>
                 <p className="text-[8px] font-normal md:text-sm leading-[130%] mb-px md:mb-0.5">
-                  {data.username}
+                  {data.author?.name}
                 </p>
                 <p className="text-grey text-[8px] md:text-sm leading-[130%]">
                   {data.institution}

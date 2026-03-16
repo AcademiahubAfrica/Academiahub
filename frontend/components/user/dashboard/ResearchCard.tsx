@@ -5,6 +5,7 @@ import { RxUpload } from "react-icons/rx";
 import { MdOutlineFileDownload } from "react-icons/md";
 import Like from "@/components/Like";
 import { ResearchCardType } from "@/app/_types/documents";
+import { getCategoryImage } from "@/lib/categoryImage";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -25,7 +26,7 @@ const ResearchCard = ({ data }: ResearchCardProps) => {
         <Image
           className="rounded-t-[15px] object-cover  "
           fill
-          src={"/assets/images/LandingPage/exploreImg-1.png"}
+          src={getCategoryImage(data.category)}
           alt="Publication image"
         />
       </div>

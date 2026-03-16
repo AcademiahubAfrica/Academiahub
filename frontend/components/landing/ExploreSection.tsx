@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import React from "react";
-import { mockData } from "../../app/data/exploreMockData";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getInitials } from "@/lib/messaging/utils";
+import { getCategoryImage } from "@/lib/categoryImage";
+import prisma from "@/prisma/connection";
 
 interface ExploreSectionProps {
 	limit?: number;
@@ -10,12 +12,20 @@ interface ExploreSectionProps {
 	showViewAllButton?: boolean;
 }
 
-const ExploreSection = ({
-	limit,
+const ExploreSection = async ({
+	limit = 12,
 	showSearch = true,
 	showViewAllButton = true,
 }: ExploreSectionProps) => {
-	const displayData = limit ? mockData.slice(0, limit) : mockData;
+	const documents = await prisma.document.findMany({
+		include: {
+			author: {
+				select: { id: true, name: true, image: true },
+			},
+		},
+		orderBy: { createdAt: "desc" },
+		take: limit,
+	});
 
 	return (
 		<section className="flex flex-col items-center min-[1290px]:mt-43.75 p-3">
@@ -46,51 +56,54 @@ const ExploreSection = ({
 				<h3 className="font-medium text-xl leading-[130%] mb-5 md:pl-10 lg:pl-0 text-center">
 					Suggested publications
 				</h3>
-				<div className="publication-list flex max-sm:flex-col sm:flex-row sm:flex-wrap items-center sm:justify-center gap-12.5">
-					{displayData.map((data) => (
-						<section
-							className="max-[1290px]:w-76 min-[1290px]:w-91 py-3 px-2 rounded-lg border-[#D9D9D9] border flex flex-col max-[1290px]:gap-2.5 min-[1290px]:gap-4.5 "
-							key={data.id}
-						>
-							<Image
-								className="rounded-t-[15px] min-[1290px]:w-87"
-								src={data.imagePath}
-								width={290}
-								height={246}
-								alt="Publication image"
-							/>
-							<div className="flex flex-col gap-2.5 w-74">
-								<h4 className="font-medium  max-[1290px]:text-[16px] min-[1290px]:text-[18px] leading-[130%]">
-									{data.name}
-								</h4>
-								<div className="flex items-center gap-1.5">
-									<div>
-										<Image
-											className="rounded-full "
-											width={40}
-											height={40}
-											src={data.userPfp}
-											alt="user's profile picture"
-										/>
-									</div>
-									<div>
-										<p className="text-sm leading-[130%]">{data.username}</p>
-										<p className="text-[#AEAEAE] text-[14px] leading-[130%]">
-											{data.institution}
-										</p>
+
+				{documents.length === 0 ? (
+					<p className="text-center text-gray-500 py-8">No publications found</p>
+				) : (
+					<div className="publication-list flex max-sm:flex-col sm:flex-row sm:flex-wrap items-center sm:justify-center gap-12.5">
+						{documents.map((doc) => (
+							<section
+								className="max-[1290px]:w-76 min-[1290px]:w-91 py-3 px-2 rounded-lg border-[#D9D9D9] border flex flex-col max-[1290px]:gap-2.5 min-[1290px]:gap-4.5 "
+								key={doc.id}
+							>
+								<Image
+									className="rounded-t-[15px] min-[1290px]:w-87"
+									src={getCategoryImage(doc.category)}
+									width={290}
+									height={246}
+									alt="Publication image"
+								/>
+								<div className="flex flex-col gap-2.5 w-74">
+									<h4 className="font-medium  max-[1290px]:text-[16px] min-[1290px]:text-[18px] leading-[130%]">
+										{doc.title}
+									</h4>
+									<div className="flex items-center gap-1.5">
+										<Avatar className="w-10 h-10 shrink-0">
+											<AvatarImage src={doc.author.image || undefined} />
+											<AvatarFallback>
+												{getInitials(doc.author.name || "")}
+											</AvatarFallback>
+										</Avatar>
+										<div>
+											<p className="text-sm leading-[130%]">{doc.author.name}</p>
+											<p className="text-[#AEAEAE] text-[14px] leading-[130%]">
+												{doc.institution}
+											</p>
+										</div>
 									</div>
 								</div>
-							</div>
-							<Button
-								variant="default"
-								size="lg"
-								className="w-full font-medium text-[16px] leading-[130%]"
-							>
-								View Details
-							</Button>
-						</section>
-					))}
-				</div>
+								<Button
+									asChild
+									variant="default"
+									size="lg"
+									className="w-full font-medium text-[16px] leading-[130%]"
+								>
+									<Link href={`/publication/${doc.id}`}>View Details</Link>
+								</Button>
+							</section>
+						))}
+					</div>
+				)}
 			</div>
 
 			{showViewAllButton && (
