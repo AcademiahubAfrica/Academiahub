@@ -12,7 +12,7 @@ const PublicationContent = async ({
 }) => {
   const { id } = await params;
 
-  const [document, comments] = await Promise.all([
+  const [document, comments, totalComments] = await Promise.all([
     prisma.document.findUnique({
       where: { id },
       include: {
@@ -27,6 +27,7 @@ const PublicationContent = async ({
       orderBy: { createdAt: "desc" },
       take: 20,
     }),
+    prisma.comment.count({ where: { documentId: id } }),
   ]);
 
   if (!document) {
@@ -39,7 +40,18 @@ const PublicationContent = async ({
     <section className="flex relative flex-col md:flex-row gap-2">
       <MainDetails>
         <PublicationDetails details={document} />
-        <Comments />
+        <Comments
+          initialComments={comments.map((c) => ({
+            id: c.id,
+            content: c.content,
+            userId: c.userId,
+            documentId: c.documentId,
+            createdAt: c.createdAt.toISOString(),
+            user: c.user,
+          }))}
+          documentId={id}
+          totalComments={totalComments}
+        />
       </MainDetails>
 
       {/* side */}
