@@ -11,12 +11,7 @@ import { Search, Loader2 } from "lucide-react";
 import { getInitials } from "@/lib/messaging/utils";
 import JoinUs from "@/components/landing/JoinUs";
 import type { Document } from "@/app/_types/documents";
-
-const PLACEHOLDER_IMAGES = [
-  "/assets/images/LandingPage/exploreImg-1.png",
-  "/assets/images/LandingPage/exploreImg-2.png",
-  "/assets/images/LandingPage/exploreImg-3.png",
-];
+import { getCategoryImage } from "@/lib/categoryImage";
 
 interface Pagination {
   page: number;
@@ -174,7 +169,7 @@ export default function ExploreContent() {
                 {/* Publication Image */}
                 <div className="relative aspect-4/3 overflow-hidden">
                   <Image
-                    src={PLACEHOLDER_IMAGES[index % PLACEHOLDER_IMAGES.length]}
+                    src={getCategoryImage(doc.category)}
                     alt={doc.title}
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"

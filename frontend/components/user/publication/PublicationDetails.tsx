@@ -7,6 +7,7 @@ import { Document } from "@/app/_types/documents";
 import Description from "./Description";
 import { formatToMB } from "@/lib/utils";
 import { getInitials } from "@/lib/messaging/utils";
+import { getCategoryImage } from "@/lib/categoryImage";
 import MessageAuthorButton from "./MessageAuthorButton";
 const PublicationDetails = ({ details }: { details: Document }) => {
   return (
@@ -46,7 +47,7 @@ const PublicationDetails = ({ details }: { details: Document }) => {
 
       <div className="relative rounded-[12px] w-full h-34.25 md:h-59.75 mb-4.25 lg:mb-5.5">
         <Image
-          src={"/assets/images/LandingPage/exploreImg-1.png"}
+          src={getCategoryImage(details.category)}
           alt={details.title}
           fill
           className="object-cover object-center rounded-[12px]"
