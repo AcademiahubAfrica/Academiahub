@@ -32,10 +32,10 @@ const Stats = ({ stats }: StatsProps) => {
   ];
 
   return (
-    <div className="flex justify-between mt-10 w-full max-w-214.5">
+    <div className="grid grid-cols-3 gap-2 md:flex md:justify-between mt-10 w-full md:max-w-214.5">
       {statsOptions.map(({ label, icon, count }) => (
         <div
-          className="flex flex-col items-center justify-center gap-3 bg-[#F5F5F5] w-41.5 h-24.5 rounded-[10px]"
+          className="flex flex-col items-center justify-center gap-3 bg-[#F5F5F5] h-20 md:w-41.5 md:h-24.5 rounded-[10px]"
           key={label}
         >
           <div className="flex items-center gap-2">
