@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { FaRegBookmark, FaRegComment } from "react-icons/fa";
-import { RxUpload } from "react-icons/rx";
 import { MdOutlineFileDownload } from "react-icons/md";
 import Like from "@/components/Like";
 import { ResearchCardType } from "@/app/_types/documents";
 import { getCategoryImage } from "@/lib/categoryImage";
+import { getInitials } from "@/lib/messaging/utils";
 import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
 
 type ResearchCardProps = {
   data: ResearchCardType;
@@ -19,9 +18,6 @@ const ResearchCard = ({ data }: ResearchCardProps) => {
       className=" relative w-full bg-white px-1 py-1 lg:py-2.75 lg:px-3 border rounded-[15px] border-[#D9D9D9]   "
       key={data.id}
     >
-      <span className="absolute right-3 top-3 md:top-5 z-30 md:right-5 rounded-full md:w-11 w-5.75 md:h-11 h-5.75 cursor-pointer bg-white flex items-center justify-center">
-        <RxUpload className="md:w-4 md:h-4  w-2.25 h-2.25 " />
-      </span>
       <div className="relative h-[118.48px] sm:h-61.5 w-full">
         <Image
           className="rounded-t-[15px] object-cover  "
@@ -46,7 +42,9 @@ const ResearchCard = ({ data }: ResearchCardProps) => {
               />
             </div>
           ) : (
-            <Skeleton className="size-5 md:size-10 rounded-full" />
+            <div className="size-5 md:size-10 rounded-full bg-grey flex items-center justify-center text-[6px] md:text-xs font-medium">
+              {getInitials(data.author.name || "")}
+            </div>
           )}
           <div>
             <p className="text-[8px] font-normal md:text-sm leading-[130%] mb-0.5">
