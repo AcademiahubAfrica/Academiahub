@@ -79,11 +79,11 @@ const ProfileSection = async () => {
                 <AvatarImage src={avatarSrc} alt={name || "avatar"} />
                 <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
-              <h3>{name}</h3>
+              <h3 className="text-xl font-normal leading-none">{name}</h3>
             </div>
             <Button
               variant={"outline2"}
-              className="max-w-23.75 text-sm leading-3.5 font-normal"
+              className="max-w-23.75 text-sm leading-3.5 font-normal mr-3.75 border-[#1E3A8A] hover:bg-[#adadad] hover:text-current"
             >
               Edit profile
             </Button>
@@ -123,9 +123,12 @@ const ProfileSection = async () => {
             </p>
           )}
 
-          {/* stats */}
-          <Stats stats={stats} />
         </div>
+      </div>
+
+      {/* stats */}
+      <div className="ml-36.25 mr-36">
+        <Stats stats={stats} />
       </div>
     </div>
   );
