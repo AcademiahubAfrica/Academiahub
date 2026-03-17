@@ -27,11 +27,17 @@ const MainContent = async ({
       <ProfileSectionOther profile={profile} />
       {children}
 
-      <section className="grid lg:px-6.25 grid-cols-2 gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
-        {documents.map((data) => (
-          <DownloadCard key={data.id} data={data} />
-        ))}
-      </section>
+      {documents.length === 0 ? (
+        <p className="text-center text-gray-500 py-8">
+          No publications yet
+        </p>
+      ) : (
+        <section className="grid lg:px-6.25 grid-cols-2 gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
+          {documents.map((data) => (
+            <DownloadCard key={data.id} data={data} />
+          ))}
+        </section>
+      )}
     </>
   );
 };
