@@ -31,10 +31,10 @@ interface DocumentData {
   author: { id: string; name: string | null; image: string | null };
 }
 
-const DownloadCard = ({ documents = [] }: { documents?: DocumentData[] }) => {
+const PublicationCard = ({ documents = [] }: { documents?: DocumentData[] }) => {
   if (documents.length === 0) {
     return (
-      <p className="text-center text-gray-500 py-8">No downloads yet</p>
+      <p className="text-center text-gray-500 py-8">To see a publication, upload one.</p>
     );
   }
 
@@ -117,4 +117,4 @@ const DownloadCard = ({ documents = [] }: { documents?: DocumentData[] }) => {
   );
 };
 
-export default DownloadCard;
+export default PublicationCard;
