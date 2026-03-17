@@ -1,6 +1,6 @@
 import { userPagesMetadata } from "@/app/data/Exports";
 import Search from "@/components/user/shared/Search";
-import DownloadCard from "@/components/user/dashboard/DownloadCard";
+import PublicationCard from "@/components/user/dashboard/PublicationCard";
 import DownloadHeader from "@/components/user/downloads/DownloadHeader";
 export const metadata = userPagesMetadata.downloads;
 const page = () => {
@@ -9,7 +9,7 @@ const page = () => {
       <Search text="downloaded" />
       <DownloadHeader />
 
-      <DownloadCard />
+      <PublicationCard />
     </main>
   );
 };

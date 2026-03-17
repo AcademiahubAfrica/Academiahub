@@ -127,7 +127,7 @@ const ProfileSection = async () => {
       </div>
 
       {/* stats */}
-      <div className="ml-36.25 mr-36">
+      <div className="px-2 md:ml-36.25 md:mr-36 md:px-0">
         <Stats stats={stats} />
       </div>
     </div>

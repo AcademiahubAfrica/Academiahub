@@ -1,21 +1,21 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import DownloadCard from "../dashboard/DownloadCard";
+import PublicationCard from "../dashboard/PublicationCard";
 
 const filterOptions = [
   {
-    value: "downloads",
+    value: "publications",
   },
   {
     value: "likes",
   },
 ];
-const DownloadsAndLikes = () => {
+const PublicationsAndLikes = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
-  const filter = searchParams.get("show") || "downloads";
+  const filter = searchParams.get("show") || "publications";
 
   function updateParams(key: string, value: string): void {
     const params = new URLSearchParams(searchParams);
@@ -40,9 +40,9 @@ const DownloadsAndLikes = () => {
         ))}
       </div>
 
-      {filter === "downloads" ? <DownloadCard /> : ""}
+      {filter === "publications" ? <PublicationCard /> : <p className="text-center text-gray-500 py-8">No likes yet</p>}
     </div>
   );
 };
 
-export default DownloadsAndLikes;
+export default PublicationsAndLikes;

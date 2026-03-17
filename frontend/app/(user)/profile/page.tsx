@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { userPagesMetadata } from "@/app/data/Exports";
 import ProfileSection from "@/components/user/profile/ProfileSection";
-import DownloadsAndLikes from "@/components/user/profile/DownloadsAndLikes";
+import PublicationsAndLikes from "@/components/user/profile/PublicationsAndLikes";
 
 export const metadata = userPagesMetadata.profile;
 const Page = () => {
@@ -9,7 +9,7 @@ const Page = () => {
     <>
       <ProfileSection />
       <Suspense fallback={null}>
-        <DownloadsAndLikes />
+        <PublicationsAndLikes />
       </Suspense>
     </>
   );
