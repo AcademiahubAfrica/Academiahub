@@ -32,7 +32,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
     const comment = await prisma.comment.findUnique({
       where: { id: commentId },
-      select: { userId: true, documentId: true },
+      select: { userId: true, documentId: true, createdAt: true },
     });
 
     if (!comment || comment.documentId !== documentId) {
@@ -41,6 +41,15 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
     if (comment.userId !== session.user.id) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    const hoursSinceCreation =
+      (Date.now() - comment.createdAt.getTime()) / (1000 * 60 * 60);
+    if (hoursSinceCreation > 72) {
+      return NextResponse.json(
+        { error: "Comments cannot be edited after 72 hours" },
+        { status: 403 }
+      );
     }
 
     const updated = await prisma.comment.update({

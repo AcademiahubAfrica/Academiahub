@@ -184,7 +184,12 @@ const Comments = ({
         className="space-y-2 h-[50vh]! lg:h-[60vh]! pb-5 max-sm:overflow-y-auto md:overflow-hidden  md:space-y-2.75 max-sm:[scrollbar-width:none]
   max-sm:[&::-webkit-scrollbar]:display-none hover:overflow-auto"
       >
-        {comments.map((comment) => (
+        {comments.map((comment) => {
+          const isEditable =
+            Date.now() - new Date(comment.createdAt).getTime() <=
+            72 * 60 * 60 * 1000;
+
+          return (
           <div
             className="flex items-center gap-1 md:gap-3.25 "
             key={comment.id}
@@ -219,6 +224,7 @@ const Comments = ({
                   <Button
                     size="sm"
                     variant="outline"
+                    className="hover:bg-[#adadad]!"
                     onClick={() => {
                       setEditingId(null);
                       setEditContent("");
@@ -241,13 +247,15 @@ const Comments = ({
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-45 md:w-65 rounded-xl md:rounded-2xl p-1.5 md:p-2.5">
+                  {isEditable && (
                   <DropdownMenuItem
                     onClick={() => handleEdit(comment)}
-                    className="h-7 md:h-9 text-xs md:text-base gap-2 md:gap-3"
+                    className="h-7 md:h-9 text-xs md:text-base gap-2 md:gap-3 hover:bg-[#adadad]!"
                   >
                     <Pencil className="size-3.5 md:size-5" />
                     Edit
                   </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem
                     variant="destructive"
                     onClick={() => handleDelete(comment.id)}
@@ -260,7 +268,8 @@ const Comments = ({
               </DropdownMenu>
             )}
           </div>
-        ))}
+          );
+        })}
         {comments.length === 0 && (
           <p className="text-center text-grey text-sm py-4">
             No comments yet. Be the first to comment!
