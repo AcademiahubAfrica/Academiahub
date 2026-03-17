@@ -21,11 +21,10 @@ export interface Document {
 
 export interface ResearchCardType {
   id: string | number;
-  //   imagePath: string;
   title: string;
+  category: string;
   author: Author;
   institution: string;
   likes: number;
-  //   comments: number;
   downloads: number;
 }

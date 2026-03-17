@@ -6,7 +6,7 @@ export const notifications = [
     type: "comment",
     time: "8 hours ago",
     post: {
-      image: "/assets/images/LandingPage/exploreImg-3.png",
+      image: "/assets/images/ResearchCards/Research.png",
       title: "The anatomy of the human body and how it impacts old age.",
       type: "Medicine",
     },
@@ -18,7 +18,7 @@ export const notifications = [
     type: "upload",
     time: "14 hours ago",
     post: {
-      image: "/assets/images/LandingPage/exploreImg-2.png",
+      image: "/assets/images/ResearchCards/Research.png",
       title: "Sustainable business models in the digital age",
       type: "Business",
     },
