@@ -18,9 +18,9 @@ const ResearchCard = ({ data }: ResearchCardProps) => {
       className=" relative w-full bg-white px-1 py-1 lg:py-2.75 lg:px-3 border rounded-[15px] border-[#D9D9D9]   "
       key={data.id}
     >
-      <div className="relative h-[118.48px] sm:h-61.5 w-full">
+      <div className="relative aspect-[343/240] w-full">
         <Image
-          className="rounded-t-[15px] object-cover  "
+          className="rounded-t-[15px] object-cover"
           fill
           src={getCategoryImage(data.category)}
           alt="Publication image"
