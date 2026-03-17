@@ -14,12 +14,30 @@ const MainContent = async ({
 
   const profile = await fetchProfile(otherUserId);
 
-  const documents = await prisma.document.findMany({
+  const rawDocuments = await prisma.document.findMany({
     where: { authorId: otherUserId },
     include: {
-      author: { select: { id: true, name: true, image: true } },
+      author: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          Profile: { take: 1, select: { bio: true } },
+        },
+      },
     },
     orderBy: { createdAt: "desc" },
+  });
+
+  const documents = rawDocuments.map((doc) => {
+    const bio = doc.author.Profile?.[0]?.bio as
+      | { department?: string }
+      | undefined;
+    return {
+      ...doc,
+      department: bio?.department ?? undefined,
+      author: { id: doc.author.id, name: doc.author.name, image: doc.author.image },
+    };
   });
 
   return (
