@@ -1,9 +1,8 @@
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import { getCategoryImage } from "@/lib/categoryImage";
 import { getInitials } from "@/lib/messaging/utils";
-import Link from "next/link";
+import DownloadButton from "./DownloadButton";
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -27,6 +26,9 @@ const DownloadCard = ({
     title: string;
     category: string;
     institution: string;
+    department?: string;
+    fileUrl: string;
+    fileName: string;
     fileSize: number;
     downloads: number;
     createdAt: Date | string;
@@ -38,7 +40,7 @@ const DownloadCard = ({
       className="relative bg-white px-1 py-1 lg:py-3 lg:px-2 border rounded-[15px] border-[#D9D9D9] flex flex-col gap-0.5 md:gap-4.5"
       key={data.id}
     >
-<div className="relative aspect-[343/240] w-full">
+<div className="relative aspect-343/240 w-full">
         <Image
           className="rounded-t-[15px] object-cover"
           fill
@@ -69,20 +71,22 @@ const DownloadCard = ({
         </div>
         {/* description  */}
         <div className="md:space-y-1 space-y-px font-normal">
-          <span className="flex items-center text-[8px] md:text-sm md:gap-2 gap-0.5">
-            <small className="text-grey md:text-sm leading-[130%]">
-              Category:
-            </small>
-            <small className="text-[8px] md:text-sm capitalize">
-              {data.category.toLowerCase()}
-            </small>
-          </span>
+          {data.department && (
+            <span className="flex items-center text-[8px] md:text-sm md:gap-2 gap-0.5">
+              <small className="text-grey md:text-sm leading-[130%]">
+                Department:
+              </small>
+              <small className="text-[8px] md:text-sm">
+                {data.department}
+              </small>
+            </span>
+          )}
           <span className="flex items-center text-[8px] md:text-sm! gap-2">
             <small className="text-grey md:text-sm leading-[130%]">
-              Downloads:
+              Uploaded:
             </small>
             <small className="text-[8px] md:text-sm">
-              {data.downloads}
+              {formatDate(data.createdAt)}
             </small>
           </span>
           <span className="flex items-center text-[8px] md:text-sm gap-2">
@@ -95,16 +99,12 @@ const DownloadCard = ({
           </span>
         </div>
       </div>
-      <div className="my-2 flex justify-between items-center">
-        <Link href={`/publication/${data.id}`} className="basis-[85%]">
-          <Button
-            variant="default"
-            size="lg"
-            className="w-full rounded md:h-9 h-5.25 flex items-center justify-center text-[7.77px] font-medium md:text-[16px] leading-[130%]"
-          >
-            Open
-          </Button>
-        </Link>
+      <div className="my-2">
+        <DownloadButton
+          documentId={data.id}
+          fileUrl={data.fileUrl}
+          fileName={data.fileName}
+        />
       </div>
     </article>
   );
