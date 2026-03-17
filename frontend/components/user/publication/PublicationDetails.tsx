@@ -59,7 +59,7 @@ const PublicationDetails = ({ details }: { details: Document }) => {
       </h2>
 
       <div className="mt-3 mb-2.5 md:mb-3.75">
-        <h3 className="text-sm lg:text-lg mb-3max-sm:text-grey  font-medium lg:leading-5 leading-4.5">
+        <h3 className="text-sm lg:text-lg mb-3 max-sm:text-grey font-medium lg:leading-5 leading-4.5">
           Abstract
         </h3>
         <Description description={details?.description} />
