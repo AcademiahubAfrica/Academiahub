@@ -240,7 +240,7 @@ const Comments = ({
                     <EllipsisVertical className="size-4 text-grey" />
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[180px] md:w-[260px] rounded-xl md:rounded-2xl p-1.5 md:p-2.5">
+                <DropdownMenuContent align="end" className="w-45 md:w-65 rounded-xl md:rounded-2xl p-1.5 md:p-2.5">
                   <DropdownMenuItem
                     onClick={() => handleEdit(comment)}
                     className="h-7 md:h-9 text-xs md:text-base gap-2 md:gap-3"
