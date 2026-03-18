@@ -39,7 +39,7 @@ const ExploreSection = async ({
 				</h3>
 
 				{showSearch && (
-					<div className="flex sm:gap-12 gap-6 items-stretch mt-9.5 mb-8 min-[1290px]:mb-15 min-[1290px]:w-318.75 bg-gray-50  rounded-xl">
+					<div className="flex sm:gap-12 gap-6 items-stretch mt-9.5 mb-8 min-[1290px]:mb-15 min-[1290px]:w-318.75 bg-gray-50  rounded-x max-w-[80%]">
 						<input
 							type="search"
 							className="max-sm:w-50 max-sm:h-10 sm:max-[1290px]:w-134 min-[1290px]:w-240 font-semibold border-[#D9D9D9] border rounded-lg  p-2.75 sm:h-13 lg:h-17 md:pt-5 pb-5 max-md:text-xs "
