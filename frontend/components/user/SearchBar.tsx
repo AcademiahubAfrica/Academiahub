@@ -10,9 +10,9 @@ export default function SearchBar() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const handleSearch = (value : string) => {
   
 
+  const handleSearch = (value : string) => {
     const params = new URLSearchParams(searchParams)
     
     if (value) {
@@ -31,6 +31,7 @@ export default function SearchBar() {
        <div className="sm:w-3/4  border h-10 flex items-center p-3 focus-within:border-2 focus-within:border-gray-600 rounded-3xl">
       <FaSearch className="font-medium text-gray-400" />
       <Input
+       onKeyDown={(e)=> e.key ===  'Enter' && handleSearch(value) }
       type="text"
       value={value}
       placeholder="Search..."
