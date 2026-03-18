@@ -62,25 +62,35 @@ export async function PUT(request: NextRequest) {
     }
 
     const userId = session.user.id;
-    const { institution, department, academicLevel, aboutMe, state, country } =
+    const { name, institution, department, academicLevel, aboutMe, state, country } =
       await request.json();
 
-    if (!institution || !department || !academicLevel || !state || !country) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    if (!name || typeof name !== "string" || !name.trim()) {
+      return NextResponse.json({ error: "Name is required" }, { status: 400 });
     }
 
-    const bioData = {
-      institution: String(institution).trim(),
-      department: String(department).trim(),
-      academicLevel,
-      aboutMe: String(aboutMe ?? "").trim(),
-      state: String(state).trim(),
-      country: String(country).trim(),
-    };
+    // Update user name
+    await prisma.user.update({
+      where: { id: userId },
+      data: { name: String(name).trim() },
+    });
 
+    // Build bio data, preserving existing academicLevel if not provided
     const existingProfile = await prisma.profile.findFirst({
       where: { userId },
+      select: { id: true, bio: true },
     });
+
+    const existingBio = (existingProfile?.bio as Record<string, string> | null) ?? {};
+
+    const bioData = {
+      institution: String(institution ?? "").trim(),
+      department: String(department ?? "").trim(),
+      academicLevel: academicLevel ?? existingBio.academicLevel ?? "",
+      aboutMe: String(aboutMe ?? "").trim(),
+      state: String(state ?? "").trim(),
+      country: String(country ?? "").trim(),
+    };
 
     let profile;
     if (existingProfile) {
@@ -94,7 +104,7 @@ export async function PUT(request: NextRequest) {
       });
     }
 
-    return NextResponse.json({ bio: profile.bio });
+    return NextResponse.json({ name: String(name).trim(), bio: profile.bio });
   } catch (error) {
     console.error("Error updating profile:", error);
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });

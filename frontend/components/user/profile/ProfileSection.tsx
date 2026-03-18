@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { LuSchool } from "react-icons/lu";
 import { RiGraduationCapLine } from "react-icons/ri";
 import { IoLocationOutline } from "react-icons/io5";
+import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
@@ -84,8 +85,9 @@ const ProfileSection = async () => {
             <Button
               variant={"outline2"}
               className="max-w-23.75 text-sm leading-3.5 font-normal mr-3.75 border-[#1E3A8A] hover:bg-[#adadad] hover:text-current"
+              asChild
             >
-              Edit profile
+              <Link href="/profile/edit">Edit profile</Link>
             </Button>
           </div>
 
