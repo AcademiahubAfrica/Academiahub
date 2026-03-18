@@ -82,7 +82,7 @@ export default function Home() {
           </div>
 
           {/* IMAGE COLUMN */}
-          <div className="w-full lg:w-1/2 xl:w-[55%] flex items-center justify-center lg:justify-end">
+          <div className="hidden md:flex w-full lg:w-1/2 xl:w-[55%]  items-center justify-center lg:justify-end">
             <picture>
               <source
                 media="(min-width: 1024px)"
@@ -93,7 +93,7 @@ export default function Home() {
                 srcSet="/assets/images/LandingPage/desktop-hero-img.svg"
               />
               <Image
-                className="w-full h-auto max-w-90 sm:max-w-130 lg:max-w-none lg:w-full lg:rounded-l-2xl"
+                className="w-full   h-auto max-w-90 sm:max-w-130 lg:max-w-none lg:w-full lg:rounded-l-2xl"
                 src="/assets/images/LandingPage/desktop-hero-img.svg"
                 alt="Hero image"
                 width={704}
