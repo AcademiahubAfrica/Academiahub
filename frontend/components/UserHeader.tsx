@@ -34,7 +34,7 @@ const UserHeader = () => {
         width={20}
         className="xl:hidden hidden md:block  cursor-pointer object-cover"
       />
-      <SearchBar />
+        {pathName === '/dashboard' && <SearchBar />}
       {/* <div className="relative h-12 basis-2/3 hidden md:block "></div> */}
 
       <div className="md:flex hidden pr-7.5   items-center   gap-4.5 xl:gap-2">
