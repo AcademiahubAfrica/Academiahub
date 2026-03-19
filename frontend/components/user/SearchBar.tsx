@@ -36,7 +36,7 @@ export default function SearchBar() {
   return (
     <div className="w-2/3 sm:flex items-center gap-5 hidden">
       
-      <div className="sm:w-3/4 border h-10 flex items-center p-3 focus-within:border-2 focus-within:border-gray-600 rounded-3xl">
+      <div className="sm:w-3/4 border h-10 flex items-center p-3 focus-within:border-2 focus-within:border-gray-600 rounded-lg">
         <FaSearch className="text-gray-400" />
         
         <Input
@@ -50,8 +50,8 @@ export default function SearchBar() {
             }
           }}
 
-          placeholder="Search..."
-          className="border-none w-full rounded-3xl text-sm focus-visible:ring-0"
+          placeholder="Search for Research papers, Seminars"
+          className="border-none w-full  text-sm focus-visible:ring-0"
         />
       </div>
 
