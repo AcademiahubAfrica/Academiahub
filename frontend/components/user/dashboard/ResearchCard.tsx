@@ -28,7 +28,7 @@ const ResearchCard = ({ data }: ResearchCardProps) => {
       </div>
       {/* content */}
       <div className=" mt-4  w-full">
-        <h3 className="font-medium line-clamp-2 text-[8px]  md:text-lg leading-[130%]">
+        <h3 className="font-medium line-clamp-1 text-[8px]  md:text-lg leading-[130%]">
           {data.title}
         </h3>
         <div className="flex items-center  mt-4.5  gap-1.5 mb-4 ">
