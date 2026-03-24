@@ -123,7 +123,7 @@ export default function ExploreContent() {
         <div className="mb-8">
           <h2 className="text-2xl font-semibold text-gray-900">
             {searchQuery
-              ? `Search Results (${pagination?.total ?? 0})`
+              ? `Search Results (${documents.length ?? 0})`
               : "All Publications"}
           </h2>
           <p className="text-gray-600 mt-2">
