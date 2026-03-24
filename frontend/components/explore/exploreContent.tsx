@@ -102,7 +102,7 @@ export default function ExploreContent() {
                 type="search"
                 placeholder="Search for Projects, Schools...."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {setSearchQuery(e.target.value); handleSearch()}}
                 onKeyPress={handleKeyPress}
                 className="w-full pl-12 pr-4 py-6 text-base rounded-full border-gray-300 focus:border-blue-500 focus:ring-2 bg-white"
               />
