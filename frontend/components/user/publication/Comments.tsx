@@ -33,12 +33,14 @@ interface CommentsProps {
   initialComments: Comment[];
   documentId: string;
   totalComments: number;
+  onChangeView: () => void;
 }
 
 const Comments = ({
   initialComments,
   documentId,
   totalComments,
+  onChangeView,
 }: CommentsProps) => {
   const { data: session } = useSession();
   const [comments, setComments] = useState<Comment[]>(initialComments);
@@ -88,7 +90,7 @@ const Comments = ({
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ content }),
-        }
+        },
       );
 
       if (!res.ok) {
@@ -99,7 +101,7 @@ const Comments = ({
 
       const updated: Comment = await res.json();
       setComments((prev) =>
-        prev.map((c) => (c.id === commentId ? updated : c))
+        prev.map((c) => (c.id === commentId ? updated : c)),
       );
       setEditingId(null);
       setEditContent("");
@@ -112,7 +114,7 @@ const Comments = ({
     startTransition(async () => {
       const res = await fetch(
         `/api/documents/${documentId}/comments/${commentId}`,
-        { method: "DELETE" }
+        { method: "DELETE" },
       );
 
       if (!res.ok) {
@@ -135,7 +137,7 @@ const Comments = ({
 
   const handleEditKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
-    commentId: string
+    commentId: string,
   ) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -150,9 +152,22 @@ const Comments = ({
 
   return (
     <div className="bg-white border border-[#D9D9D9] rounded-[15px] py-3.5 px-2.75 md:px-4.5">
-      <h4 className="mb-2.5 text-sm lg:base font-medium lg:leading-5 leading-[130%]">
-        Comments ({commentCount})
-      </h4>
+      <div className="flex items-center justify-between">
+        <Button
+          variant={"ghost2"}
+          onClick={() => onChangeView()}
+          className="mb-2.5 text-sm lg:base lg:hover:bg-transparent lg:hover:text-foreground font-medium lg:leading-5 leading-[130%]"
+        >
+          Comments ({commentCount})
+        </Button>
+        <Button
+          className="lg:hidden"
+          onClick={() => onChangeView()}
+          variant={"ghost2"}
+        >
+          Reviews
+        </Button>
+      </div>
 
       <div className="flex items-center gap-1 md:gap-3.25 mb-3 md:-5 lg:mb-7">
         <Avatar className="size-7.5 md:size-10 ">
@@ -190,84 +205,87 @@ const Comments = ({
             72 * 60 * 60 * 1000;
 
           return (
-          <div
-            className="flex items-center gap-1 md:gap-3.25 "
-            key={comment.id}
-          >
-            <Avatar className="size-7.5 md:size-10 ">
-              <AvatarImage src={comment.user.image || undefined} />
-              <AvatarFallback>
-                {getInitials(comment.user.name || "")}
-              </AvatarFallback>
-            </Avatar>
-            <div className=" flex-1 space-y-0.5 ">
-              <p className="font-semibold text-sm  leading-3.5 md:leading-4.5">
-                {comment.user.name || "Anonymous"}
-              </p>
-              {editingId === comment.id ? (
-                <div className="flex items-center gap-2">
-                  <Input
-                    className="text-xs md:text-sm h-8"
-                    value={editContent}
-                    onChange={(e) => setEditContent(e.target.value)}
-                    onKeyDown={(e) => handleEditKeyDown(e, comment.id)}
-                    disabled={isPending}
-                    autoFocus
-                  />
-                  <Button
-                    size="sm"
-                    onClick={() => handleEditSubmit(comment.id)}
-                    disabled={isPending || !editContent.trim()}
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="hover:bg-[#adadad]!"
-                    onClick={() => {
-                      setEditingId(null);
-                      setEditContent("");
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              ) : (
-                <p className="font-normal text-xs md:text-sm leading-3.5 md:leading-4.5">
-                  {comment.content}
+            <div
+              className="flex items-center gap-1 md:gap-3.25 "
+              key={comment.id}
+            >
+              <Avatar className="size-7.5 md:size-10 ">
+                <AvatarImage src={comment.user.image || undefined} />
+                <AvatarFallback>
+                  {getInitials(comment.user.name || "")}
+                </AvatarFallback>
+              </Avatar>
+              <div className=" flex-1 space-y-0.5 ">
+                <p className="font-semibold text-sm  leading-3.5 md:leading-4.5">
+                  {comment.user.name || "Anonymous"}
                 </p>
+                {editingId === comment.id ? (
+                  <div className="flex items-center gap-2">
+                    <Input
+                      className="text-xs md:text-sm h-8"
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                      onKeyDown={(e) => handleEditKeyDown(e, comment.id)}
+                      disabled={isPending}
+                      autoFocus
+                    />
+                    <Button
+                      size="sm"
+                      onClick={() => handleEditSubmit(comment.id)}
+                      disabled={isPending || !editContent.trim()}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="hover:bg-[#adadad]!"
+                      onClick={() => {
+                        setEditingId(null);
+                        setEditContent("");
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                ) : (
+                  <p className="font-normal text-xs md:text-sm leading-3.5 md:leading-4.5">
+                    {comment.content}
+                  </p>
+                )}
+              </div>
+              {currentUserId === comment.userId && editingId !== comment.id && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="p-1 rounded-full hover:bg-gray-100 transition-colors">
+                      <EllipsisVertical className="size-4 text-grey" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="end"
+                    className="w-45 md:w-65 rounded-xl md:rounded-2xl p-1.5 md:p-2.5"
+                  >
+                    {isEditable && (
+                      <DropdownMenuItem
+                        onClick={() => handleEdit(comment)}
+                        className="h-7 md:h-9 text-xs md:text-base gap-2 md:gap-3 hover:bg-[#adadad]!"
+                      >
+                        <Pencil className="size-3.5 md:size-5" />
+                        Edit
+                      </DropdownMenuItem>
+                    )}
+                    <DropdownMenuItem
+                      variant="destructive"
+                      onClick={() => handleDelete(comment.id)}
+                      className="h-7 md:h-9 text-xs md:text-base gap-2 md:gap-3"
+                    >
+                      <Trash2 className="size-3.5 md:size-5" />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               )}
             </div>
-            {currentUserId === comment.userId && editingId !== comment.id && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="p-1 rounded-full hover:bg-gray-100 transition-colors">
-                    <EllipsisVertical className="size-4 text-grey" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-45 md:w-65 rounded-xl md:rounded-2xl p-1.5 md:p-2.5">
-                  {isEditable && (
-                  <DropdownMenuItem
-                    onClick={() => handleEdit(comment)}
-                    className="h-7 md:h-9 text-xs md:text-base gap-2 md:gap-3 hover:bg-[#adadad]!"
-                  >
-                    <Pencil className="size-3.5 md:size-5" />
-                    Edit
-                  </DropdownMenuItem>
-                  )}
-                  <DropdownMenuItem
-                    variant="destructive"
-                    onClick={() => handleDelete(comment.id)}
-                    className="h-7 md:h-9 text-xs md:text-base gap-2 md:gap-3"
-                  >
-                    <Trash2 className="size-3.5 md:size-5" />
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-          </div>
           );
         })}
         {comments.length === 0 && (

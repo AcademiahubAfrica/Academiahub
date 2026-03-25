@@ -4,6 +4,7 @@ import MainDetails from "./MainDetails";
 import ProfileCard from "./ProfileCard";
 import PublicationDetails from "./PublicationDetails";
 import Comments from "./Comments";
+import CommentOrReview from "./CommentOrReview";
 
 const PublicationContent = async ({
   params,
@@ -40,17 +41,10 @@ const PublicationContent = async ({
     <section className="flex relative flex-col md:flex-row gap-2">
       <MainDetails>
         <PublicationDetails details={document} />
-        <Comments
-          initialComments={comments.map((c) => ({
-            id: c.id,
-            content: c.content,
-            userId: c.userId,
-            documentId: c.documentId,
-            createdAt: c.createdAt.toISOString(),
-            user: c.user,
-          }))}
-          documentId={id}
-          totalComments={totalComments}
+        <CommentOrReview
+          comments={comments}
+          id={id}
+          totalcomments={totalComments}
         />
       </MainDetails>
 
