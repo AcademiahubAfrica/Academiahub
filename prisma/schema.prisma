@@ -23,16 +23,6 @@ enum Category {
   ANALYSIS
 }
 
-enum AcademicLevel {
-  UNDERGRADUATE
-  GRADUATE
-  POSTGRADUATE
-  PHD
-  PROFESSOR
-  RESEARCHER
-  OTHER
-}
-
 enum NotificationType {
   COMMENT
   LIKE
@@ -75,7 +65,6 @@ model Profile {
 type Bio {
   institution   String
   department    String
-  academicLevel AcademicLevel
   aboutMe       String
   state         String
   country       String

@@ -25,7 +25,6 @@ const ProfileInfoForm = ({ profileData }: { profileData: ProfileData }) => {
     profileData.bio ?? {
       institution: "",
       department: "",
-      academicLevel: "",
       aboutMe: "",
       state: "",
       country: "",

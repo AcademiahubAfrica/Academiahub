@@ -50,7 +50,6 @@ export const frontendSpec = {
         properties: {
           institution: { type: "string" as const },
           department: { type: "string" as const },
-          academicLevel: { type: "string" as const },
           aboutMe: { type: "string" as const },
           state: { type: "string" as const },
           country: { type: "string" as const },
@@ -489,14 +488,12 @@ export const frontendSpec = {
                 required: [
                   "institution",
                   "department",
-                  "academicLevel",
                   "state",
                   "country",
                 ],
                 properties: {
                   institution: { type: "string" as const },
                   department: { type: "string" as const },
-                  academicLevel: { type: "string" as const },
                   aboutMe: { type: "string" as const },
                   state: { type: "string" as const },
                   country: { type: "string" as const },
