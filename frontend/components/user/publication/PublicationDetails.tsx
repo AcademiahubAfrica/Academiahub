@@ -23,21 +23,13 @@ const PublicationDetails = ({ details }: { details: Document }) => {
             </AvatarFallback>
           </Avatar>
 
-          <div className="flex gap-0.5 items-start">
-            <div className="max-sm:space-y-1">
-              <h2 className="text-sm lg:text-xl font-medium lg:leading-6 leading-4.5">
-                {details.author.name}
-              </h2>
-              <p className="text-xs md:text-sm text-grey font-normal lg:leading-4.5 leading-3.5">
-                {details.institution}
-              </p>
-            </div>
-            <Image
-              alt="trust badge"
-              src={"/assets/images/user/trust.svg"}
-              width={24}
-              height={24}
-            />
+          <div className="max-sm:space-y-1">
+            <h2 className="text-sm lg:text-xl font-medium lg:leading-6 leading-4.5">
+              {details.author.name}
+            </h2>
+            <p className="text-xs md:text-sm text-grey font-normal lg:leading-4.5 leading-3.5">
+              {details.institution}
+            </p>
           </div>
         </div>
 
