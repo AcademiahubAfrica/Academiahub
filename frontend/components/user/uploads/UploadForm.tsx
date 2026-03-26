@@ -124,7 +124,7 @@ const UploadForm = () => {
           category: data.category,
           institution: data.institution,
           year: data.year,
-          fileUrl: uploadedFile.ufsUrl,
+          fileUrl: uploadedFile.url,
           fileKey: uploadedFile.key,
           fileName: uploadedFile.name,
           fileSize: uploadedFile.size,
