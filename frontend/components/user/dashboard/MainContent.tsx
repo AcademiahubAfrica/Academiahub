@@ -3,14 +3,32 @@ import prisma from "@/prisma/connection";
 import ResearchCard from "./ResearchCard";
 import FilterDocuments from "./FilterDocuments";
 import SearchBar from "../SearchBar";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 
 const MainContent = async () => {
- 
+
   let documents: Awaited<ReturnType<typeof fetchDocuments>> = [];
+  let likedDocumentIds: Set<string> = new Set();
 
   try {
-    documents = await fetchDocuments();
+    const [docs, session] = await Promise.all([
+      fetchDocuments(),
+      getServerSession(authOptions),
+    ]);
+    documents = docs;
+
+    if (session?.user?.id) {
+      const likes = await prisma.like.findMany({
+        where: {
+          userId: session.user.id,
+          documentId: { in: documents.map((d) => d.id) },
+        },
+        select: { documentId: true },
+      });
+      likedDocumentIds = new Set(likes.map((l) => l.documentId));
+    }
   } catch (error) {
     console.error("Failed to fetch documents:", error);
   }
@@ -28,7 +46,7 @@ const MainContent = async () => {
         <h4 className="text-lg mb-3 lg:mb-5.5 p-2.5  w-fit bg-white rounded-2xl font-medium leading-[130%]"  >
           Research of the week
         </h4>
-        <FilterDocuments documents={documents} />
+        <FilterDocuments documents={documents} likedDocumentIds={likedDocumentIds} />
       </div>
     </>
   );

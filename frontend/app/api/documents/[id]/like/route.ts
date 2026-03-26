@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
+import { revalidatePath } from "next/cache";
 
 /**
  * POST /api/documents/:id/like
@@ -36,23 +37,27 @@ export async function POST(
       }),
     ]);
 
-    // Notify document author
-    const document = await prisma.document.findUnique({
-      where: { id: documentId },
-      select: { authorId: true },
-    });
-
-    if (document && document.authorId !== userId) {
-      await prisma.notification.create({
-        data: {
-          userId: document.authorId,
-          type: "LIKE",
-          message: `${session.user.name} liked your document`,
-          actorId: userId,
-          documentId,
-        },
+    after(async () => {
+      // Notify document author
+      const document = await prisma.document.findUnique({
+        where: { id: documentId },
+        select: { authorId: true },
       });
-    }
+
+      if (document && document.authorId !== userId) {
+        await prisma.notification.create({
+          data: {
+            userId: document.authorId,
+            type: "LIKE",
+            message: `${session.user.name} liked your document`,
+            actorId: userId,
+            documentId,
+          },
+        });
+      }
+
+      revalidatePath("/dashboard");
+    });
 
     return NextResponse.json({ message: "Liked" }, { status: 201 });
   } catch (error) {
@@ -95,6 +100,10 @@ export async function DELETE(
         data: { likes: { decrement: 1 } },
       }),
     ]);
+
+    after(() => {
+      revalidatePath("/dashboard");
+    });
 
     return NextResponse.json({ message: "Unliked" });
   } catch (error) {

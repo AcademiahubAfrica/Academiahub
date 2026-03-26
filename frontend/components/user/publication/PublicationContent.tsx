@@ -5,6 +5,8 @@ import ProfileCard from "./ProfileCard";
 import PublicationDetails from "./PublicationDetails";
 import Comments from "./Comments";
 import CommentOrReview from "./CommentOrReview";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const PublicationContent = async ({
   params,
@@ -13,7 +15,7 @@ const PublicationContent = async ({
 }) => {
   const { id } = await params;
 
-  const [document, comments, totalComments] = await Promise.all([
+  const [document, comments, totalComments, session] = await Promise.all([
     prisma.document.findUnique({
       where: { id },
       include: {
@@ -29,18 +31,27 @@ const PublicationContent = async ({
       take: 20,
     }),
     prisma.comment.count({ where: { documentId: id } }),
+    getServerSession(authOptions),
   ]);
 
   if (!document) {
     throw new Error("Document not found");
   }
 
-  const profile = await fetchProfile(document.author.id);
+  const [profile, existingLike] = await Promise.all([
+    fetchProfile(document.author.id),
+    session?.user?.id
+      ? prisma.like.findUnique({
+          where: { userId_documentId: { userId: session.user.id, documentId: id } },
+          select: { id: true },
+        })
+      : null,
+  ]);
 
   return (
     <section className="flex relative flex-col md:flex-row gap-2">
       <MainDetails>
-        <PublicationDetails details={document} />
+        <PublicationDetails details={document} isLiked={!!existingLike} />
         <CommentOrReview
           comments={comments}
           id={id}
