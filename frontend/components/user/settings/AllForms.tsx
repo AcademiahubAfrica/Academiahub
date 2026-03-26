@@ -3,20 +3,12 @@ import { useState } from "react";
 import ChangePasswordForm from "./ChangePasswordForm";
 import NotificationsSettings from "./NotificationsSettings";
 import PrivacySettings from "./PrivacySettings";
-import ProfileInfoForm from "./ProfileInfoForm";
-import { Bio } from "@/app/_types/author";
 
-interface ProfileData {
-  name: string;
-  image: string | null;
-  bio: Bio | null;
-}
 
-const AllForms = ({ profileData }: { profileData: ProfileData }) => {
+const AllForms = () => {
   const [activeTab, setActiveTab] = useState("profile");
 
   const tabs = [
-    { id: "profile", label: "Profile", component: <ProfileInfoForm profileData={profileData} /> },
     { id: "password", label: "Security", component: <ChangePasswordForm /> },
     {
       id: "notifications",
@@ -52,7 +44,6 @@ const AllForms = ({ profileData }: { profileData: ProfileData }) => {
 
       {/* Desktop Content (Vertical Stack) */}
       <div className="hidden md:block space-y-20">
-        <ProfileInfoForm profileData={profileData} />
         <ChangePasswordForm />
         <NotificationsSettings />
         <PrivacySettings />
