@@ -3,6 +3,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* *{
+  box-sizing: border-box;
+  outline: 1px solid limegreen !important;  
+} */
+
 :root {
   --color-primary-100: #e8ebf3;
   --color-primary-200: #bcc4dc;
