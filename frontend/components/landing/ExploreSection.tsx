@@ -33,23 +33,10 @@ const ExploreSection = async ({
 				<h1 className="max-lg:font-medium max-lg:text-[20px]  leading-[130%] lg:font-bold lg:text-[32px]">
 					Explore and Find What You Need
 				</h1>
-				<h3 className="max-lg:font-medium max-lg:text-sm max-lg:leading-[130%] lg:font-normal lg:text-[24px] ">
+				<h3 className="max-lg:font-medium max-lg:text-sm max-lg:leading-[130%] lg:font-normal lg:text-[24px] mb-5">
 					Search through thousands of publications by topic, university or field
 					of study
 				</h3>
-
-				{showSearch && (
-					<div className="flex sm:gap-12 gap-6 items-stretch mt-9.5 mb-8 min-[1290px]:mb-15 min-[1290px]:w-318.75 bg-gray-50  rounded-x max-w-[80%]">
-						<input
-							type="search"
-							className="max-sm:w-50 max-sm:h-10 sm:max-[1290px]:w-134 min-[1290px]:w-240 font-semibold border-[#D9D9D9] border rounded-lg  p-2.75 sm:h-13 lg:h-17 md:pt-5 pb-5 max-md:text-xs "
-							placeholder="Search for Projects, Schools...."
-						/>
-						<Button variant="default" size="sm" className="lg:h-16 sm:h-13 h-10 sm:w-37 sm:text-lg text-sm">
-							Search
-						</Button>
-					</div>
-				)}
 			</header>
 
 			<div>
