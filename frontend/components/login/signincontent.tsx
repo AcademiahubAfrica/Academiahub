@@ -81,7 +81,6 @@ const Signincontent = () => {
         return;
       }
 
-      toast.success("Signed in successfully!");
       router.push("/dashboard");
     });
   };
@@ -130,7 +129,7 @@ const Signincontent = () => {
           </div>
 
           {/* Form Fields */}
-          <div className="space-y-5">
+          <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="space-y-5">
             {/* Email */}
             <div>
               <label className="block label font-medium text-foreground mb-2">
@@ -207,7 +206,7 @@ const Signincontent = () => {
 
             {/* Sign In Button */}
             <button
-              onClick={handleSubmit}
+              type="submit"
               disabled={isPending}
               className={`w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors ${isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
             >
@@ -266,7 +265,7 @@ const Signincontent = () => {
                 </span>
               </button>
             </div>
-          </div>
+          </form>
 
           {/* Sign Up Link */}
           <p className="text-center body-text text-muted-foreground mt-6">
