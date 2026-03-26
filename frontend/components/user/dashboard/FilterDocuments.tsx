@@ -11,6 +11,9 @@ interface FilterDocumentsProp {
         image: string | null;
         name: string | null;
     };
+    _count: {
+        commentRecords: number;
+    };
 } & {
     category: $Enums.Category;
     id: string;

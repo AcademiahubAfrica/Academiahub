@@ -27,4 +27,7 @@ export interface ResearchCardType {
   institution: string;
   likes: number;
   downloads: number;
+  _count: {
+    commentRecords: number;
+  };
 }

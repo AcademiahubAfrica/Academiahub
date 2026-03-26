@@ -62,7 +62,7 @@ const ResearchCard = ({ data }: ResearchCardProps) => {
             <div className="flex items-end gap-0.75">
               <FaRegComment className="cursor-pointer text-black w-2.25 h-2.25 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
               <small className="text-[6.74px] md:text-sm">
-                {/* {data?.comments} */}0
+                {data._count.commentRecords}
               </small>
             </div>
             <div className="flex items-end gap-0.75">

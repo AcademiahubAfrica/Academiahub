@@ -40,6 +40,9 @@ async function fetchDocuments() {
       author: {
         select: { id: true, name: true, image: true },
       },
+      _count: {
+        select: { commentRecords: true },
+      },
     },
     orderBy: { createdAt: "desc" },
     take: 12,
