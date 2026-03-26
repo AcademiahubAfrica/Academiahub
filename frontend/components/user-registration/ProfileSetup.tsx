@@ -1,6 +1,6 @@
 "use client"
 import { useState } from 'react';
-import { User, ChevronDown } from 'lucide-react';
+import { User } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
@@ -9,36 +9,22 @@ interface FormData {
   fullName: string;
   institution: string;
   department: string;
-  academicLevel: string;
 }
 
 interface FormErrors {
   fullName?: string;
   institution?: string;
   department?: string;
-  academicLevel?: string;
 }
-
-const academicLevels = [
-  'Undergraduate',
-  'Graduate',
-  'Postgraduate',
-  'PhD',
-  'Professor',
-  'Researcher',
-  'Other'
-];
 
 const ProfileSetup = () => {
     const [formData, setFormData] = useState<FormData>({
     fullName: '',
     institution: '',
     department: '',
-    academicLevel: ''
   });
-  
+
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
 
   const validateForm = (): boolean => {
@@ -55,11 +41,7 @@ const ProfileSetup = () => {
     if (!formData.department.trim()) {
       newErrors.department = 'Department is required';
     }
-    
-    if (!formData.academicLevel) {
-      newErrors.academicLevel = 'Academic level is required';
-    }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -76,11 +58,6 @@ const ProfileSetup = () => {
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: undefined }));
     }
-  };
-
-  const handleSelectLevel = (level: string) => {
-    handleChange('academicLevel', level);
-    setIsDropdownOpen(false);
   };
 
   return (
@@ -190,45 +167,6 @@ const ProfileSetup = () => {
               </div>
               {errors.department && (
                 <p className="label text-destructive mt-1">{errors.department}</p>
-              )}
-            </div>
-
-            {/* Academic Level */}
-            <div>
-              <label className="block body-text font-medium text-foreground mb-2">
-                Academic Level
-              </label>
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className={`w-full px-4 py-3 rounded-xl border ${
-                    errors.academicLevel ? 'border-destructive' : 'border-input'
-                  } bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:bg-background transition-all text-left flex items-center justify-between`}
-                >
-                  <span className={formData.academicLevel ? 'text-foreground' : 'text-muted-foreground'}>
-                    {formData.academicLevel || 'Choose academic level'}
-                  </span>
-                  <ChevronDown className={`h-5 w-5 text-foreground transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
-                </button>
-                
-                {isDropdownOpen && (
-                  <div className="absolute z-10 w-full mt-2 bg-background border border-border rounded-xl shadow-lg max-h-60 overflow-auto">
-                    {academicLevels.map((level) => (
-                      <button
-                        key={level}
-                        type="button"
-                        onClick={() => handleSelectLevel(level)}
-                        className="w-full px-4 py-3 text-left hover:bg-muted transition-colors body-text text-foreground"
-                      >
-                        {level}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-              {errors.academicLevel && (
-                <p className="label text-destructive mt-1">{errors.academicLevel}</p>
               )}
             </div>
 

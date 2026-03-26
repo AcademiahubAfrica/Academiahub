@@ -7,7 +7,6 @@ export interface Author {
 export interface Bio {
   institution: string;
   department: string;
-  academicLevel: string;
   aboutMe: string;
   state: string;
   country: string;
