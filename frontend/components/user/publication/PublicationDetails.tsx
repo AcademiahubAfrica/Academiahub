@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -9,7 +10,9 @@ import { formatToMB } from "@/lib/utils";
 import { getInitials } from "@/lib/messaging/utils";
 import { getCategoryImage } from "@/lib/categoryImage";
 import MessageAuthorButton from "./MessageAuthorButton";
+import DownloadButton from "../shared/DownloadButton";
 const PublicationDetails = ({ details }: { details: Document }) => {
+  const [downloadCount, setDownloadCount] = useState(details.downloads);
   return (
     <div className="bg-white border lg:px-4 lg:pb-8.75 pt-6.25 border-[#D9D9D9] rounded-[15px] p-3">
       {/* profile pic and name */}
@@ -67,13 +70,17 @@ const PublicationDetails = ({ details }: { details: Document }) => {
         </span>
         <span className="flex text-[10px] font-normal lg:leading-4.5 leading-[130%] md:text-sm items-center gap-px">
           <p className="max-sm:tex-grey ">Downloads:</p>
-          <p className="">{details.downloads}</p>
+          <p className="">{downloadCount}</p>
         </span>
       </div>
       <div className="flex items-center  gap-2 md:gap-5 mb-3 lg:mb-5 justify-between">
-        <Button className="basis-[48%] text-xs md:text-base">
-          Download Publication
-        </Button>
+        <DownloadButton
+          documentId={details.id}
+          fileUrl={details.fileUrl}
+          fileName={details.fileName}
+          className="basis-[48%] text-xs md:text-base"
+          onDownload={() => setDownloadCount((prev) => prev + 1)}
+        />
         <Button
           className="basis-[48%] border-primary hover:bg-primary/85 hover:text-white text-xs md:text-base"
           variant={"outline"}
