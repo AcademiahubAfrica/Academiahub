@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
+import { revalidatePath } from "next/cache";
 
 type Params = { params: Promise<{ id: string; commentId: string }> };
 
@@ -94,6 +96,10 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
     }
 
     await prisma.comment.delete({ where: { id: commentId } });
+
+    after(() => {
+      revalidatePath("/dashboard");
+    });
 
     return NextResponse.json({ message: "Comment deleted" });
   } catch (error) {

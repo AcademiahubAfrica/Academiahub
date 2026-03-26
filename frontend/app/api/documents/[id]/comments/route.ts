@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
+import { revalidatePath } from "next/cache";
 
 /**
  * GET /api/documents/:id/comments
@@ -100,18 +102,22 @@ export async function POST(
       },
     });
 
-    // Notify document author
-    if (document.authorId !== userId) {
-      await prisma.notification.create({
-        data: {
-          userId: document.authorId,
-          type: "COMMENT",
-          message: `${session.user.name} commented on your document`,
-          actorId: userId,
-          documentId,
-        },
-      });
-    }
+    after(async () => {
+      // Notify document author
+      if (document.authorId !== userId) {
+        await prisma.notification.create({
+          data: {
+            userId: document.authorId,
+            type: "COMMENT",
+            message: `${session.user.name} commented on your document`,
+            actorId: userId,
+            documentId,
+          },
+        });
+      }
+
+      revalidatePath("/dashboard");
+    });
 
     return NextResponse.json(comment, { status: 201 });
   } catch (error) {
