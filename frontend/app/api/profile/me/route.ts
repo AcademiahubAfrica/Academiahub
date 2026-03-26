@@ -62,7 +62,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const userId = session.user.id;
-    const { name, institution, department, academicLevel, aboutMe, state, country } =
+    const { name, institution, department, aboutMe, state, country } =
       await request.json();
 
     if (!name || typeof name !== "string" || !name.trim()) {
@@ -75,18 +75,14 @@ export async function PUT(request: NextRequest) {
       data: { name: String(name).trim() },
     });
 
-    // Build bio data, preserving existing academicLevel if not provided
     const existingProfile = await prisma.profile.findFirst({
       where: { userId },
-      select: { id: true, bio: true },
+      select: { id: true },
     });
-
-    const existingBio = (existingProfile?.bio as Record<string, string> | null) ?? {};
 
     const bioData = {
       institution: String(institution ?? "").trim(),
       department: String(department ?? "").trim(),
-      academicLevel: academicLevel ?? existingBio.academicLevel ?? "",
       aboutMe: String(aboutMe ?? "").trim(),
       state: String(state ?? "").trim(),
       country: String(country ?? "").trim(),

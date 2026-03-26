@@ -25,7 +25,7 @@ const InboxView = () => {
   }, [isError, error, router]);
 
   if (isLoading) {
-    return <p className="font-semibold text-gray-500 text-center">Loading..</p>;
+    return null;
   }
   if (isError) {
     return <ErrorState error={error} onRetry={refetch} />;
