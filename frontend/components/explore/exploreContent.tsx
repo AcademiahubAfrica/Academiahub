@@ -102,7 +102,7 @@ export default function ExploreContent() {
                 type="search"
                 placeholder="Search for Projects, Schools...."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {setSearchQuery(e.target.value); handleSearch()}}
                 onKeyPress={handleKeyPress}
                 className="w-full pl-12 pr-4 py-6 text-base rounded-full border-gray-300 focus:border-blue-500 focus:ring-2 bg-white"
               />
@@ -123,7 +123,7 @@ export default function ExploreContent() {
         <div className="mb-8">
           <h2 className="text-2xl font-semibold text-gray-900">
             {searchQuery
-              ? `Search Results (${pagination?.total ?? 0})`
+              ? `Search Results (${documents.length ?? 0})`
               : "All Publications"}
           </h2>
           <p className="text-gray-600 mt-2">

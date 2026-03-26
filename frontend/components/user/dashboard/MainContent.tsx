@@ -2,6 +2,7 @@ import ResearchFilters from "@/components/ResearchFilters";
 import prisma from "@/prisma/connection";
 import ResearchCard from "./ResearchCard";
 import FilterDocuments from "./FilterDocuments";
+import SearchBar from "../SearchBar";
 
 
 const MainContent = async () => {
@@ -21,6 +22,9 @@ const MainContent = async () => {
     <>
       <ResearchFilters />
       <div className="lg:px-6.25 mt-4">
+        <div className="md:hidden w-full my-3">
+         <SearchBar />
+        </div>
         <h4 className="text-lg mb-3 lg:mb-5.5 p-2.5  w-fit bg-white rounded-2xl font-medium leading-[130%]"  >
           Research of the week
         </h4>
