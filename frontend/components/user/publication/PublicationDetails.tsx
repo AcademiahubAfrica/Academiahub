@@ -11,7 +11,8 @@ import { getInitials } from "@/lib/messaging/utils";
 import { getCategoryImage } from "@/lib/categoryImage";
 import MessageAuthorButton from "./MessageAuthorButton";
 import DownloadButton from "../shared/DownloadButton";
-const PublicationDetails = ({ details }: { details: Document }) => {
+import Like from "@/components/Like";
+const PublicationDetails = ({ details, isLiked }: { details: Document; isLiked: boolean }) => {
   const [downloadCount, setDownloadCount] = useState(details.downloads);
   return (
     <div className="bg-white border lg:px-4 lg:pb-8.75 pt-6.25 border-[#D9D9D9] rounded-[15px] p-3">
@@ -89,18 +90,7 @@ const PublicationDetails = ({ details }: { details: Document }) => {
         </Button>
       </div>
 
-      <div className="flex items-end gap-1">
-        <Image
-          alt="like count"
-          src={"/assets/images/user/like.svg"}
-          width={20}
-          height={18}
-        />
-
-        <p className="text-sm! text-regular  leading-4.5">
-          {details.likes} Likes
-        </p>
-      </div>
+      <Like documentId={details.id} initialLiked={isLiked} initialCount={details.likes} />
     </div>
   );
 };
