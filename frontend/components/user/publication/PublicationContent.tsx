@@ -49,7 +49,7 @@ const PublicationContent = async ({
   ]);
 
   return (
-    <section className="flex relative flex-col md:flex-row gap-2">
+    <section className="grid grid-cols-1 md:grid-cols-[2fr_1fr] relative gap-2 ">
       <MainDetails>
         <PublicationDetails details={document} isLiked={!!existingLike} />
         <CommentOrReview
