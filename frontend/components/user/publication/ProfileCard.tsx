@@ -8,7 +8,7 @@ import Reviews from "./Reviews";
 
 const ProfileCard = ({ profile }: { profile: Profile }) => {
   return (
-    <aside className="hidden pb-6 md:block border  md:top-8 md:w-1/3 bg-[#FAFAFA] self-start sticky top-24 text-center  rounded-[12px] pt-7 px-4.5">
+    <aside className="hidden pb-6 md:block border  md:top-8 bg-[#FAFAFA] self-start sticky top-24 text-center  rounded-[12px] pt-7 px-4.5">
       <div className="">
         <h2 className="text-base lg:text-xl leading-6 font-medium mb-3">
           About Author

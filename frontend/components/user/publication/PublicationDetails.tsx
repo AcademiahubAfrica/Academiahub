@@ -74,16 +74,16 @@ const PublicationDetails = ({ details, isLiked }: { details: Document; isLiked: 
           <p className="">{downloadCount}</p>
         </span>
       </div>
-      <div className="flex items-center  gap-2 md:gap-5 mb-3 lg:mb-5 justify-between">
+      <div className="flex items-center  gap-2 md:gap-5 mb-3 lg:mb-5 justify-between p">
         <DownloadButton
           documentId={details.id}
           fileUrl={details.fileUrl}
           fileName={details.fileName}
-          className="basis-[48%] text-xs md:text-base"
+          className="basis-[48%] w-[47%] text-xs md:text-base h-7.5 md:h-11"
           onDownload={() => setDownloadCount((prev) => prev + 1)}
         />
         <Button
-          className="basis-[48%] border-primary hover:bg-primary/85 hover:text-white text-xs md:text-base"
+          className="basis-[48%] w-[47%] border-primary h-7.5 md:h-11 hover:bg-primary/85 hover:text-white text-xs md:text-base"
           variant={"outline"}
         >
           Save for later

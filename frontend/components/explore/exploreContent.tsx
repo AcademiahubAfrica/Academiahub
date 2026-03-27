@@ -55,6 +55,15 @@ export default function ExploreContent() {
     fetchDocuments("", 1);
   }, [fetchDocuments]);
 
+  useEffect(() => {
+  const timeout = setTimeout(() => {
+    setPage(1);
+    fetchDocuments(searchQuery, 1);
+  }, 400);
+
+  return () => clearTimeout(timeout); 
+}, [searchQuery, fetchDocuments]);
+
   const handleSearch = () => {
     setPage(1);
     fetchDocuments(searchQuery, 1);
@@ -102,7 +111,7 @@ export default function ExploreContent() {
                 type="search"
                 placeholder="Search for Projects, Schools...."
                 value={searchQuery}
-                onChange={(e) => {setSearchQuery(e.target.value); handleSearch()}}
+                onChange={(e) => {setSearchQuery(e.target.value)}}
                 onKeyPress={handleKeyPress}
                 className="w-full pl-12 pr-4 py-6 text-base rounded-full border-gray-300 focus:border-blue-500 focus:ring-2 bg-white"
               />
