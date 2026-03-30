@@ -1,3 +1,4 @@
+import { type ReactNode } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { CiBookmark, CiSettings } from "react-icons/ci";
 import { FiDownloadCloud } from "react-icons/fi";
@@ -7,7 +8,20 @@ import { RiBarChart2Line } from "react-icons/ri";
 import { GoSignOut } from "react-icons/go";
 import { BiSupport } from "react-icons/bi";
 import { IoMdNotificationsOutline } from "react-icons/io";
-export const sideLinks = [
+
+interface SideLink {
+  icon: ReactNode;
+  label: string;
+  link: string;
+}
+
+interface AccountLink {
+  icon: ReactNode;
+  label: string;
+  link?: string;
+}
+
+export const sideLinks: SideLink[] = [
   {
     icon: <MdOutlineExplore />,
     label: "Explore",
@@ -35,12 +49,12 @@ export const sideLinks = [
   },
   {
     icon: <AiOutlineCloudUpload />,
-    label: "uploads",
+    label: "upload",
     link: "/uploads",
   },
 ];
 
-export const accountLinks = [
+export const accountLinks: AccountLink[] = [
   {
     icon: <MdOutlinePersonOutline />,
     label: "Profile",
@@ -68,7 +82,10 @@ export const accountLinks = [
 ];
 
 // central metadata for (user) folder
-export const userPagesMetadata = {
+export const userPagesMetadata: Record<
+  string,
+  { title: string; description: string }
+> = {
   dashboard: {
     title: "Dashboard – User",
     description: "Overview of your activity.",
