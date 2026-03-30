@@ -32,8 +32,9 @@ interface FilterDocumentsProp {
      updatedAt: Date;
 })[];
   likedDocumentIds: Set<string>;
+  savedDocumentIds: Set<string>;
 }
-const FilterDocuments = ({documents, likedDocumentIds}: FilterDocumentsProp) => {
+const FilterDocuments = ({documents, likedDocumentIds, savedDocumentIds}: FilterDocumentsProp) => {
    const searchParams = useSearchParams()
 
    const filterDocuments = () => {
@@ -59,7 +60,7 @@ const FilterDocuments = ({documents, likedDocumentIds}: FilterDocumentsProp) => 
   return (
     <section className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
           {filteredDocuments.map((data) => (
-            <ResearchCard key={data.id} data={data} isLiked={likedDocumentIds.has(data.id)} />
+            <ResearchCard key={data.id} data={data} isLiked={likedDocumentIds.has(data.id)} isSaved={savedDocumentIds.has(data.id)} />
           ))}
         </section>
   )

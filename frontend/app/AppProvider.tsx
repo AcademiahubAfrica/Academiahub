@@ -1,7 +1,6 @@
 "use client";
 // this component is ment to be house all contexts and provided to root layout once
 
-import SavedProvider from "./_contexts/SavedContext";
 import QueryProvider from "./_contexts/QueryProvider";
 import { SocketProvider } from "./_contexts/SocketContext";
 import { PresenceProvider } from "./_contexts/PresenceContext";
@@ -14,7 +13,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
         <QueryProvider>
           <SocketProvider>
             <PresenceProvider>
-              <SavedProvider>{children}</SavedProvider>
+              {children}
             </PresenceProvider>
           </SocketProvider>
         </QueryProvider>

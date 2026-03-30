@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { FaRegBookmark, FaRegComment } from "react-icons/fa";
+import { FaRegComment } from "react-icons/fa";
 import { MdOutlineFileDownload } from "react-icons/md";
 import Like from "@/components/Like";
 import { ResearchCardType } from "@/app/_types/documents";
+import SaveButton from "@/components/SaveButton";
 import { getCategoryImage } from "@/lib/categoryImage";
 import { getInitials } from "@/lib/messaging/utils";
 import Link from "next/link";
@@ -11,9 +12,11 @@ import Link from "next/link";
 type ResearchCardProps = {
   data: ResearchCardType;
   isLiked: boolean;
+  isSaved: boolean;
+  onSaveToggle?: (isSaved: boolean) => void;
 };
 
-const ResearchCard = ({ data, isLiked }: ResearchCardProps) => {
+const ResearchCard = ({ data, isLiked, isSaved, onSaveToggle }: ResearchCardProps) => {
   return (
     <article
       className=" relative w-full bg-white px-1 py-1 lg:py-2.75 lg:px-3 border rounded-[15px] border-[#D9D9D9]   "
@@ -73,7 +76,7 @@ const ResearchCard = ({ data, isLiked }: ResearchCardProps) => {
               </small>
             </div>
           </div>
-          <FaRegBookmark className=" cursor-pointer md:w-3.5! md:h-4.5! w-1.75! h-2.25!   text-primary" />
+          <SaveButton documentId={data.id as string} initialSaved={isSaved} onToggle={onSaveToggle} />
         </div>
       </div>
       <Button
