@@ -52,7 +52,10 @@ const DownloadButton = ({
     <Button
       variant="default"
       size="lg"
-      className={className ?? "basisw-full rounded h-7.5 md:h-11 flex items-center justify-center text-[7.77px] font-medium md:text-[16px] leading-[130%]"}
+      className={
+        className ??
+        "basis-full rounded h-7.5 md:h-11 flex items-center justify-center text-[7.77px] font-medium md:text-[16px] leading-[130%]"
+      }
       onClick={handleDownload}
       disabled={loading}
     >

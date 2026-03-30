@@ -28,10 +28,9 @@ interface DocumentData {
   fileName: string;
   fileSize: number;
   createdAt: Date | string;
-  author: { id: string; name: string | null; image: string | null };
 }
 
-const PublicationCard = ({
+const OwnPublicationCard = ({
   documents = [],
 }: {
   documents?: DocumentData[];
@@ -64,22 +63,7 @@ const PublicationCard = ({
             <h3 className="font-medium text-[8px] capitalize md:text-lg leading-[130%]">
               {data.title}
             </h3>
-            <div className="flex items-center md:gap-1.5 gap-0.5 mb-0.75 md:mb-2">
-              <Avatar className="w-5 h-5 md:w-10 md:h-10">
-                <AvatarImage src={data.author?.image || undefined} />
-                <AvatarFallback className="text-[6px] md:text-xs text-white">
-                  {getInitials(data.author?.name || "")}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="text-[8px] font-normal md:text-sm leading-[130%] mb-px md:mb-0.5">
-                  {data.author?.name}
-                </p>
-                <p className="text-grey text-[8px] md:text-sm leading-[130%]">
-                  {data.institution}
-                </p>
-              </div>
-            </div>
+
             {/* description  */}
             <div className="md:space-y-1 space-y-px font-normal">
               {data.department && (
@@ -110,7 +94,7 @@ const PublicationCard = ({
               </span>
             </div>
           </div>
-          <div className="my-2">
+          <div className="my-2 w-full">
             <DownloadButton
               documentId={data.id}
               fileUrl={data.fileUrl}
@@ -123,4 +107,4 @@ const PublicationCard = ({
   );
 };
 
-export default PublicationCard;
+export default OwnPublicationCard;
