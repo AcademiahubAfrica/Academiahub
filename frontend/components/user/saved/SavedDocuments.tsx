@@ -1,7 +1,8 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
-import SavedContent from "./SavedContent";
+import SavedHeader from "./SavedHeader";
+import SavedList from "./SavedList";
 
 const SavedDocuments = async () => {
   const session = await getServerSession(authOptions);
@@ -25,10 +26,13 @@ const SavedDocuments = async () => {
   }
 
   return (
-    <SavedContent
-      initialDocuments={savedDocuments}
-      likedDocumentIds={likedDocumentIds}
-    />
+    <>
+      <SavedHeader count={savedDocuments.length} />
+      <SavedList
+        initialDocuments={savedDocuments}
+        likedDocumentIds={likedDocumentIds}
+      />
+    </>
   );
 };
 
