@@ -282,6 +282,7 @@ const Signup = () => {
                 <span className="text-foreground text-sm">Remember me</span>
               </label>
               <button
+                type="button"
                 onClick={() => router.push("/reset-password")}
                 className="text-foreground text-sm hover:underline"
               >
