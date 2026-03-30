@@ -31,11 +31,11 @@ const ResearchCard = ({ data, isLiked, isSaved, onSaveToggle }: ResearchCardProp
         />
       </div>
       {/* content */}
-      <div className=" mt-4  w-full">
+      <div className=" mt-2  w-full">
         <h3 className="font-medium line-clamp-1 text-[8px]  md:text-lg leading-[130%]">
           {data.title}
         </h3>
-        <div className="flex items-center  mt-4.5  gap-1.5 mb-4 ">
+        <div className="flex items-center  mt-2  gap-1.5 mb-3 ">
           {data.author.image ? (
             <div className="w-5 h-5 md:w-10 md:h-10 relative">
               <Image
@@ -60,18 +60,18 @@ const ResearchCard = ({ data, isLiked, isSaved, onSaveToggle }: ResearchCardProp
           </div>
         </div>
         {/* stats section */}
-        <div className="flex items-center py-2 gap-2  mb-1.5 justify-between lg:justify-around lg:gap-12.5  pr-2">
-          <div className="flex items-center gap-2 sm:gap-6 md:gap-12.5">
+        <div className="flex items-center py-1 gap-9  mb-1.5 lg:justify-around lg:gap-12.5  pr-2">
+          <div className="flex items-center gap-8.5 sm:gap-6 md:gap-12.5">
             <Like documentId={data.id as string} initialLiked={isLiked} initialCount={data.likes} />
-            <div className="flex items-end gap-0.75">
-              <FaRegComment className="cursor-pointer text-black w-2.25 h-2.25 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
-              <small className="text-[6.74px] md:text-sm">
+            <div className="flex items-center gap-0.75">
+              <FaRegComment className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
+              <small className="text-[6.84px] md:text-sm">
                 {data._count.commentRecords}
               </small>
             </div>
-            <div className="flex items-end gap-0.75">
-              <MdOutlineFileDownload className="cursor-pointer text-black w-2.25 h-2.25 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
-              <small className="text-[6.74px] md:text-sm">
+            <div className="flex items-center gap-0.75">
+              <MdOutlineFileDownload className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
+              <small className="text-[6.84px] md:text-sm">
                 {data?.downloads}
               </small>
             </div>
@@ -83,7 +83,7 @@ const ResearchCard = ({ data, isLiked, isSaved, onSaveToggle }: ResearchCardProp
         asChild
         variant="default"
         size="lg"
-        className="w-full md:h-9 lg:h-11 h-5.25 text-[7.7px] mt-3 mb-1.5 flex items-center justify-center  font-medium md:text-[16px] leading-[130%]"
+        className="w-full md:h-9 lg:h-11 h-5.25 text-[7.7px] mt-0.75 mb-1.5 flex items-center justify-center  font-medium md:text-[16px] leading-[130%]"
       >
         <Link href={`/publication/${data.id}`}>View Details</Link>
       </Button>
