@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getCategoryImage } from "@/lib/categoryImage";
-import { getInitials } from "@/lib/messaging/utils";
 import DownloadButton from "../shared/DownloadButton";
+import { FaRegTrashAlt } from "react-icons/fa";
+import DeletePublication from "../shared/DeletePublication";
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -60,7 +60,7 @@ const OwnPublicationCard = ({
           </div>
           {/* content */}
           <div className="flex flex-col gap-0.75 md:gap-2.5 w-full">
-            <h3 className="font-medium text-[8px] capitalize md:text-lg leading-[130%]">
+            <h3 className="font-medium text-[8px] line-clamp-1 capitalize md:text-lg leading-[130%]">
               {data.title}
             </h3>
 
@@ -94,12 +94,19 @@ const OwnPublicationCard = ({
               </span>
             </div>
           </div>
-          <div className="my-2 w-full">
+          <div className="my-2 flex items-center justify-between">
             <DownloadButton
               documentId={data.id}
               fileUrl={data.fileUrl}
               fileName={data.fileName}
+              className="basis-2/3"
             />
+            <DeletePublication message="This action cannot be undone. This will permanently delete your Publication from our servers. Note that users who had downloaded copies prior, will still have access to their copies">
+              <FaRegTrashAlt
+                size={25}
+                className="text-destructive cursor-pointer"
+              />
+            </DeletePublication>
           </div>
         </article>
       ))}
