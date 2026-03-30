@@ -35,7 +35,7 @@ export default function SearchBar() {
   }, [value])
 
   return (
-    <div className="w-2/3 flex items-center gap-5 max-md:w-full max-md:justify-between ">
+    <div className=" flex items-center gap-5 w-full max-md:justify-between ">
       
       <div className="sm:w-4/5 max-sm:w-full border h-10 max-sm:h-7 flex items-center p-3 focus-within:border-2 focus-within:border-gray-600 rounded-lg max-sm:rounded-sm">
         <FaSearch className="text-gray-400" />
