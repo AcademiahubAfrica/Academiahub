@@ -1,6 +1,5 @@
 import ResearchFilters from "@/components/ResearchFilters";
 import prisma from "@/prisma/connection";
-import ResearchCard from "./ResearchCard";
 import FilterDocuments from "./FilterDocuments";
 import SearchBar from "../SearchBar";
 import { getServerSession } from "next-auth";
@@ -11,6 +10,7 @@ const MainContent = async () => {
 
   let documents: Awaited<ReturnType<typeof fetchDocuments>> = [];
   let likedDocumentIds: Set<string> = new Set();
+  let savedDocumentIds: Set<string> = new Set();
 
   try {
     const [docs, session] = await Promise.all([
@@ -20,14 +20,25 @@ const MainContent = async () => {
     documents = docs;
 
     if (session?.user?.id) {
-      const likes = await prisma.like.findMany({
-        where: {
-          userId: session.user.id,
-          documentId: { in: documents.map((d) => d.id) },
-        },
-        select: { documentId: true },
-      });
+      const documentIds = documents.map((d) => d.id);
+      const [likes, saves] = await Promise.all([
+        prisma.like.findMany({
+          where: {
+            userId: session.user.id,
+            documentId: { in: documentIds },
+          },
+          select: { documentId: true },
+        }),
+        prisma.save.findMany({
+          where: {
+            userId: session.user.id,
+            documentId: { in: documentIds },
+          },
+          select: { documentId: true },
+        }),
+      ]);
       likedDocumentIds = new Set(likes.map((l) => l.documentId));
+      savedDocumentIds = new Set(saves.map((s) => s.documentId));
     }
   } catch (error) {
     console.error("Failed to fetch documents:", error);
@@ -46,7 +57,7 @@ const MainContent = async () => {
         <h4 className="text-lg mb-3 lg:mb-5.5 p-2.5  w-fit bg-white rounded-2xl font-medium leading-[130%]"  >
           Research of the week
         </h4>
-        <FilterDocuments documents={documents} likedDocumentIds={likedDocumentIds} />
+        <FilterDocuments documents={documents} likedDocumentIds={likedDocumentIds} savedDocumentIds={savedDocumentIds} />
       </div>
     </>
   );
