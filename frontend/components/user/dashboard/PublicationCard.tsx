@@ -61,7 +61,7 @@ const PublicationCard = ({
           </div>
           {/* content */}
           <div className="flex flex-col gap-0.75 md:gap-2.5 w-full">
-            <h3 className="font-medium text-[8px] capitalize md:text-lg leading-[130%]">
+            <h3 className="font-medium text-[8px] line-clamp-1 capitalize md:text-lg leading-[130%]">
               {data.title}
             </h3>
             <div className="flex items-center md:gap-1.5 gap-0.5 mb-0.75 md:mb-2">

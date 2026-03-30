@@ -1,6 +1,6 @@
 import { ResearchCardType } from "@/app/_types/documents";
 import ResearchCard from "@/components/user/dashboard/ResearchCard";
-import EmptySection from "@/components/user/notifications/EmptySection";
+import EmptySection from "@/components/user/shared/EmptySection";
 
 interface SavedListProps {
   documents: ResearchCardType[];

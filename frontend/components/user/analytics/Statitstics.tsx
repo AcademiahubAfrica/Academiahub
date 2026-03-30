@@ -1,7 +1,8 @@
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { CiBookmark } from "react-icons/ci";
 import { FiDownloadCloud } from "react-icons/fi";
-import { IoBookOutline, IoTrendingDown, IoTrendingUp } from "react-icons/io5";
+import { IoTrendingDown, IoTrendingUp } from "react-icons/io5";
+import { MdPersonOutline } from "react-icons/md";
 
 const stats = [
   {
@@ -23,10 +24,10 @@ const stats = [
     icon: <CiBookmark />,
   },
   {
-    label: "Citations",
+    label: "Profile Visits",
     percentage: 50,
     value: 6,
-    icon: <IoBookOutline />,
+    icon: <MdPersonOutline size={24} />,
   },
 ];
 const Statitstics = () => {

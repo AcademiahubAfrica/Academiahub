@@ -40,7 +40,7 @@ const DownloadCard = ({
       className="relative bg-white px-1 py-1 lg:py-3 lg:px-2 border rounded-[15px] border-[#D9D9D9] flex flex-col gap-0.5 md:gap-4.5"
       key={data.id}
     >
-<div className="relative aspect-343/240 w-full">
+      <div className="relative aspect-343/240 w-full">
         <Image
           className="rounded-t-[15px] object-cover"
           fill
@@ -76,9 +76,7 @@ const DownloadCard = ({
               <small className="text-grey md:text-sm leading-[130%]">
                 Department:
               </small>
-              <small className="text-[8px] md:text-sm">
-                {data.department}
-              </small>
+              <small className="text-[8px] md:text-sm">{data.department}</small>
             </span>
           )}
           <span className="flex items-center text-[8px] md:text-sm! gap-2">
@@ -90,9 +88,7 @@ const DownloadCard = ({
             </small>
           </span>
           <span className="flex items-center text-[8px] md:text-sm gap-2">
-            <small className="text-grey md:text-sm leading-[130%]">
-              Size:
-            </small>
+            <small className="text-grey md:text-sm leading-[130%]">Size:</small>
             <small className="text-[8px] md:text-sm">
               {formatFileSize(data.fileSize)}
             </small>
