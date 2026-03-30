@@ -7,7 +7,7 @@ import {
   AiOutlineUser,
 } from "react-icons/ai";
 import Image from "next/image";
-import EmptySection from "@/components/user/notifications/EmptySection";
+import EmptySection from "@/components/user/shared/EmptySection";
 
 function DisplayNotificationIcon(typeOfNotification: string) {
   switch (typeOfNotification) {
