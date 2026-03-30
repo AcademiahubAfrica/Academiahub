@@ -2,7 +2,6 @@
 import Logo from "./Logo";
 import { sideLinks } from "@/app/data/Exports";
 import SideLink from "./SideLink";
-import { Button } from "@/components/ui/button";
 import CollaspeSide from "./CollaspeSide";
 import { useSidebar } from "./SidebarContext";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
@@ -44,11 +43,6 @@ const Sidebar = () => {
           className={`flex flex-col mt-4 gap-2 pb-4  ${isExpanded ? "md:flex" : "md:hidden lg:flex"}
 `}
         >
-          <h4 className="font-bold">Upgrade to Pro</h4>
-          <small>Unlock unlimited upload and download</small>
-          <Button className="bg-black hover:bg-black text-white hover:text-white">
-            Upgrade Now
-          </Button>
         </div>
       </div>
     </aside>
