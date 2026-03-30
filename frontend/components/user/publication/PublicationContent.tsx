@@ -38,10 +38,16 @@ const PublicationContent = async ({
     throw new Error("Document not found");
   }
 
-  const [profile, existingLike] = await Promise.all([
+  const [profile, existingLike, existingSave] = await Promise.all([
     fetchProfile(document.author.id),
     session?.user?.id
       ? prisma.like.findUnique({
+          where: { userId_documentId: { userId: session.user.id, documentId: id } },
+          select: { id: true },
+        })
+      : null,
+    session?.user?.id
+      ? prisma.save.findUnique({
           where: { userId_documentId: { userId: session.user.id, documentId: id } },
           select: { id: true },
         })
@@ -51,7 +57,7 @@ const PublicationContent = async ({
   return (
     <section className="grid grid-cols-1 md:grid-cols-[2fr_1fr] relative gap-2 ">
       <MainDetails>
-        <PublicationDetails details={document} isLiked={!!existingLike} />
+        <PublicationDetails details={document} isLiked={!!existingLike} isSaved={!!existingSave} />
         <CommentOrReview
           comments={comments}
           id={id}

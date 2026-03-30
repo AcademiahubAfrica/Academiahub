@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Document } from "@/app/_types/documents";
@@ -12,7 +11,8 @@ import { getCategoryImage } from "@/lib/categoryImage";
 import MessageAuthorButton from "./MessageAuthorButton";
 import DownloadButton from "../shared/DownloadButton";
 import Like from "@/components/Like";
-const PublicationDetails = ({ details, isLiked }: { details: Document; isLiked: boolean }) => {
+import SaveButton from "@/components/SaveButton";
+const PublicationDetails = ({ details, isLiked, isSaved }: { details: Document; isLiked: boolean; isSaved: boolean }) => {
   const [downloadCount, setDownloadCount] = useState(details.downloads);
   return (
     <div className="bg-white border lg:px-4 lg:pb-8.75 pt-6.25 border-[#D9D9D9] rounded-[15px] p-3">
@@ -82,12 +82,7 @@ const PublicationDetails = ({ details, isLiked }: { details: Document; isLiked: 
           className="basis-[48%] w-[47%] text-xs md:text-base h-7.5 md:h-11"
           onDownload={() => setDownloadCount((prev) => prev + 1)}
         />
-        <Button
-          className="basis-[48%] w-[47%] border-primary h-7.5 md:h-11 hover:bg-primary/85 hover:text-white text-xs md:text-base"
-          variant={"outline"}
-        >
-          Save for later
-        </Button>
+        <SaveButton documentId={details.id} initialSaved={isSaved} variant="button" />
       </div>
 
       <Like documentId={details.id} initialLiked={isLiked} initialCount={details.likes} />

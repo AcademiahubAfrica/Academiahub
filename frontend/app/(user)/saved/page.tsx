@@ -1,18 +1,16 @@
 import { userPagesMetadata } from "@/app/data/Exports";
 import Search from "@/components/user/shared/Search";
-import SavedList from "@/components/user/saved/SavedList";
-import SavedHeader from "@/components/user/saved/SavedHeader";
+import SavedDocuments from "@/components/user/saved/SavedDocuments";
 
 export const metadata = userPagesMetadata.saved;
-const Page = () => {
+
+const SavedPage = () => {
   return (
     <main>
       <Search />
-
-      <SavedHeader />
-      <SavedList />
+      <SavedDocuments />
     </main>
   );
 };
 
-export default Page;
+export default SavedPage;
