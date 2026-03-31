@@ -38,7 +38,7 @@ const UserHeader = () => {
 			/>
 			
 				{pathName === "/dashboard" && openSearchBar === true && (
-					<div className="lg:hidden w-full">
+					<div className="lg:hidden w-full max-md:hidden">
 					<SearchBar />
 						</div>
 				) }
