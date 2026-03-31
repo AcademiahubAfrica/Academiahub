@@ -4,9 +4,19 @@ import MyChart from "@/components/user/analytics/MyChart";
 import Statitstics from "@/components/user/analytics/Statitstics";
 import RecentActivities from "@/components/user/analytics/RecentActivities";
 import PageName from "@/components/user/shared/PageName";
+// import EmptySection from "@/components/user/shared/EmptySection";
 
 export const metadata = userPagesMetadata.analytics;
 const page = () => {
+  // component to return when no analytics data
+  // return (
+  //   <EmptySection
+  //     title={"No analytics yet"}
+  //     text={
+  //       "Upload your first material to start tracking engagement and anlaytics"
+  //     }
+  //   />
+  // );
   return (
     <main className="mt-2 lg:px-4">
       <Header />
