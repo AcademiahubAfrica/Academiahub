@@ -1,6 +1,6 @@
 import { ResearchCardType } from "@/app/_types/documents";
 import ResearchCard from "@/components/user/dashboard/ResearchCard";
-import EmptySection from "@/components/user/notifications/EmptySection";
+import EmptySection from "../shared/EmptySection";
 
 interface SavedListProps {
   documents: ResearchCardType[];
@@ -30,7 +30,6 @@ const SavedList = ({
       ) : (
         <EmptySection
           title="No saved publications yet"
-          text="Materials you save will appear here for easy access"
           text="Materials you save will appear here for easy access"
         />
       )}
