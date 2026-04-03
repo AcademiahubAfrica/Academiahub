@@ -5,18 +5,17 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 const StarRatings = () => {
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [rating, setRating] = useState(0);
+  const [tempRating, setTempRating] = useState(0);
 
   function onClickRating(rating: number): void {
-    setIsDisabled(false);
-    setSelectedIndex(rating);
+    setRating(rating);
   }
 
   function onSubmit() {
     try {
-      if (selectedIndex !== null) {
-        toast.success(`Review sent: ${selectedIndex} stars`);
+      if (rating) {
+        toast.success(`Review sent: ${rating} stars`);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -25,8 +24,7 @@ const StarRatings = () => {
         toast.error("Something went wrong");
       }
     } finally {
-      setIsDisabled(true);
-      setSelectedIndex(null);
+      setRating(0);
     }
   }
 
@@ -35,28 +33,29 @@ const StarRatings = () => {
       <div className="flex items-center gap-1 justify-center">
         {[...Array(5)].map((_, index) => {
           const ratingValue = index + 1;
-          const isActive =
-            selectedIndex !== null && selectedIndex >= ratingValue;
-
+          const full = tempRating
+            ? tempRating >= ratingValue
+            : rating >= ratingValue;
           return (
-            <Image
+            <div
+              className="relative w-8.75 h-8.75 lg:w-11.25 lg:h-11.25"
               key={index}
-              onClick={() => onClickRating(ratingValue)}
-              alt={`star ${ratingValue}`}
-              src={`/assets/images/ratings/star${ratingValue}.svg`}
-              height={44}
-              width={44}
-              className={`hover:cursor-pointer transition-all ${
-                isActive
-                  ? "border border-accent scale-110"
-                  : "border-0 scale-100"
-              } rounded-md`}
-            />
+            >
+              <Image
+                onMouseEnter={() => setTempRating(ratingValue)}
+                onMouseLeave={() => setTempRating(0)}
+                onClick={() => onClickRating(ratingValue)}
+                alt={`star ${ratingValue}`}
+                src={`/assets/images/ratings/star${full ? "Full" : ""}${ratingValue}.svg`}
+                fill
+                className={`hover:cursor-pointer absoulte`}
+              />
+            </div>
           );
         })}
       </div>
 
-      <Button disabled={isDisabled} onClick={onSubmit} className="w-full">
+      <Button disabled={!Boolean(rating)} onClick={onSubmit} className="w-full">
         Submit Rating
       </Button>
     </div>
