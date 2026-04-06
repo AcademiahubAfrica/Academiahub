@@ -60,8 +60,8 @@ const ResearchCard = ({ data, isLiked, isSaved, onSaveToggle }: ResearchCardProp
           </div>
         </div>
         {/* stats section */}
-        <div className="flex items-center py-1 gap-9  mb-1.5 lg:justify-around lg:gap-12.5  pr-2">
-          <div className="flex items-center gap-8.5 sm:gap-6 md:gap-12.5">
+        <div className="flex items-center py-1 justify-between  mb-1.5 lg:justify-around lg:gap-12.5  pr-2">
+          <div className="flex items-center gap-6 sm:gap-8 md:gap-12.5">
             <Like documentId={data.id as string} initialLiked={isLiked} initialCount={data.likes} />
             <div className="flex items-center gap-0.75">
               <FaRegComment className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
