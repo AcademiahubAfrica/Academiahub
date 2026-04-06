@@ -33,14 +33,14 @@ interface CommentsProps {
   initialComments: Comment[];
   documentId: string;
   totalComments: number;
-  onChangeView: () => void;
+  setShowView: (params: string) => void;
 }
 
 const Comments = ({
   initialComments,
   documentId,
   totalComments,
-  onChangeView,
+  setShowView,
 }: CommentsProps) => {
   const { data: session } = useSession();
   const [comments, setComments] = useState<Comment[]>(initialComments);
@@ -152,17 +152,17 @@ const Comments = ({
 
   return (
     <div className="bg-white border border-[#D9D9D9] rounded-[15px] py-3.5 px-2.75 md:px-4.5">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between  mb-2.5">
         <Button
           variant={"ghost2"}
-          onClick={() => onChangeView()}
-          className="mb-2.5 text-sm lg:base lg:hover:bg-transparent lg:hover:text-foreground font-medium lg:leading-5 leading-[130%]"
+          onClick={() => setShowView("comments")}
+          className=" text-sm lg:base lg:hover:bg-transparent lg:hover:text-foreground font-medium lg:leading-5 leading-[130%]"
         >
           Comments ({commentCount})
         </Button>
         <Button
           className="lg:hidden"
-          onClick={() => onChangeView()}
+          onClick={() => setShowView("reviews")}
           variant={"ghost2"}
         >
           Reviews

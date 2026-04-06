@@ -26,23 +26,16 @@ interface Props {
 }
 
 const CommentOrReview = ({ comments, id, totalcomments }: Props) => {
-  const [show, setShow] = useState("comments");
+  const [showView, setShowView] = useState("comments");
 
-  const handleView = () => {
-    setShow("reviews");
-    if (show === "reviews") {
-      setShow("comments");
-    }
-  };
   return (
     <>
-      {show === "reviews" && (
-        <Button onClick={() => handleView()} variant={"ghost2"}>
-          {" "}
-          Comments{" "}
+      {showView === "reviews" && (
+        <Button onClick={() => setShowView("comments")} variant={"ghost2"}>
+          Comments
         </Button>
       )}
-      {show === "comments" ? (
+      {showView === "comments" ? (
         <Comments
           initialComments={comments.map((c) => ({
             id: c.id,
@@ -54,7 +47,7 @@ const CommentOrReview = ({ comments, id, totalcomments }: Props) => {
           }))}
           documentId={id}
           totalComments={totalcomments}
-          onChangeView={handleView}
+          setShowView={setShowView}
         />
       ) : (
         <Reviews />
