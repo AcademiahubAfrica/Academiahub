@@ -10,7 +10,10 @@ const Reviews = () => {
         <div className="flex items-center justify-center  gap-4">
           <div className="">
             <div className="flex items-center gap-px">
-              <h2 className="font-extrabold tracking-normal text-[54px]">
+              <h2
+                className="font-extrabold tracking-normal text-transparent  bg-clip-text bg-[linear-gradient(110deg,var(--color-primary)_0%_30%,#8B7C45_40%,var(--color-primary)_100%)]
+ text-[54px]"
+              >
                 4.5
               </h2>
               <Image
