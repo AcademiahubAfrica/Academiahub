@@ -14,7 +14,7 @@ const HeroButtons = () => {
             size="lg"
             className="w-full h-11 bg-linear-to-r from-primary"
           >
-            Join for Free
+            Join Now
           </Button>
         </Link>
 
@@ -31,23 +31,23 @@ const HeroButtons = () => {
 
       {/* Desktop Buttons */}
       <div className="hidden md:flex w-full lg:w-105 max-lg:gap-3">
-        <Link href="/explore" className="w-full">
+        <Link href="/signup" className="w-full">
           <Button
             variant="default"
             size="lg"
             className="w-full h-11 lg:w-50 bg-linear-to-r from-primary"
           >
-            Start Exploring
+            Join Now
           </Button>
         </Link>
 
-        <Link href="/dashboard" className="w-full">
+        <Link href="/explore" className="w-full">
           <Button
             variant="secondary"
             size="lg"
             className="w-full lg:w-50 h-11 border border-primary shadow-[0_5px_4px] shadow-[#E9EBF3]"
           >
-            Share Publication
+            Start Exploring
           </Button>
         </Link>
       </div>
