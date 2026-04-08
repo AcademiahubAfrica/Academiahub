@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const ChangePasswordForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,17 +26,37 @@ const ChangePasswordForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm({
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<PasswordSchemaType>({
     resolver: zodResolver(passwordSchema),
   });
 
-  const onSubmit = (data: PasswordSchemaType) => {
-    console.log(data);
+  const onSubmit = async (data: PasswordSchemaType) => {
+    try {
+      const res = await fetch("/api/user/change-password", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        toast.error(result.error ?? "Failed to update password");
+        return;
+      }
+
+      toast.success("Password updated successfully");
+      reset();
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    }
   };
+
   return (
     <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
-      <fieldset>
+      <fieldset disabled={isSubmitting}>
         <FieldLegend className="md:text-xl font-medium leading-4.5 tracking-normal mb-8">
           Change Password
         </FieldLegend>
@@ -125,7 +146,9 @@ const ChangePasswordForm = () => {
           </Field>
 
           <div>
-            <Button className="md:w-78.25"> Update Password</Button>
+            <Button className="md:w-78.25" disabled={isSubmitting}>
+              {isSubmitting ? "Updating..." : "Update Password"}
+            </Button>
           </div>
         </FieldGroup>
       </fieldset>
