@@ -51,6 +51,8 @@ model User {
   comments          Comment[]
   saves             Save[]
   downloadRecords   DownloadRecord[]
+  allowMessages     Boolean          @default(true)
+  showInSearch      Boolean          @default(true)
 }
 
 model Profile {

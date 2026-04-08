@@ -1,59 +1,73 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Switch } from "@/components/ui/switch";
+import toast from "react-hot-toast";
 
 const privacyTypes = [
   {
-    id: "messages",
+    field: "allowMessages" as const,
     label: "Allow messages from anyone",
     description: "Let anyone send you direct messages",
   },
   {
-    id: "comments",
-    label: "Allow comments on materials",
-    description: "Let others comment on your uploaded materials",
-  },
-  {
-    id: "profile",
+    field: "showInSearch" as const,
     label: "Show profile in search",
     description: "Make your profile discoverable in search results",
   },
 ];
 
+type PrivacyFields = {
+  allowMessages: boolean;
+  showInSearch: boolean;
+};
+
 const PrivacySettings = () => {
-  const [settings, setSettings] = useState<Record<string, boolean>>({
-    comments: false,
-    likes: false,
-    messages: false,
-    follows: false,
+  const [settings, setSettings] = useState<PrivacyFields>({
+    allowMessages: true,
+    showInSearch: true,
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSettings = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setSettings({
-        messages: false,
-        comments: true,
-        profile: true,
-      });
+      try {
+        const res = await fetch("/api/user/privacy");
+        if (!res.ok) throw new Error();
+        const data: PrivacyFields = await res.json();
+        setSettings(data);
+      } catch {
+        toast.error("Failed to load privacy settings");
+      } finally {
+        setLoading(false);
+      }
     };
     fetchSettings();
   }, []);
 
-  const handleToggle = async (id: string, checked: boolean) => {
-    setSettings((prev) => ({ ...prev, [id]: checked }));
+  const handleToggle = useCallback(
+    async (field: keyof PrivacyFields, checked: boolean) => {
+      const previous = settings[field];
+      setSettings((prev) => ({ ...prev, [field]: checked }));
 
-    try {
-      console.log(`Updating ${id} to:`, checked);
-      // call api
-      //   add debounce logic
-      // add toast notification
-    } catch (error) {
-      setSettings((prev) => ({ ...prev, [id]: !checked }));
-      console.error("Failed to update settings", error);
-    }
-  };
+      try {
+        const res = await fetch("/api/user/privacy", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ field, value: checked }),
+        });
+
+        if (!res.ok) {
+          const { error } = await res.json();
+          throw new Error(error);
+        }
+      } catch {
+        setSettings((prev) => ({ ...prev, [field]: previous }));
+        toast.error("Failed to update setting");
+      }
+    },
+    [settings]
+  );
 
   return (
     <div className="space-y-3 h-full max-sm:min-h-[60vh]">
@@ -63,7 +77,7 @@ const PrivacySettings = () => {
 
       <div className="space-y-7">
         {privacyTypes.map((type) => (
-          <div key={type.id} className="flex items-center justify-between">
+          <div key={type.field} className="flex items-center justify-between">
             <div className="space-y-1">
               <h4 className="md:text-base text-sm font-medium">{type.label}</h4>
               <p className="text-xs text-grey md:text-sm font-normal">
@@ -72,8 +86,9 @@ const PrivacySettings = () => {
             </div>
 
             <Switch
-              checked={settings[type.id] || false}
-              onCheckedChange={(checked) => handleToggle(type.id, checked)}
+              checked={settings[type.field]}
+              onCheckedChange={(checked) => handleToggle(type.field, checked)}
+              disabled={loading}
               className="cursor-pointer"
             />
           </div>
