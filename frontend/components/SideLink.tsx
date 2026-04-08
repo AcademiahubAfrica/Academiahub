@@ -13,7 +13,7 @@ interface SideLinkProps {
 }
 
 const SideLink = ({ icon, label, link }: SideLinkProps) => {
-  const { setOpenMobileSidebar } = useSidebar();
+  const { setOpenMobileSidebar, isExpanded } = useSidebar();
   const pathName = usePathname();
   return (
     <li
@@ -27,7 +27,12 @@ const SideLink = ({ icon, label, link }: SideLinkProps) => {
         } flex items-center hover:text-primary transition w-full h-full  duration-150 gap-2.5`}
       >
         {icon}
-        <p className="capitalize">{label}</p>
+        <p
+          className={`capitalize hidden md:block xl:hidden transition-all  duration-150 ${isExpanded ? "w-full opacity-100 translate-x-0" : " opacity-0 -translate-x-0.5"}`}
+        >
+          {label}
+        </p>
+        <p className={`capitalize md:hidden xl:block`}>{label}</p>
       </Link>
     </li>
   );
@@ -42,7 +47,7 @@ interface AccountLinksProps {
 }
 
 export function AccountLinks({ link, label, icon }: AccountLinksProps) {
-  const { setOpenMobileSidebar } = useSidebar();
+  const { setOpenMobileSidebar, isExpanded } = useSidebar();
   const pathName = usePathname();
 
   return (
@@ -56,7 +61,14 @@ export function AccountLinks({ link, label, icon }: AccountLinksProps) {
           } flex items-center hover:text-primary w-full h-full transition duration-150 gap-2.5 overflow-hidden`}
         >
           {icon}
-          <p className="capitalize text-[16px] truncate">{label}</p>
+          <p
+            className={`capitalize truncate hidden md:block xl:hidden transition-all  duration-150 ${isExpanded ? " opacity-100 translate-x-0" : " opacity-0 -translate-x-0.5"}`}
+          >
+            {label}
+          </p>
+          <p className="capitalize md:hidden xl:block text-[16px] truncate">
+            {label}
+          </p>
         </Link>
       ) : (
         <Button
@@ -64,7 +76,14 @@ export function AccountLinks({ link, label, icon }: AccountLinksProps) {
           className=" flex items-center hover:text-primary pl-0!    bg-transparent text-black hover:bg-transparent transition duration-150 gap-2.5 overflow-hidden"
         >
           {icon}
-          <p className="capitalize text-[16px] truncate">{label}</p>
+          <p className="capitalize md:hidden xl:block text-[16px] truncate">
+            {label}
+          </p>
+          <p
+            className={`capitalize truncate hidden md:block xl:hidden transition-all  duration-150 ${isExpanded ? " opacity-100 translate-x-0" : " opacity-0 -translate-x-0.5"}`}
+          >
+            {label}
+          </p>
         </Button>
       )}
     </li>
