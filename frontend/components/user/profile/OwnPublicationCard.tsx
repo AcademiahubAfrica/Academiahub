@@ -3,6 +3,9 @@ import { getCategoryImage } from "@/lib/categoryImage";
 import DownloadButton from "../shared/DownloadButton";
 import { FaRegTrashAlt } from "react-icons/fa";
 import DeletePublication from "../shared/DeletePublication";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import prisma from "@/prisma/connection";
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -18,23 +21,25 @@ function formatDate(date: Date | string): string {
   });
 }
 
-interface DocumentData {
-  id: string;
-  title: string;
-  category: string;
-  institution: string;
-  department?: string;
-  fileUrl: string;
-  fileName: string;
-  fileSize: number;
-  createdAt: Date | string;
-}
+const OwnPublicationCard = async () => {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
 
-const OwnPublicationCard = ({
-  documents = [],
-}: {
-  documents?: DocumentData[];
-}) => {
+  const documents = userId
+    ? await prisma.document.findMany({
+        where: { authorId: userId },
+        select: {
+          id: true,
+          title: true,
+          category: true,
+          institution: true,
+          fileUrl: true,
+          fileName: true,
+          fileSize: true,
+          createdAt: true,
+        },
+      })
+    : [];
   if (documents.length === 0) {
     return (
       <p className="text-center text-gray-500 py-8">
@@ -66,16 +71,6 @@ const OwnPublicationCard = ({
 
             {/* description  */}
             <div className="md:space-y-1 space-y-px font-normal">
-              {data.department && (
-                <span className="flex items-center text-[8px] md:text-sm md:gap-2 gap-0.5">
-                  <small className="text-grey md:text-sm leading-[130%]">
-                    Department:
-                  </small>
-                  <small className="text-[8px] md:text-sm">
-                    {data.department}
-                  </small>
-                </span>
-              )}
               <span className="flex items-center text-[8px] md:text-sm! gap-2">
                 <small className="text-grey md:text-sm leading-[130%]">
                   Uploaded:
