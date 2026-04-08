@@ -21,26 +21,15 @@ const ProfileSection = async () => {
   let stats = { uploads: 0, downloads: 0, likes: 0, saves: 0 };
 
   if (userId) {
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: {
-        name: true,
-        image: true,
-        Profile: {
-          take: 1,
-          select: { bio: true },
+    const [user, documents, savesReceived] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          name: true,
+          image: true,
+          Profile: { take: 1, select: { bio: true } },
         },
-      },
-    });
-
-    if (user) {
-      name = user.name || name;
-      image = user.image;
-      bio = (user.Profile[0]?.bio as Bio) ?? null;
-    }
-
-    const [uploadCount, documents, savesReceived] = await Promise.all([
-      prisma.document.count({ where: { authorId: userId } }),
+      }),
       prisma.document.findMany({
         where: { authorId: userId },
         select: { downloads: true, likes: true },
@@ -50,8 +39,14 @@ const ProfileSection = async () => {
       }),
     ]);
 
+    if (user) {
+      name = user.name || name;
+      image = user.image;
+      bio = (user.Profile[0]?.bio as Bio) ?? null;
+    }
+
     stats = {
-      uploads: uploadCount,
+      uploads: documents.length,
       downloads: documents.reduce((sum, doc) => sum + doc.downloads, 0),
       likes: documents.reduce((sum, doc) => sum + doc.likes, 0),
       saves: savesReceived,
