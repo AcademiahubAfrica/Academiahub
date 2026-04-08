@@ -283,7 +283,7 @@ const Signup = () => {
               </label>
               <button
                 type="button"
-                onClick={() => router.push("/reset-password")}
+                onClick={() => router.push("/reset-your-password")}
                 className="text-foreground text-sm hover:underline"
               >
                 Forgotten password?
