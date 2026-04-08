@@ -20,7 +20,9 @@ const Stats = ({ stats }: StatsProps) => {
       count: stats?.downloads ?? 0,
     },
     {
-      icon: <IoCloudUploadOutline className="text-primary text-sm md:text-xl" />,
+      icon: (
+        <IoCloudUploadOutline className="text-primary text-sm md:text-xl" />
+      ),
       label: "Uploads",
       count: stats?.uploads ?? 0,
     },
@@ -32,10 +34,10 @@ const Stats = ({ stats }: StatsProps) => {
   ];
 
   return (
-    <div className="grid grid-cols-3 gap-2 md:flex md:justify-between mt-10 w-full md:max-w-214.5">
+    <div className=" gap-2 lg:gap-45 flex justify-between mt-10 max:w-[95vw] md:max-w-214.5  ">
       {statsOptions.map(({ label, icon, count }) => (
         <div
-          className="flex flex-col items-center justify-center gap-3 bg-[#F5F5F5] h-20 md:w-41.5 md:h-24.5 rounded-[10px]"
+          className="flex flex-col items-center justify-center gap-3 sm:bg-[#F5F5F5] h-20  sm:w-34.75 sm:h-20.25   xl:w-41.5 xl:h-24.5 rounded-[10px]"
           key={label}
         >
           <div className="flex items-center gap-2">
