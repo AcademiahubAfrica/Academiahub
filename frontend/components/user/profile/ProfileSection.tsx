@@ -73,7 +73,7 @@ const ProfileSection = async () => {
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
 
-        <div className="flex-1 mt-2 lg:mt-6.5">
+        <div className="flex-1 mt-2 lg:mt-6.5  ">
           <div className="flex items-center mb-2 justify-between">
             <div className="flex items-center gap-2">
               <Avatar className="border-[3px] md:hidden border-white shadow-md h-10 w-10 ">
@@ -91,46 +91,38 @@ const ProfileSection = async () => {
             </Button>
           </div>
 
-          {/* info */}
-          <div className="flex md:items-center text-black flex-col md:flex-row  gap-4 lg:gap-8">
-            {bio?.institution && (
+          <div className="pl-2">
+            {/* info */}
+            <div className="flex md:items-center text-black flex-col md:flex-row  gap-4 lg:gap-8">
               <div className="flex items-center gap-1">
                 <LuSchool />
                 <h5 className="text-xs md:text-sm leading-3.5 md:leading-4.5">
-                  {bio.institution}
+                  {bio?.institution || "Institution not specified"}
                 </h5>
               </div>
-            )}
-            {bio?.department && (
+
               <div className="flex  items-center gap-1">
                 <RiGraduationCapLine />
                 <h5 className="text-xs md:text-sm leading-3.5 md:leading-4.5">
-                  {bio.department}
+                  {bio?.department || "Department not specified"}
                 </h5>
               </div>
-            )}
-          </div>
-          {location && (
+            </div>
+
             <div className="flex items-center text-black mt-4 mb-6.5 gap-1">
               <IoLocationOutline />
               <h5 className="text-xs md:text-sm leading-3.5 md:leading-4.5">
-                {location}
+                {location ? location : "Location not specified"}
               </h5>
             </div>
-          )}
 
-          {bio?.aboutMe && (
             <p className="text-xs md:text-sm leading-3.5 md:leading-4.5">
-              {bio.aboutMe}
+              {bio?.aboutMe || "No bio summary provided"}
             </p>
-          )}
-
+            {/* stats */}
+            <Stats stats={stats} />
+          </div>
         </div>
-      </div>
-
-      {/* stats */}
-      <div className="px-2 md:ml-36.25 md:mr-36 md:px-0">
-        <Stats stats={stats} />
       </div>
     </div>
   );
