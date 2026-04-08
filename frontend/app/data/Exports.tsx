@@ -23,32 +23,32 @@ interface AccountLink {
 
 export const sideLinks: SideLink[] = [
   {
-    icon: <MdOutlineExplore />,
+    icon: <MdOutlineExplore size={20} />,
     label: "Explore",
     link: "/dashboard",
   },
   {
-    icon: <FiDownloadCloud />,
+    icon: <FiDownloadCloud size={20} />,
     label: "Downloads",
     link: "/downloads",
   },
   {
-    icon: <CiBookmark />,
+    icon: <CiBookmark size={20} />,
     label: "Saved",
     link: "/saved",
   },
   {
-    icon: <RiBarChart2Line />,
+    icon: <RiBarChart2Line size={20} />,
     label: "Analytics",
     link: "/analytics",
   },
   {
-    icon: <HiOutlineEnvelope />,
+    icon: <HiOutlineEnvelope size={20} />,
     label: "inbox",
     link: "/inbox",
   },
   {
-    icon: <AiOutlineCloudUpload />,
+    icon: <AiOutlineCloudUpload size={20} />,
     label: "upload",
     link: "/uploads",
   },
@@ -56,27 +56,27 @@ export const sideLinks: SideLink[] = [
 
 export const accountLinks: AccountLink[] = [
   {
-    icon: <MdOutlinePersonOutline />,
+    icon: <MdOutlinePersonOutline size={20} />,
     label: "Profile",
     link: "/profile",
   },
   {
-    icon: <IoMdNotificationsOutline />,
+    icon: <IoMdNotificationsOutline size={20} />,
     label: "Notification",
     link: "/notifications",
   },
   {
-    icon: <CiSettings />,
+    icon: <CiSettings size={20} />,
     label: "Settings",
     link: "/settings",
   },
   {
-    icon: <BiSupport />,
+    icon: <BiSupport size={20} />,
     label: "Help & Support",
     link: "/support",
   },
   {
-    icon: <GoSignOut />,
+    icon: <GoSignOut size={20} />,
     label: "Sign Out",
   },
 ];

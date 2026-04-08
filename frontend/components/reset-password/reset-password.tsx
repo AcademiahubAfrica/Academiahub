@@ -104,16 +104,14 @@ const ResetPasswordContent = () => {
         <div className="w-full max-w-md">
           {/* Logo and Header */}
           <div className="text-center mb-8">
-            <div className="flex justify-center mb-6 cursor-pointer" onClick={() => router.push("/")}>
-              <div className="h-16 w-auto relative">
+            <div className="flex justify-center mb-3 cursor-pointer" onClick={() => router.push("/")}>
                 <Image 
                   src="/assets/images/academialogo.png" 
                   alt="AcademiaHub Logo"
-                  width={180}
-                  height={64}
+                  width={120}
+                  height={40}
                   className="object-contain"
                 />
-              </div>
             </div>
             <h1 className="heading-1 font-semibold text-foreground mb-2">
               Reset Password

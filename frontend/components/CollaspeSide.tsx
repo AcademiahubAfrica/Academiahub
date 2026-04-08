@@ -20,13 +20,13 @@ const CollaspeSide = () => {
       className=" min-w-4 "
     >
       <AccordionItem value="item-1">
-        <AccordionTrigger className="text-grey md:hidden lg:flex">
+        <AccordionTrigger className="text-grey md:hidden xl:flex">
           Account
         </AccordionTrigger>
 
         <AccordionTrigger
           onClick={toggleSidebar}
-          className={`hidden md:max-lg:flex ${isExpanded ? "text-grey" : "text-transparent"}`}
+          className={`hidden md:max-xl:flex  transition-all duration-150 text-grey ${isExpanded ? "opacity-100 ml-0 " : "opacity-80 -ml-4.5"}`}
         >
           Account
         </AccordionTrigger>

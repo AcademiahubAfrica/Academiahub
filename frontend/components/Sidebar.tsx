@@ -10,7 +10,7 @@ const Sidebar = () => {
   const { isExpanded, toggleSidebar } = useSidebar();
   return (
     <aside
-      className={`h-full transition-all duration-300 w-full md:w-12 xl:w-62.5 overflow-hidden lg:border-r bg-white shadow-lg p-5  ${isExpanded ? "md:w-62.5 z-60" : "md:w-12"}`}
+      className={`h-full transition-all relative duration-300 w-full md:w-14 xl:w-62.5 overflow-hidden lg:border-r bg-white shadow-lg p-5  ${isExpanded ? "md:w-62.5 z-60" : "md:w-14"}`}
     >
       <div
         className={`${!isExpanded ? "block md:hidden xl:block" : "md:block hidden"}`}
@@ -18,7 +18,7 @@ const Sidebar = () => {
         <Logo />
       </div>
       <MdOutlineKeyboardArrowRight
-        className="hidden text-3xl text-black md:block xl:hidden absolute top-6 right-0  cursor-pointer transition-transform duration-300"
+        className={`hidden text-3xl text-black md:block xl:hidden absolute top-6 ${isExpanded ? "right-0 " : " translate-x-1/2 right-1/2"} z-60  cursor-pointer transition-transform duration-300`}
         onClick={toggleSidebar}
         style={{
           transform: isExpanded ? " rotate(180deg)" : " rotate(0deg)",
@@ -28,7 +28,7 @@ const Sidebar = () => {
       <div className="flex flex-col justify-between h-full mt-3.75 lg:mt-8 xl:mt-3.75 pb-4">
         <div>
           <nav>
-            <ul className="w-52.5 mt-7.5 lg:mt-0  ">
+            <ul className="w-52.5  md:w-fit mt-7.5 lg:mt-0  ">
               {sideLinks.map(({ icon, label, link }) => {
                 return (
                   <SideLink icon={icon} label={label} link={link} key={link} />
@@ -42,8 +42,7 @@ const Sidebar = () => {
         <div
           className={`flex flex-col mt-4 gap-2 pb-4  ${isExpanded ? "md:flex" : "md:hidden lg:flex"}
 `}
-        >
-        </div>
+        ></div>
       </div>
     </aside>
   );
