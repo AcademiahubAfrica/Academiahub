@@ -187,7 +187,7 @@ export default function ExploreContent() {
 
                 {/* Publication Content */}
                 <div className="p-5">
-                  <h3 className="font-semibold text-lg text-gray-900 mb-4 line-clamp-2 min-h-14">
+                  <h3 className="font-semibold text-lg text-gray-900 mb-4.5 line-clamp-2 truncate ">
                     {doc.title}
                   </h3>
 
@@ -200,7 +200,7 @@ export default function ExploreContent() {
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm text-gray-900 truncate">
+                      <p className="font-medium text-sm text-gray-900 truncate mb-0.5">
                         {doc.author.name}
                       </p>
                       <p className="text-sm text-gray-500 truncate">
