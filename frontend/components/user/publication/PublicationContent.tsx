@@ -57,7 +57,7 @@ const PublicationContent = async ({
   return (
     <section className="grid grid-cols-1 md:grid-cols-[2fr_1fr] relative gap-2 ">
       <MainDetails>
-        <PublicationDetails details={document} isLiked={!!existingLike} isSaved={!!existingSave} />
+        <PublicationDetails id={id} details={document} isLiked={!!existingLike} isSaved={!!existingSave} />
         <CommentOrReview
           comments={comments}
           id={id}
