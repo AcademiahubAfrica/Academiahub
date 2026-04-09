@@ -1,11 +1,4 @@
 import { notifications } from "@/app/data/notificationMockData";
-import {
-  AiOutlineHeart,
-  AiOutlineMessage,
-  AiOutlineSetting,
-  AiOutlineUpload,
-  AiOutlineUser,
-} from "react-icons/ai";
 import Image from "next/image";
 import EmptySection from "@/components/user/shared/EmptySection";
 
