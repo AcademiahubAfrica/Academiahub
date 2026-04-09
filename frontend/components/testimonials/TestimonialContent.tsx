@@ -38,6 +38,7 @@ const Testimonials = () => {
                   <Image
                     src={testimonial.avatar}
                     fill
+                    sizes="40px"
                     alt={`${testimonial.name}'s profile picture`}
                     className="object-cover"
                   />
