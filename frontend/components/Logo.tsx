@@ -8,6 +8,7 @@ const Logo = () => {
         alt="AcademiaHub logo"
         width={158}
         height={45}
+        style={{ height: "auto" }}
       />
     </Link>
   );

@@ -12,6 +12,7 @@ const Header = () => {
         width={120}
         height={120}
         alt="academia hub's logo icon"
+        style={{ width: "auto", height: "auto" }}
       />
     </div>
   );

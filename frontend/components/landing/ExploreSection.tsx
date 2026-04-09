@@ -59,6 +59,7 @@ const ExploreSection = async ({
 									width={290}
 									height={246}
 									alt="Publication image"
+									loading="eager"
 								/>
 								<div className="flex flex-col gap-2.5 w-74">
 									<h4 className="font-medium  max-[1290px]:text-[16px] min-[1290px]:text-[18px] leading-[130%]">
