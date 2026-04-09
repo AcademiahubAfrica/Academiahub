@@ -13,21 +13,49 @@ function DisplayNotificationIcon(typeOfNotification: string) {
   switch (typeOfNotification) {
     case "comment":
       return (
-        <AiOutlineMessage className="text-lg md:text-4xl text-green-400" />
+        <Image
+          fill
+          alt="comment icon"
+          src={"/assets/images/user/notification/message.svg"}
+        />
       );
       break;
 
     case "upload":
-      return <AiOutlineUpload className="text-lg md:text-4xl text-blue-700" />;
+      return (
+        <Image
+          fill
+          alt="comment icon"
+          src={"/assets/images/user/notification/upload.svg"}
+        />
+      );
       break;
     case "reaction":
-      return <AiOutlineHeart className="text-lg md:text-4xl text-red-700" />;
+      return (
+        <Image
+          fill
+          alt="comment icon"
+          src={"/assets/images/user/notification/love.svg"}
+        />
+      );
       break;
     case "settings":
-      return <AiOutlineSetting className="text-lg md:text-4xl text-black" />;
+      return (
+        <Image
+          fill
+          alt="comment icon"
+          src={"/assets/images/user/notification/settings.svg"}
+        />
+      );
       break;
     case "message":
-      return <AiOutlineUser className="text-lg md:text-4xl text-yellow-300" />;
+      return (
+        <Image
+          fill
+          alt="comment icon"
+          src={"/assets/images/user/notification/person.svg"}
+        />
+      );
       break;
     default:
       break;
@@ -57,7 +85,9 @@ const page = () => {
           >
             <div className="flex items-center justify-between">
               <div className="flex gap-4 mt-8 font-normal items-center max-w-[80%]">
-                <div>{DisplayNotificationIcon(n.type)}</div>
+                <div className="relative h-5  w-5  shrink-0">
+                  {DisplayNotificationIcon(n.type)}
+                </div>
                 <div>
                   <p className="line-clamp-1 text-xs leading-3.5 md:leading-4.5 md:text-base mb-1 md:mb-3">
                     {n.notification}
@@ -69,23 +99,6 @@ const page = () => {
               </div>
               <span className="h-2 w-2 bg-primary-500 rounded-full"></span>
             </div>
-
-            {n.post && (
-              <div className="mt-8 md:ml-20 flex items-center gap-3">
-                <div className="relative md:w-15 md:h-15 w-10 h-10">
-                  <Image
-                    className=" rounded-lg"
-                    src={n.post.image}
-                    alt="The Image of a Post"
-                    fill
-                  />
-                </div>
-                <div className="text-xs leading-3.5 font-medium md:text-base">
-                  <p className=" mb-2">{n.post.title}</p>
-                  <p className="">{n.post.type}</p>
-                </div>
-              </div>
-            )}
           </div>
         ))}
       </div>
