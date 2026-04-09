@@ -5,11 +5,6 @@ export const notifications = [
       "Adewale Adams commented on the research paper you downloaded “The anatomy of the human body and how it impacts old age.” ",
     type: "comment",
     time: "8 hours ago",
-    post: {
-      image: "/assets/images/ResearchCards/Research.png",
-      title: "The anatomy of the human body and how it impacts old age.",
-      type: "Medicine",
-    },
   },
   {
     id: 2,
@@ -17,11 +12,6 @@ export const notifications = [
       "Damilare Aremu posted a thesis  “Sustainable business models in the digital age.” ",
     type: "upload",
     time: "14 hours ago",
-    post: {
-      image: "/assets/images/ResearchCards/Research.png",
-      title: "Sustainable business models in the digital age",
-      type: "Business",
-    },
   },
   {
     id: 3,
