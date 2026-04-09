@@ -10,7 +10,7 @@ export default async function DocumentViewPage({
 }) {
   return (
     <main className="m-1 md:m-2 lg:mx-4  lg:px-4">
-      <TopButtons />
+      <TopButtons />   
       <Suspense fallback={<PublicationPageSkeleton />}>
         <PublicationContent params={params} />
       </Suspense>

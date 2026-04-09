@@ -47,7 +47,7 @@ const SaveButton = ({
   if (variant === "button") {
     return (
       <Button
-        className="basis-[48%] w-[47%] border-primary h-7.5 md:h-11 hover:bg-primary/85 hover:text-white text-xs md:text-base"
+        className=" border-primary h-7.5 md:h-11 hover:bg-primary/85 hover:text-white text-xs md:text-base"
         variant="outline"
         onClick={handleToggle}
         disabled={isPending}

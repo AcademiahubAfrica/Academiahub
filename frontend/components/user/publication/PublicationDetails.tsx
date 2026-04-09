@@ -12,8 +12,12 @@ import MessageAuthorButton from "./MessageAuthorButton";
 import DownloadButton from "../shared/DownloadButton";
 import Like from "@/components/Like";
 import SaveButton from "@/components/SaveButton";
-const PublicationDetails = ({ details, isLiked, isSaved }: { details: Document; isLiked: boolean; isSaved: boolean }) => {
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+const PublicationDetails = ({id, details, isLiked, isSaved }: { details: Document; isLiked: boolean; isSaved: boolean, id:string }) => {
   const [downloadCount, setDownloadCount] = useState(details.downloads);
+
+  const router = useRouter()
   return (
     <div className="bg-white border lg:px-4 lg:pb-8.75 pt-6.25 border-[#D9D9D9] rounded-[15px] p-3">
       {/* profile pic and name */}
@@ -50,7 +54,7 @@ const PublicationDetails = ({ details, isLiked, isSaved }: { details: Document; 
         />
       </div>
 
-      <h2 className="text-sm lg:text-xl font-medium lg:leading-6 leading-4.5">
+      <h2  className="text-sm lg:text-xl font-medium lg:leading-6 leading-4.5">
         {details.title}
       </h2>
 
@@ -74,15 +78,18 @@ const PublicationDetails = ({ details, isLiked, isSaved }: { details: Document; 
           <p className="">{downloadCount}</p>
         </span>
       </div>
-      <div className="flex items-center  gap-2 md:gap-5 mb-3 lg:mb-5 justify-between p">
+      <div className="grid grid-cols-3  gap-2 md:gap-5 mb-3 lg:mb-5 justify-between p">
         <DownloadButton
           documentId={details.id}
           fileUrl={details.fileUrl}
           fileName={details.fileName}
-          className="basis-[48%] w-[47%] text-xs md:text-base h-7.5 md:h-11"
+          className=" text-xs md:text-base h-7.5 md:h-11"
           onDownload={() => setDownloadCount((prev) => prev + 1)}
         />
         <SaveButton documentId={details.id} initialSaved={isSaved} variant="button" />
+       
+        <Button onClick={() => router.push(`/publication/${id}/report-issue`)} className=" border-primary h-7.5 md:h-11 hover:bg-primary/85 hover:text-white text-xs md:text-base" variant={'outline'}>Report</Button>
+        
       </div>
 
       <Like documentId={details.id} initialLiked={isLiked} initialCount={details.likes} />
