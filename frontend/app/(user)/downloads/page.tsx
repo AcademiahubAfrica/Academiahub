@@ -1,17 +1,24 @@
+import { Suspense } from "react";
 import { userPagesMetadata } from "@/app/data/Exports";
 import Search from "@/components/user/shared/Search";
-import PublicationCard from "@/components/user/dashboard/PublicationCard";
-import DownloadHeader from "@/components/user/downloads/DownloadHeader";
+import PageName from "@/components/user/shared/PageName";
+import MobileSearch from "@/components/user/shared/MobileSearch";
+import DownloadedDocuments from "@/components/user/downloads/DownloadedDocuments";
+
 export const metadata = userPagesMetadata.downloads;
-const page = () => {
+
+const Page = () => {
   return (
     <main>
       <Search text="downloaded" />
-      <DownloadHeader />
+      <PageName />
+      <MobileSearch placeholder="Search for downloaded publications" />
 
-      <PublicationCard />
+      <Suspense fallback={null}>
+        <DownloadedDocuments />
+      </Suspense>
     </main>
   );
 };
 
-export default page;
+export default Page;
