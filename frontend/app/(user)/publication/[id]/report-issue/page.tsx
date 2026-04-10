@@ -8,7 +8,8 @@ const Report = () => {
    const [isSubmitSuccess, setIsSubmitSuccess] = useState(false)
 	const router = useRouter();
   return (
-    <div
+		<div className="w-full min-h-[80dvh] overflow-hidden  flex justify-center items-center">
+			<div
 				className="relative z-10 bg-white text-black rounded-xl shadow-lg min-w-[320px] max-w-133.75 flex justify-center"
 				onClick={(e) => e.stopPropagation()}
 			>
@@ -61,6 +62,8 @@ const Report = () => {
         }
 				
 			</div>
+		</div>
+    
   )
 }
 
