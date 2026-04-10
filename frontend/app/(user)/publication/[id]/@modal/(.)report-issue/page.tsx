@@ -7,6 +7,7 @@ import { useState } from "react";
 
 const ReportModal = () => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false)
+	const [openInput, setOpenInput] = useState(false)
 	const router = useRouter();
 
 	return (
@@ -46,8 +47,11 @@ const ReportModal = () => {
 							</li>
 						))}
 
-						<li className="flex justify-between items-center border-b-2 border-b-gray-300 px-6 pb-3 mt-3.75">
-							<p className="font-medium">Other</p>
+						<li onClick={() => setOpenInput(true)} className=" group flex justify-between items-center border-b-2 border-b-gray-300 px-6 pb-3 mt-3.75 cursor-pointer">
+							{
+								openInput ? <textarea placeholder="Type here..." className="w-full resize-none focus-within:outline-0"></textarea> : 	<p className="font-medium cursor-pointer ">Other</p>
+							}
+						
 						</li>
 					</ul>
 
@@ -55,7 +59,7 @@ const ReportModal = () => {
 						<Button
 							variant={"outline"}
 							onClick={() => router.back()}
-							className="border-primary-500 "
+							className="border-primary-500 hover:bg-none"
 						>
 							Close
 						</Button>
