@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { revalidatePath } from "next/cache";
+import { pushNotification } from "@/lib/notifications/pushNotification";
 
 /**
  * POST /api/documents/:id/like
@@ -41,19 +42,23 @@ export async function POST(
       // Notify document author
       const document = await prisma.document.findUnique({
         where: { id: documentId },
-        select: { authorId: true },
+        select: { authorId: true, title: true },
       });
 
       if (document && document.authorId !== userId) {
-        await prisma.notification.create({
+        const link = `/publication/${documentId}`;
+        const notification = await prisma.notification.create({
           data: {
             userId: document.authorId,
             type: "LIKE",
-            message: `${session.user.name} liked your document`,
+            message: `${session.user.name} liked your publication "${document.title}"`,
             actorId: userId,
             documentId,
+            link,
           },
         });
+
+        await pushNotification(document.authorId, notification);
       }
 
       revalidatePath("/dashboard");

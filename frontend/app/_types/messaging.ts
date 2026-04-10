@@ -112,6 +112,15 @@ export interface SocketErrorPayload {
   message: string;
 }
 
+export interface NotificationNewPayload {
+  id: string;
+  type: "COMMENT" | "LIKE" | "MESSAGE";
+  message: string;
+  link: string | null;
+  actorId: string | null;
+  createdAt: string;
+}
+
 // ─── Socket Event Maps (for type-safe emit/on) ────────────────────────
 
 export interface ClientToServerEvents {
@@ -129,5 +138,6 @@ export interface ServerToClientEvents {
   typing: (payload: TypingEventPayload) => void;
   presence: (payload: PresencePayload) => void;
   "presence:sync": (payload: PresenceSyncPayload) => void;
+  "notification:new": (payload: NotificationNewPayload) => void;
   error: (payload: SocketErrorPayload) => void;
 }

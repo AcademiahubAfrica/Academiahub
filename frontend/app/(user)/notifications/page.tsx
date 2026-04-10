@@ -1,102 +1,103 @@
-import { notifications } from "@/app/data/notificationMockData";
-import Image from "next/image";
+"use client";
+
+import { useEffect, useRef, useCallback } from "react";
 import EmptySection from "@/components/user/shared/EmptySection";
+import NotificationItem from "@/components/user/notifications/NotificationItem";
+import {
+  useNotifications,
+  useMarkNotificationRead,
+  useMarkAllRead,
+} from "@/lib/notifications/hooks";
+import { formatTimeAgo } from "@/lib/notifications/formatTime";
 
-function DisplayNotificationIcon(typeOfNotification: string) {
-  switch (typeOfNotification) {
-    case "comment":
-      return (
-        <Image
-          fill
-          alt="comment icon"
-          src={"/assets/images/user/notification/message.svg"}
-        />
-      );
-      break;
+export default function NotificationsPage() {
+  const {
+    data,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useNotifications();
+  const { markRead } = useMarkNotificationRead();
+  const { markAllRead } = useMarkAllRead();
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
-    case "upload":
-      return (
-        <Image
-          fill
-          alt="comment icon"
-          src={"/assets/images/user/notification/upload.svg"}
-        />
-      );
-      break;
-    case "reaction":
-      return (
-        <Image
-          fill
-          alt="comment icon"
-          src={"/assets/images/user/notification/love.svg"}
-        />
-      );
-      break;
-    case "settings":
-      return (
-        <Image
-          fill
-          alt="comment icon"
-          src={"/assets/images/user/notification/settings.svg"}
-        />
-      );
-      break;
-    case "message":
-      return (
-        <Image
-          fill
-          alt="comment icon"
-          src={"/assets/images/user/notification/person.svg"}
-        />
-      );
-      break;
-    default:
-      break;
-  }
-}
-const page = () => {
+  const notifications = data?.pages.flatMap((p) => p.notifications) ?? [];
+  const hasUnread = notifications.some((n) => !n.read);
+
+  // Infinite scroll via IntersectionObserver on a sentinel element
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    [hasNextPage, isFetchingNextPage, fetchNextPage]
+  );
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(handleObserver, {
+      threshold: 0.1,
+    });
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [handleObserver]);
+
   return (
     <main className=" lg:px-6 m-2 lg:m-6 rounded lg:rounded-2xl bg-white lg:py-4 lg:mb-0 py-2 ">
-      <header className="w-full md:bg-white py-2 md:py-7 px-2 mb-4 rounded-lg">
+      <header className="w-full md:bg-white py-2 md:py-7 px-2 mb-4 rounded-lg flex items-center justify-between">
         <h1 className="font-medium max-sm:text-primary text-2xl">
           Notifications
         </h1>
+        {hasUnread && (
+          <button
+            onClick={markAllRead}
+            className="text-sm text-primary-500 hover:underline cursor-pointer"
+          >
+            Mark all as read
+          </button>
+        )}
       </header>
 
-      {notifications.length === 0 && (
+      {!isLoading && notifications.length === 0 && (
         <EmptySection
           title="No notification yet"
           text="When someone interacts with your content, you'll see it here"
         />
       )}
 
+      {isLoading && (
+        <div className="flex justify-center py-12">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
+        </div>
+      )}
+
       <div className="bg-white">
         {notifications.map((n) => (
-          <div
+          <NotificationItem
             key={n.id}
-            className="rounded-xl border-[0.3px] border-grey p-3 mb-4 pb-6"
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex gap-4 mt-8 font-normal items-center max-w-[80%]">
-                <div className="relative h-5  w-5  shrink-0">
-                  {DisplayNotificationIcon(n.type)}
-                </div>
-                <div>
-                  <p className="line-clamp-1 text-xs leading-3.5 md:leading-4.5 md:text-base mb-1 md:mb-3">
-                    {n.notification}
-                  </p>
-                  <p className="text-[10px] leading-[130%] md:leading-4.5 md:text-sm text-grey ">
-                    {n.time}
-                  </p>
-                </div>
-              </div>
-              <span className="h-2 w-2 bg-primary-500 rounded-full"></span>
-            </div>
-          </div>
+            id={n.id}
+            type={n.type.toLowerCase()}
+            message={n.message}
+            time={formatTimeAgo(n.createdAt)}
+            link={n.link}
+            isUnread={!n.read}
+            onMarkRead={markRead}
+          />
         ))}
+
+        {/* Sentinel for infinite scroll */}
+        <div ref={sentinelRef} className="h-1" />
+
+        {isFetchingNextPage && (
+          <div className="flex justify-center py-4">
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
+          </div>
+        )}
       </div>
     </main>
   );
-};
-
-export default page;
+}
