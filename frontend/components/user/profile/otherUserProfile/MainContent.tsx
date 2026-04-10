@@ -1,7 +1,9 @@
 import ProfileSectionOther from "./ProfileSectionOther";
 import prisma from "@/prisma/connection";
 import { Profile } from "@/app/_types/author";
-import DownloadCard from "../../shared/DownloadCard";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import OtherUserPublications from "./OtherUserPublications";
 
 const MainContent = async ({
   params,
@@ -12,33 +14,37 @@ const MainContent = async ({
 }) => {
   const { otherUserId } = await params;
 
-  const profile = await fetchProfile(otherUserId);
-
-  const rawDocuments = await prisma.document.findMany({
-    where: { authorId: otherUserId },
-    include: {
-      author: {
-        select: {
-          id: true,
-          name: true,
-          image: true,
-          Profile: { take: 1, select: { bio: true } },
-        },
+  const [profile, session, documents] = await Promise.all([
+    fetchProfile(otherUserId),
+    getServerSession(authOptions),
+    prisma.document.findMany({
+      where: { authorId: otherUserId },
+      include: {
+        author: { select: { id: true, name: true, image: true } },
+        _count: { select: { commentRecords: true } },
       },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
 
-  const documents = rawDocuments.map((doc) => {
-    const bio = doc.author.Profile?.[0]?.bio as
-      | { department?: string }
-      | undefined;
-    return {
-      ...doc,
-      department: bio?.department ?? undefined,
-      author: { id: doc.author.id, name: doc.author.name, image: doc.author.image },
-    };
-  });
+  let likedDocumentIds = new Set<string>();
+  let savedDocumentIds = new Set<string>();
+
+  if (session?.user?.id && documents.length > 0) {
+    const documentIds = documents.map((d) => d.id);
+    const [likes, saves] = await Promise.all([
+      prisma.like.findMany({
+        where: { userId: session.user.id, documentId: { in: documentIds } },
+        select: { documentId: true },
+      }),
+      prisma.save.findMany({
+        where: { userId: session.user.id, documentId: { in: documentIds } },
+        select: { documentId: true },
+      }),
+    ]);
+    likedDocumentIds = new Set(likes.map((l) => l.documentId));
+    savedDocumentIds = new Set(saves.map((s) => s.documentId));
+  }
 
   return (
     <>
@@ -46,15 +52,14 @@ const MainContent = async ({
       {children}
 
       {documents.length === 0 ? (
-        <p className="text-center text-gray-500 py-8">
-          No publications yet
-        </p>
+        <p className="text-center text-gray-500 py-8">No publications yet</p>
       ) : (
-        <section className="grid lg:px-6.25 grid-cols-2 gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
-          {documents.map((data) => (
-            <DownloadCard key={data.id} data={data} />
-          ))}
-        </section>
+        <OtherUserPublications
+          userId={session?.user?.id ?? ""}
+          documents={documents}
+          likedDocumentIds={likedDocumentIds}
+          savedDocumentIds={savedDocumentIds}
+        />
       )}
     </>
   );

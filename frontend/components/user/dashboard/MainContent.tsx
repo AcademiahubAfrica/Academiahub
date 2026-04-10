@@ -11,6 +11,7 @@ const MainContent = async () => {
   let documents: Awaited<ReturnType<typeof fetchDocuments>> = [];
   let likedDocumentIds: Set<string> = new Set();
   let savedDocumentIds: Set<string> = new Set();
+  let userId: string | undefined;
 
   try {
     const [docs, session] = await Promise.all([
@@ -18,6 +19,7 @@ const MainContent = async () => {
       getServerSession(authOptions),
     ]);
     documents = docs;
+    userId = session?.user?.id;
 
     if (session?.user?.id) {
       const documentIds = documents.map((d) => d.id);
@@ -57,7 +59,7 @@ const MainContent = async () => {
         <h4 className="text-lg mb-3 lg:mb-5.5 p-2.5  w-fit bg-white rounded-2xl font-medium leading-[130%]"  >
           Research of the week
         </h4>
-        <FilterDocuments documents={documents} likedDocumentIds={likedDocumentIds} savedDocumentIds={savedDocumentIds} />
+        <FilterDocuments userId={userId} documents={documents} likedDocumentIds={likedDocumentIds} savedDocumentIds={savedDocumentIds} />
       </div>
     </>
   );
