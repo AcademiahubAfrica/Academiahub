@@ -5,6 +5,7 @@ import { $Enums } from '@/lib/generated/prisma';
 import ResearchCard from './ResearchCard';
 
 interface FilterDocumentsProp {
+  userId?: string;
   documents: ({
     author: {
         id: string;
@@ -34,7 +35,7 @@ interface FilterDocumentsProp {
   likedDocumentIds: Set<string>;
   savedDocumentIds: Set<string>;
 }
-const FilterDocuments = ({documents, likedDocumentIds, savedDocumentIds}: FilterDocumentsProp) => {
+const FilterDocuments = ({userId, documents, likedDocumentIds, savedDocumentIds}: FilterDocumentsProp) => {
    const searchParams = useSearchParams()
 
    const filterDocuments = () => {
@@ -60,7 +61,7 @@ const FilterDocuments = ({documents, likedDocumentIds, savedDocumentIds}: Filter
   return (
     <section className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
           {filteredDocuments.map((data) => (
-            <ResearchCard key={data.id} data={data} isLiked={likedDocumentIds.has(data.id)} isSaved={savedDocumentIds.has(data.id)} />
+            <ResearchCard key={data.id} data={data} isLiked={likedDocumentIds.has(data.id)} isSaved={savedDocumentIds.has(data.id)} showSaveButton={data.author.id !== userId} />
           ))}
         </section>
   )

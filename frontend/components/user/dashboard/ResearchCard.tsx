@@ -13,10 +13,11 @@ type ResearchCardProps = {
   data: ResearchCardType;
   isLiked: boolean;
   isSaved: boolean;
+  showSaveButton?: boolean;
   onSaveToggle?: (isSaved: boolean) => void;
 };
 
-const ResearchCard = ({ data, isLiked, isSaved, onSaveToggle }: ResearchCardProps) => {
+const ResearchCard = ({ data, isLiked, isSaved, showSaveButton = true, onSaveToggle }: ResearchCardProps) => {
   return (
     <article
       className=" relative w-full bg-white px-1 py-1 lg:py-2.75 lg:px-3 border rounded-[15px] border-[#D9D9D9]   "
@@ -76,7 +77,7 @@ const ResearchCard = ({ data, isLiked, isSaved, onSaveToggle }: ResearchCardProp
               </small>
             </div>
           </div>
-          <SaveButton documentId={data.id as string} initialSaved={isSaved} onToggle={onSaveToggle} />
+          {showSaveButton && <SaveButton documentId={data.id as string} initialSaved={isSaved} onToggle={onSaveToggle} />}
         </div>
       </div>
       <Button
