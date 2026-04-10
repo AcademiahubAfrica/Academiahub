@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { revalidatePath } from "next/cache";
+import { pushNotification } from "@/lib/notifications/pushNotification";
 
 /**
  * GET /api/documents/:id/comments
@@ -105,15 +106,23 @@ export async function POST(
     after(async () => {
       // Notify document author
       if (document.authorId !== userId) {
-        await prisma.notification.create({
+        const doc = await prisma.document.findUnique({
+          where: { id: documentId },
+          select: { title: true },
+        });
+        const link = `/publication/${documentId}`;
+        const notification = await prisma.notification.create({
           data: {
             userId: document.authorId,
             type: "COMMENT",
-            message: `${session.user.name} commented on your document`,
+            message: `${session.user.name} commented on your publication "${doc?.title}"`,
             actorId: userId,
             documentId,
+            link,
           },
         });
+
+        await pushNotification(document.authorId, notification);
       }
 
       revalidatePath("/dashboard");
