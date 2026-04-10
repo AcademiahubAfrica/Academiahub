@@ -9,6 +9,7 @@ import "./types";
 import conversationRoutes from "./routes/conversations";
 import messageRoutes from "./routes/messages";
 import userRoutes from "./routes/users";
+import internalRoutes from "./routes/internal";
 import { errorHandler } from "./middleware/errorHandler";
 import { createSocketServer } from "./ws/handler";
 import swaggerUi from "swagger-ui-express";
@@ -33,6 +34,7 @@ app.use(express.json({ limit: "10kb" }));
 app.use("/api/conversations", conversationRoutes);
 app.use("/api/conversations", messageRoutes);
 app.use("/api/users", userRoutes);
+app.use("/internal", internalRoutes);
 
 // ─── Health Check ───────────────────────────────────────
 

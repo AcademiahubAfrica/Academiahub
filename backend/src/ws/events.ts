@@ -112,6 +112,35 @@ export async function handleMessageSend(
     const recipientId = getOtherParticipantId(conversation, userId);
     sendToUser(recipientId, "message:new", message);
     sendToUser(userId, "message:new", message);
+
+    // Create a notification for the recipient (fire-and-forget)
+    try {
+      const sender = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { name: true },
+      });
+
+      const notification = await prisma.notification.create({
+        data: {
+          userId: recipientId,
+          type: "MESSAGE",
+          message: `${sender?.name ?? "Someone"} sent you a message`,
+          actorId: userId,
+          link: "/inbox",
+        },
+      });
+
+      sendToUser(recipientId, "notification:new", {
+        id: notification.id,
+        type: notification.type,
+        message: notification.message,
+        link: notification.link,
+        actorId: notification.actorId,
+        createdAt: notification.createdAt.toISOString(),
+      });
+    } catch (err) {
+      console.error("Failed to create message notification:", err);
+    }
   } catch (err) {
     console.error("message:send error:", err);
     socket.emit("error", { message: "Failed to send message" });
