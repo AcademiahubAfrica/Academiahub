@@ -13,11 +13,13 @@ import NameSkeleton from "./NameSkeleton";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "./SidebarContext";
 import { getInitials } from "@/lib/messaging/utils";
+import { useUnreadCount } from "@/lib/notifications/hooks";
 import SearchBar from "./user/SearchBar";
 import { MdSearch } from "react-icons/md";
 const UserHeader = () => {
 	const { openMobileSidebar, setOpenMobileSidebar } = useSidebar();
 	const [openSearchBar, setOpenSearchBar] = useState(false);
+	const { data: unreadCount } = useUnreadCount();
 
 	const pathName = usePathname();
 
@@ -61,9 +63,14 @@ const UserHeader = () => {
 				<div className="flex items-center gap-4.5 ">
 					<Link
 						href={"/notifications"}
-						className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full"
+						className="relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full"
 					>
 						<IoMdNotificationsOutline className="text-2xl lg:block" />
+						{!!unreadCount && unreadCount > 0 && (
+							<span className="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 flex items-center justify-center rounded-full bg-primary-500 text-white text-[10px] font-medium leading-none">
+								{unreadCount > 99 ? "99+" : unreadCount}
+							</span>
+						)}
 					</Link>
 					<Link href={"/profile"}>
 						<Avatar>
@@ -122,9 +129,14 @@ const UserHeader = () => {
 					<div className="flex items-center gap-1.25">
 						<Link
 							href={"/notifications"}
-							className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full"
+							className="relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full"
 						>
 							<IoMdNotificationsOutline className="text-2xl" />
+							{!!unreadCount && unreadCount > 0 && (
+								<span className="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 flex items-center justify-center rounded-full bg-primary-500 text-white text-[10px] font-medium leading-none">
+									{unreadCount > 99 ? "99+" : unreadCount}
+								</span>
+							)}
 						</Link>
 						<SheetTrigger>
 							<FaBars className="text-xl" />
