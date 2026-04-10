@@ -1,16 +1,30 @@
 "use client";
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ReactNode } from "react";
+import { ResearchCardType } from "@/app/_types/documents";
+import ResearchCard from "@/components/user/dashboard/ResearchCard";
+import EmptySection from "../shared/EmptySection";
 
 const filterOptions = [
-  {
-    value: "publications",
-  },
-  {
-    value: "likes",
-  },
+  { value: "publications" },
+  { value: "likes" },
 ];
-const PublicationsAndLikes = ({ children }: { children: ReactNode }) => {
+
+interface PublicationsAndLikesProps {
+  userId: string;
+  ownDocuments: ResearchCardType[];
+  likedDocuments: ResearchCardType[];
+  likedDocumentIds: Set<string>;
+  savedDocumentIds: Set<string>;
+}
+
+const PublicationsAndLikes = ({
+  userId,
+  ownDocuments,
+  likedDocuments,
+  likedDocumentIds,
+  savedDocumentIds,
+}: PublicationsAndLikesProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -22,16 +36,27 @@ const PublicationsAndLikes = ({ children }: { children: ReactNode }) => {
     params.set(key, value);
     router.push(`${pathname}?${params.toString()}`);
   }
+
+  const documents = filter === "publications" ? ownDocuments : likedDocuments;
+  const emptyTitle =
+    filter === "publications"
+      ? "No publications yet"
+      : "No liked publications yet";
+  const emptyText =
+    filter === "publications"
+      ? "To see a publication, upload one."
+      : "Publications you like will appear here";
+
   return (
-    <div className="mt-2 ">
-      <div className="flex items-center gap-2 md:mx-4 mb-4  ">
+    <div className="mt-2">
+      <div className="flex items-center gap-2 md:mx-4 mb-4">
         {filterOptions.map(({ value }, index) => (
           <button
-            className={` ${
+            className={`${
               filter === value
                 ? "text-primary border-b border-primary"
                 : "text-black"
-            }    rounded-none p-2 capitalize`}
+            } rounded-none p-2 capitalize`}
             onClick={() => updateParams("show", value)}
             key={index}
           >
@@ -40,11 +65,23 @@ const PublicationsAndLikes = ({ children }: { children: ReactNode }) => {
         ))}
       </div>
 
-      {filter === "publications" ? (
-        children
-      ) : (
-        <p className="text-center text-gray-500 py-8">No likes yet</p>
-      )}
+      <div className="lg:px-6.25">
+        {documents.length ? (
+          <section className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
+            {documents.map((data) => (
+              <ResearchCard
+                key={data.id}
+                data={data}
+                isLiked={likedDocumentIds.has(data.id as string)}
+                isSaved={savedDocumentIds.has(data.id as string)}
+                showSaveButton={data.author.id !== userId}
+              />
+            ))}
+          </section>
+        ) : (
+          <EmptySection title={emptyTitle} text={emptyText} />
+        )}
+      </div>
     </div>
   );
 };
