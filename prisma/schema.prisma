@@ -26,9 +26,7 @@ enum Category {
 enum NotificationType {
   COMMENT
   LIKE
-  UPLOAD
   MESSAGE
-  SYSTEM
 }
 
 model User {
@@ -103,6 +101,7 @@ model Notification {
   message    String
   actorId    String?          @db.ObjectId
   documentId String?          @db.ObjectId
+  link       String?
   read       Boolean          @default(false)
   createdAt  DateTime         @default(now())
 
