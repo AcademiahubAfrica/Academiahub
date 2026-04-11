@@ -21,6 +21,7 @@ const SavedList = ({
             <ResearchCard
               key={data.id}
               data={data}
+              isOwnDocument={false}
               isLiked={likedDocumentIds.has(data.id as string)}
               isSaved={true}
               onSaveToggle={onSaveToggle(data.id as string)}

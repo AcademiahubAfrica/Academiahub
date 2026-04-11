@@ -1,21 +1,21 @@
-'use client'
-import React from 'react'
+"use client";
+import React from "react";
 import { useSearchParams } from "next/navigation";
-import { $Enums } from '@/lib/generated/prisma';
-import ResearchCard from './ResearchCard';
+import { $Enums } from "@/lib/generated/prisma";
+import ResearchCard from "./ResearchCard";
 
 interface FilterDocumentsProp {
   userId?: string;
   documents: ({
     author: {
-        id: string;
-        image: string | null;
-        name: string | null;
+      id: string;
+      image: string | null;
+      name: string | null;
     };
     _count: {
-        commentRecords: number;
+      commentRecords: number;
     };
-} & {
+  } & {
     category: $Enums.Category;
     id: string;
     title: string;
@@ -30,41 +30,46 @@ interface FilterDocumentsProp {
     likes: number;
     authorId: string;
     createdAt: Date;
-     updatedAt: Date;
-})[];
+    updatedAt: Date;
+  })[];
   likedDocumentIds: Set<string>;
   savedDocumentIds: Set<string>;
 }
 const FilterDocuments = ({userId, documents, likedDocumentIds, savedDocumentIds}: FilterDocumentsProp) => {
    const searchParams = useSearchParams()
 
-   const filterDocuments = () => {
-    const category = searchParams.get("category")
-    const search = searchParams.get("search")
+  const filterDocuments = () => {
+    const category = searchParams.get("category");
+    const search = searchParams.get("search");
 
-   const filteredDocuments =  documents.filter((doc) => {
+    const filteredDocuments = documents.filter((doc) => {
+      const categoryMatch =
+        !category || category === "all" || doc.category === category;
 
-  const categoryMatch =
-    !category || category === "all" || doc.category === category
+      const searchMatch =
+        !search || doc.title.toLowerCase().includes(search.toLowerCase());
 
-  const searchMatch =
-    !search || doc.title.toLowerCase().includes(search.toLowerCase())
+      return categoryMatch && searchMatch;
+    });
+    return filteredDocuments;
+  };
 
-  return categoryMatch && searchMatch
-})
-    return filteredDocuments
-  }
+  const filteredDocuments = filterDocuments();
 
-  const filteredDocuments = filterDocuments()
-  
-  
   return (
     <section className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
-          {filteredDocuments.map((data) => (
-            <ResearchCard key={data.id} data={data} isLiked={likedDocumentIds.has(data.id)} isSaved={savedDocumentIds.has(data.id)} showSaveButton={data.author.id !== userId} />
-          ))}
-        </section>
-  )
-}
+      {filteredDocuments.map((data) => (
+        <ResearchCard
+          key={data.id}
+          data={data}
+          isOwnDocument={data.authorId === userId}
+          isLiked={likedDocumentIds.has(data.id)}
+          isSaved={savedDocumentIds.has(data.id)}
+          showSaveButton={data.author.id !== userId}
+        />
+      ))}
+    </section>
+  );
+};
 
-export default FilterDocuments
+export default FilterDocuments;
