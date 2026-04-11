@@ -32,6 +32,7 @@ const DownloadedList = ({
           <section className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
             {documents.map((data) => (
               <ResearchCard
+                isOwnDocument={userId === data.author.id}
                 key={data.id}
                 data={data}
                 isLiked={likedDocumentIds.has(data.id as string)}
