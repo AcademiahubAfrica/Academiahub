@@ -72,8 +72,12 @@ const ResearchCard = ({
           </div>
         </div>
         {/* stats section */}
-        <div className="flex items-center py-1 justify-between  mb-1.5 lg:justify-around lg:gap-12.5  pr-2">
-          <div className="flex items-center gap-6 sm:gap-8 md:gap-12.5">
+        <div
+          className={`flex items-center py-1 justify-between  mb-1.5 ${showSaveButton ? "lg:justify-around" : "justify-between "}  lg:gap-12.5  pr-2`}
+        >
+          <div
+            className={`flex items-center ${!showSaveButton && "justify-between w-full px-2"} gap-6 sm:gap-8 md:gap-12.5`}
+          >
             <Like
               documentId={data.id as string}
               initialLiked={isLiked}
