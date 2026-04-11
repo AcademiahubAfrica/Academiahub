@@ -96,13 +96,7 @@ const ResearchCard = ({
               </small>
             </div>
           </div>
-          {showSaveButton && (
-            <SaveButton
-              documentId={data.id as string}
-              initialSaved={isSaved}
-              onToggle={onSaveToggle}
-            />
-          )}
+          {showSaveButton && <SaveButton documentId={data.id as string} initialSaved={isSaved} onToggle={onSaveToggle} />}
         </div>
       </div>
       <Button

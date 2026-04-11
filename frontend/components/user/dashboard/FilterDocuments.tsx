@@ -35,13 +35,8 @@ interface FilterDocumentsProp {
   likedDocumentIds: Set<string>;
   savedDocumentIds: Set<string>;
 }
-const FilterDocuments = ({
-  userId,
-  documents,
-  likedDocumentIds,
-  savedDocumentIds,
-}: FilterDocumentsProp) => {
-  const searchParams = useSearchParams();
+const FilterDocuments = ({userId, documents, likedDocumentIds, savedDocumentIds}: FilterDocumentsProp) => {
+   const searchParams = useSearchParams()
 
   const filterDocuments = () => {
     const category = searchParams.get("category");

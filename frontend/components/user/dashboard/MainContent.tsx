@@ -54,12 +54,7 @@ const MainContent = async () => {
         <h4 className="text-lg mb-3 lg:mb-5.5 p-2.5  w-fit bg-white rounded-2xl font-medium leading-[130%]">
           Research of the week
         </h4>
-        <FilterDocuments
-          userId={userId}
-          documents={documents}
-          likedDocumentIds={likedDocumentIds}
-          savedDocumentIds={savedDocumentIds}
-        />
+        <FilterDocuments userId={userId} documents={documents} likedDocumentIds={likedDocumentIds} savedDocumentIds={savedDocumentIds} />
       </div>
     </>
   );
