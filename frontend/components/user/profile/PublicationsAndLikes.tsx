@@ -5,10 +5,7 @@ import { ResearchCardType } from "@/app/_types/documents";
 import ResearchCard from "@/components/user/dashboard/ResearchCard";
 import EmptySection from "../shared/EmptySection";
 
-const filterOptions = [
-  { value: "publications" },
-  { value: "likes" },
-];
+const filterOptions = [{ value: "publications" }, { value: "likes" }];
 
 interface PublicationsAndLikesProps {
   userId: string;
@@ -71,6 +68,7 @@ const PublicationsAndLikes = ({
             {documents.map((data) => (
               <ResearchCard
                 key={data.id}
+                isOwnDocument={true}
                 data={data}
                 isLiked={likedDocumentIds.has(data.id as string)}
                 isSaved={savedDocumentIds.has(data.id as string)}

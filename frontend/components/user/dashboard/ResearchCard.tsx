@@ -8,21 +8,32 @@ import SaveButton from "@/components/SaveButton";
 import { getCategoryImage } from "@/lib/categoryImage";
 import { getInitials } from "@/lib/messaging/utils";
 import Link from "next/link";
+import KebabIcon from "../shared/KebabIcon";
 
 type ResearchCardProps = {
   data: ResearchCardType;
   isLiked: boolean;
+  isOwnDocument: boolean;
   isSaved: boolean;
   showSaveButton?: boolean;
   onSaveToggle?: (isSaved: boolean) => void;
 };
 
-const ResearchCard = ({ data, isLiked, isSaved, showSaveButton = true, onSaveToggle }: ResearchCardProps) => {
+const ResearchCard = ({
+  data,
+  isOwnDocument,
+  isLiked,
+  isSaved,
+  showSaveButton = true,
+  onSaveToggle,
+}: ResearchCardProps) => {
   return (
     <article
-      className=" relative w-full bg-white px-1 py-1 lg:py-2.75 lg:px-3 border rounded-[15px] border-[#D9D9D9]   "
+      className=" relative w-full bg-white px-1 py-1 lg:py-2.75 lg:px-3 border rounded-[15px] border-[#D9D9D9]"
       key={data.id}
     >
+      <KebabIcon isOwnDocument={isOwnDocument} documentId={data.id as string} />
+
       <div className="relative aspect-343/240 w-full">
         <Image
           className="rounded-t-[15px] object-cover"
@@ -61,9 +72,17 @@ const ResearchCard = ({ data, isLiked, isSaved, showSaveButton = true, onSaveTog
           </div>
         </div>
         {/* stats section */}
-        <div className="flex items-center py-1 justify-between  mb-1.5 lg:justify-around lg:gap-12.5  pr-2">
-          <div className="flex items-center gap-6 sm:gap-8 md:gap-12.5">
-            <Like documentId={data.id as string} initialLiked={isLiked} initialCount={data.likes} />
+        <div
+          className={`flex items-center py-1 justify-between  mb-1.5 ${showSaveButton ? "lg:justify-around" : "justify-between "}  lg:gap-12.5  pr-2`}
+        >
+          <div
+            className={`flex items-center ${!showSaveButton && "justify-between w-full px-2"} gap-6 sm:gap-8 md:gap-12.5`}
+          >
+            <Like
+              documentId={data.id as string}
+              initialLiked={isLiked}
+              initialCount={data.likes}
+            />
             <div className="flex items-center gap-0.75">
               <FaRegComment className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
               <small className="text-[6.84px] md:text-sm">

@@ -2,6 +2,7 @@
 
 import { ResearchCardType } from "@/app/_types/documents";
 import ResearchCard from "@/components/user/dashboard/ResearchCard";
+import { useId } from "react";
 
 interface OtherUserPublicationsProps {
   userId: string;
@@ -22,6 +23,7 @@ const OtherUserPublications = ({
         <ResearchCard
           key={data.id}
           data={data}
+          isOwnDocument={false}
           isLiked={likedDocumentIds.has(data.id as string)}
           isSaved={savedDocumentIds.has(data.id as string)}
           showSaveButton={data.author.id !== userId}
