@@ -2,7 +2,7 @@
 
 import { ResearchCardType } from "@/app/_types/documents";
 import ResearchCard from "@/components/user/dashboard/ResearchCard";
-import { useId } from "react";
+
 
 interface OtherUserPublicationsProps {
   userId: string;
