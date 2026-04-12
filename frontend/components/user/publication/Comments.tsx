@@ -14,6 +14,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { EllipsisVertical, Pencil, Trash2 } from "lucide-react";
 
+async function readError(res: Response): Promise<string> {
+  const contentType = res.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    try {
+      const data = await res.json();
+      return data?.error ?? `${res.status} ${res.statusText}`;
+    } catch {
+      return `${res.status} ${res.statusText}`;
+    }
+  }
+  return `${res.status} ${res.statusText}`;
+}
+
 interface Commenter {
   id: string;
   name: string | null;
@@ -55,22 +68,25 @@ const Comments = ({
     if (!content || isPending) return;
 
     startTransition(async () => {
-      const res = await fetch(`/api/documents/${documentId}/comments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content }),
-      });
+      try {
+        const res = await fetch(`/api/documents/${documentId}/comments`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content }),
+        });
 
-      if (!res.ok) {
-        const data = await res.json();
-        console.error("Failed to post comment:", data.error);
-        return;
+        if (!res.ok) {
+          console.error("Failed to post comment:", await readError(res));
+          return;
+        }
+
+        const comment: Comment = await res.json();
+        setComments((prev) => [comment, ...prev]);
+        setCommentCount((prev) => prev + 1);
+        setNewComment("");
+      } catch (err) {
+        console.error("Failed to post comment:", err);
       }
-
-      const comment: Comment = await res.json();
-      setComments((prev) => [comment, ...prev]);
-      setCommentCount((prev) => prev + 1);
-      setNewComment("");
     });
   };
 
@@ -84,27 +100,30 @@ const Comments = ({
     if (!content || isPending) return;
 
     startTransition(async () => {
-      const res = await fetch(
-        `/api/documents/${documentId}/comments/${commentId}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ content }),
-        },
-      );
+      try {
+        const res = await fetch(
+          `/api/documents/${documentId}/comments/${commentId}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content }),
+          },
+        );
 
-      if (!res.ok) {
-        const data = await res.json();
-        console.error("Failed to edit comment:", data.error);
-        return;
+        if (!res.ok) {
+          console.error("Failed to edit comment:", await readError(res));
+          return;
+        }
+
+        const updated: Comment = await res.json();
+        setComments((prev) =>
+          prev.map((c) => (c.id === commentId ? updated : c)),
+        );
+        setEditingId(null);
+        setEditContent("");
+      } catch (err) {
+        console.error("Failed to edit comment:", err);
       }
-
-      const updated: Comment = await res.json();
-      setComments((prev) =>
-        prev.map((c) => (c.id === commentId ? updated : c)),
-      );
-      setEditingId(null);
-      setEditContent("");
     });
   };
 
@@ -112,19 +131,22 @@ const Comments = ({
     if (isPending) return;
 
     startTransition(async () => {
-      const res = await fetch(
-        `/api/documents/${documentId}/comments/${commentId}`,
-        { method: "DELETE" },
-      );
+      try {
+        const res = await fetch(
+          `/api/documents/${documentId}/comments/${commentId}`,
+          { method: "DELETE" },
+        );
 
-      if (!res.ok) {
-        const data = await res.json();
-        console.error("Failed to delete comment:", data.error);
-        return;
+        if (!res.ok) {
+          console.error("Failed to delete comment:", await readError(res));
+          return;
+        }
+
+        setComments((prev) => prev.filter((c) => c.id !== commentId));
+        setCommentCount((prev) => prev - 1);
+      } catch (err) {
+        console.error("Failed to delete comment:", err);
       }
-
-      setComments((prev) => prev.filter((c) => c.id !== commentId));
-      setCommentCount((prev) => prev - 1);
     });
   };
 
