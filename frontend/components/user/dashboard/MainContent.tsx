@@ -6,34 +6,25 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const MainContent = async () => {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
+
   let documents: Awaited<ReturnType<typeof fetchDocuments>> = [];
   let likedDocumentIds: Set<string> = new Set();
   let savedDocumentIds: Set<string> = new Set();
-  let userId: string | undefined;
 
   try {
-    const [docs, session] = await Promise.all([
-      fetchDocuments(),
-      getServerSession(authOptions),
-    ]);
-    documents = docs;
-    userId = session?.user?.id;
+    documents = await fetchDocuments();
 
-    if (session?.user?.id) {
+    if (userId) {
       const documentIds = documents.map((d) => d.id);
       const [likes, saves] = await Promise.all([
         prisma.like.findMany({
-          where: {
-            userId: session.user.id,
-            documentId: { in: documentIds },
-          },
+          where: { userId, documentId: { in: documentIds } },
           select: { documentId: true },
         }),
         prisma.save.findMany({
-          where: {
-            userId: session.user.id,
-            documentId: { in: documentIds },
-          },
+          where: { userId, documentId: { in: documentIds } },
           select: { documentId: true },
         }),
       ]);
