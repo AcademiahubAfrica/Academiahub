@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useSearchParams } from "next/navigation";
-import { $Enums } from "@/lib/generated/prisma";
+import { $Enums } from "@prisma/client";
 import ResearchCard from "./ResearchCard";
 
 interface FilterDocumentsProp {
