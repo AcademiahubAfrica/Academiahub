@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import prisma from "@/prisma/connection";
 import Sidebar from "../../components/Sidebar";
 import UserHeader from "../../components/UserHeader";
 import { SidebarProvider } from "@/components/SidebarContext";
@@ -12,6 +13,30 @@ export default async function UserLayout({
   const userInfo = await getServerSession(authOptions);
   if (!userInfo?.user) {
     redirect("/");
+  }
+
+  // Check if profile is complete — redirect to onboarding if not
+  const user = await prisma.user.findUnique({
+    where: { id: userInfo.user.id },
+    select: {
+      name: true,
+      Profile: {
+        take: 1,
+        select: { bio: true },
+      },
+    },
+  });
+
+  const bio = user?.Profile[0]?.bio;
+  const isProfileComplete =
+    !!user?.name?.trim() &&
+    !!bio?.institution?.trim() &&
+    !!bio?.department?.trim() &&
+    !!bio?.country?.trim() &&
+    !!bio?.state?.trim();
+
+  if (!isProfileComplete) {
+    redirect("/onboarding");
   }
   return (
     <SidebarProvider>
