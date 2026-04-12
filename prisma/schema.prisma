@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../frontend/lib/generated/prisma"
 }
 
 generator backendClient {
