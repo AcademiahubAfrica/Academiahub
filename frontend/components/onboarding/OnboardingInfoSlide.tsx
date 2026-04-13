@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 
 interface OnboardingInfoSlideProps {
   step: number;
+  animation: boolean,
   subheading: string;
   body: string;
   image: string;
@@ -18,14 +19,15 @@ export default function OnboardingInfoSlide({
   body,
   image,
   onNext,
+  animation,
   onBack,
 }: OnboardingInfoSlideProps) {
   const isLastInfoSlide = step === 2;
 
   return (
-    <div className="h-screen flex flex-col lg:flex-row">
+    <div className={`h-screen flex flex-col lg:flex-row   ${animation ? " transition ease-out duration-300" : ""} `}>
       {/* Left content */}
-      <div className="flex-1 flex flex-col p-6 sm:p-10 lg:pt-12 lg:pl-22.5 lg:pr-16 lg:pb-10 relative">
+      <div className="flex-1 flex flex-col  p-6 sm:p-10 lg:pt-12 lg:pl-22.5 lg:pr-16 lg:pb-10 relative">
         {/* Watermark background */}
         <div className="absolute pointer-events-none w-63.25 h-91 bottom-0 -left-6.25">
           <Image
@@ -36,7 +38,7 @@ export default function OnboardingInfoSlide({
           />
         </div>
 
-        <div className="relative z-10 flex flex-col flex-1">
+        <div className="relative z-10 flex flex-col flex-1 rounded-r-2xl">
           {/* Logo */}
           <div className="mb-12">
             <Image
