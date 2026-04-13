@@ -3,11 +3,7 @@ import { Button } from "@/components/ui/button";
 import Activity from "./Activity";
 import type { RecentActivity } from "@/lib/analytics";
 
-const RecentActivities = ({
-  activities,
-}: {
-  activities: RecentActivity[];
-}) => {
+const RecentActivities = ({ activities }: { activities: RecentActivity[] }) => {
   return (
     <div className="flex-1 bg-white rounded-[20px] p-4">
       <div className="flex justify-between items-center mb-4">
