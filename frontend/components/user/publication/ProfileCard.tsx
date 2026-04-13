@@ -5,8 +5,22 @@ import { getInitials } from "@/lib/messaging/utils";
 import Link from "next/link";
 import MessageAuthorButton from "./MessageAuthorButton";
 import Reviews from "./Reviews";
+import type { ReviewAggregate } from "@/lib/reviews/aggregate";
 
-const ProfileCard = ({ profile }: { profile: Profile }) => {
+type ReviewsProps = {
+  documentId: string;
+  aggregate: ReviewAggregate;
+  userRating: number | null;
+  canReview: boolean;
+};
+
+const ProfileCard = ({
+  profile,
+  reviewsProps,
+}: {
+  profile: Profile;
+  reviewsProps: ReviewsProps;
+}) => {
   return (
     <aside className="hidden pb-6 md:block border  md:top-8 bg-[#FAFAFA] self-start sticky top-24 text-center  rounded-[12px] pt-7 px-4.5">
       <div className="">
@@ -71,7 +85,7 @@ const ProfileCard = ({ profile }: { profile: Profile }) => {
       </div>
       {/* review section */}
 
-      <Reviews />
+      <Reviews {...reviewsProps} />
     </aside>
   );
 };
