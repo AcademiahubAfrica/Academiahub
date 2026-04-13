@@ -40,8 +40,10 @@ export default function NotificationItem({
     >
       <div className="flex items-center justify-between">
         <div className="flex gap-4 mt-8 font-normal items-center max-w-[80%]">
-          <div className="relative h-5 w-5 shrink-0">
-            <NotificationIcon type={type} />
+          <div className="shrink-0 w-8.5 h-8.5 md:w-12.5 md:h-12.5 bg-white flex items-center justify-center rounded-full">
+            <div className="relative h-5 w-5 ">
+              <NotificationIcon type={type} />
+            </div>
           </div>
           <div>
             <p className="line-clamp-1 text-xs leading-3.5 md:leading-4.5 md:text-base mb-1 md:mb-3">

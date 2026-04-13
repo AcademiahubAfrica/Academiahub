@@ -8,23 +8,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-import { Button } from "@/components/ui/button";
 import AnalyticFilters from "./AnalyticFilters";
-
-const chartData = [
-  { month: "January", downloads: 0 },
-  { month: "February", downloads: 10 },
-  { month: "March", downloads: 50 },
-  { month: "April", downloads: 173 },
-  { month: "May", downloads: 209 },
-  { month: "June", downloads: 214 },
-  { month: "July", downloads: 180 },
-  { month: "August", downloads: 220 },
-  { month: "September", downloads: 195 },
-  { month: "October", downloads: 250 },
-  { month: "November", downloads: 300 },
-  { month: "December", downloads: 375 },
-];
+import type { MonthlyDownload } from "@/lib/analytics";
 
 const chartConfig = {
   downloads: {
@@ -33,7 +18,11 @@ const chartConfig = {
   },
 };
 
-export default function MyChart() {
+export default function MyChart({
+  data,
+}: {
+  data: MonthlyDownload[];
+}) {
   return (
     <section className="md:px-4 py-2 md:py-4 bg-white rounded-[20px] lg:basis-[58%] w-[97%]">
       <div className="flex justify-between items-center mb-2">
@@ -45,7 +34,7 @@ export default function MyChart() {
       </div>
 
       <ChartContainer config={chartConfig} className="min-h-50 h-[92%] w-full ">
-        <AreaChart data={chartData}>
+        <AreaChart data={data}>
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
 
           <XAxis

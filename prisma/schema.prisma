@@ -49,8 +49,19 @@ model User {
   saves             Save[]
   downloadRecords   DownloadRecord[]
   reviews           Review[]
+  profileVisitsReceived ProfileVisit[] @relation("profileVisitsReceived")
   allowMessages     Boolean          @default(true)
   showInSearch      Boolean          @default(true)
+}
+
+model ProfileVisit {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  profileOwner   User     @relation("profileVisitsReceived", fields: [profileOwnerId], references: [id])
+  profileOwnerId String   @db.ObjectId
+  visitorId      String?  @db.ObjectId
+  createdAt      DateTime @default(now())
+
+  @@index([profileOwnerId, createdAt(sort: Desc)])
 }
 
 model Profile {

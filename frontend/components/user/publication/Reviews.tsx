@@ -12,8 +12,7 @@ type Props = {
 };
 
 const Reviews = ({ documentId, aggregate, userRating, canReview }: Props) => {
-  const avgDisplay =
-    aggregate.total > 0 ? aggregate.average.toFixed(1) : "0.0";
+  const avgDisplay = aggregate.total > 0 ? aggregate.average.toFixed(1) : "0.0";
   const reviewLabel = `${aggregate.total} ${
     aggregate.total === 1 ? "review" : "reviews"
   }`;
@@ -52,8 +51,7 @@ const Reviews = ({ documentId, aggregate, userRating, canReview }: Props) => {
 
           <div className="space-y-1 basis-[40%] ">
             {[5, 4, 3, 2, 1].map((star) => {
-              const count =
-                aggregate.distribution[star as 1 | 2 | 3 | 4 | 5];
+              const count = aggregate.distribution[star as 1 | 2 | 3 | 4 | 5];
               const value = (count / maxCount) * 100;
               return (
                 <div className="flex gap-px items-center " key={star}>
