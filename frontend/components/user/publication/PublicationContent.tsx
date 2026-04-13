@@ -7,6 +7,7 @@ import Comments from "./Comments";
 import CommentOrReview from "./CommentOrReview";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getReviewAggregate } from "@/lib/reviews/aggregate";
 
 const PublicationContent = async ({
   params,
@@ -15,7 +16,7 @@ const PublicationContent = async ({
 }) => {
   const { id } = await params;
 
-  const [document, comments, totalComments, session] = await Promise.all([
+  const [document, comments, totalComments, session, aggregate] = await Promise.all([
     prisma.document.findUnique({
       where: { id },
       include: {
@@ -32,13 +33,14 @@ const PublicationContent = async ({
     }),
     prisma.comment.count({ where: { documentId: id } }),
     getServerSession(authOptions),
+    getReviewAggregate(id),
   ]);
 
   if (!document) {
     throw new Error("Document not found");
   }
 
-  const [profile, existingLike, existingSave] = await Promise.all([
+  const [profile, existingLike, existingSave, userReview] = await Promise.all([
     fetchProfile(document.author.id),
     session?.user?.id
       ? prisma.like.findUnique({
@@ -52,7 +54,23 @@ const PublicationContent = async ({
           select: { id: true },
         })
       : null,
+    session?.user?.id
+      ? prisma.review.findUnique({
+          where: { userId_documentId: { userId: session.user.id, documentId: id } },
+          select: { rating: true },
+        })
+      : null,
   ]);
+
+  const canReview =
+    !!session?.user?.id && session.user.id !== document.author.id;
+
+  const reviewsProps = {
+    documentId: id,
+    aggregate,
+    userRating: userReview?.rating ?? null,
+    canReview,
+  };
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-[2fr_1fr] relative gap-2 ">
@@ -62,11 +80,12 @@ const PublicationContent = async ({
           comments={comments}
           id={id}
           totalcomments={totalComments}
+          reviewsProps={reviewsProps}
         />
       </MainDetails>
 
       {/* side */}
-      <ProfileCard profile={profile} />
+      <ProfileCard profile={profile} reviewsProps={reviewsProps} />
     </section>
   );
 };
