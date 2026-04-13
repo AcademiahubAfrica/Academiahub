@@ -3,6 +3,7 @@ import prisma from "@/prisma/connection";
 import { Profile } from "@/app/_types/author";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { recordProfileVisit } from "@/lib/analytics";
 import OtherUserPublications from "./OtherUserPublications";
 
 const MainContent = async ({
@@ -27,18 +28,22 @@ const MainContent = async ({
     }),
   ]);
 
+  recordProfileVisit(session!.user.id, otherUserId).catch((err) =>
+    console.error("Failed to record profile visit:", err),
+  );
+
   let likedDocumentIds = new Set<string>();
   let savedDocumentIds = new Set<string>();
 
-  if (session?.user?.id && documents.length > 0) {
+  if (documents.length > 0) {
     const documentIds = documents.map((d) => d.id);
     const [likes, saves] = await Promise.all([
       prisma.like.findMany({
-        where: { userId: session.user.id, documentId: { in: documentIds } },
+        where: { userId: session!.user.id, documentId: { in: documentIds } },
         select: { documentId: true },
       }),
       prisma.save.findMany({
-        where: { userId: session.user.id, documentId: { in: documentIds } },
+        where: { userId: session!.user.id, documentId: { in: documentIds } },
         select: { documentId: true },
       }),
     ]);
@@ -55,7 +60,7 @@ const MainContent = async ({
         <p className="text-center text-gray-500 py-8">No publications yet</p>
       ) : (
         <OtherUserPublications
-          userId={session?.user?.id ?? ""}
+          userId={session!.user.id}
           documents={documents}
           likedDocumentIds={likedDocumentIds}
           savedDocumentIds={savedDocumentIds}

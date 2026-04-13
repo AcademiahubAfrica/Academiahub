@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/chart";
 
 import AnalyticFilters from "./AnalyticFilters";
-import type { MonthlyDownload } from "@/lib/analytics";
+import type { ChartPoint } from "@/lib/analytics";
 
 const chartConfig = {
   downloads: {
@@ -21,7 +21,7 @@ const chartConfig = {
 export default function MyChart({
   data,
 }: {
-  data: MonthlyDownload[];
+  data: ChartPoint[];
 }) {
   return (
     <section className="md:px-4 py-2 md:py-4 bg-white rounded-[20px] lg:basis-[58%] w-[97%]">
@@ -38,11 +38,10 @@ export default function MyChart({
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
 
           <XAxis
-            dataKey="month"
+            dataKey="label"
             tickLine={false}
             axisLine={false}
             tickMargin={8}
-            tickFormatter={(value) => value.slice(0, 3)}
           />
 
           <YAxis

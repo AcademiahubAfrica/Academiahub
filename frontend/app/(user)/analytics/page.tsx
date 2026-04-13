@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { getServerSession } from "next-auth";
 import { userPagesMetadata } from "@/app/data/Exports";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getAnalytics } from "@/lib/analytics";
+import { getAnalytics, isTimeRange } from "@/lib/analytics";
 import Header from "@/components/user/analytics/Header";
 import MyChart from "@/components/user/analytics/MyChart";
 import Statistics from "@/components/user/analytics/Statistics";
@@ -12,30 +12,43 @@ import PageName from "@/components/user/shared/PageName";
 
 export const metadata = userPagesMetadata.analytics;
 
-const AnalyticsContent = async () => {
-  const session = await getServerSession(authOptions);
-  const { stats, monthlyDownloads, recentActivities } = await getAnalytics(
+const AnalyticsContent = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ time?: string }>;
+}) => {
+  const [session, { time }] = await Promise.all([
+    getServerSession(authOptions),
+    searchParams,
+  ]);
+  const timeRange = isTimeRange(time) ? time : "yearly";
+  const { stats, chartData, recentActivities } = await getAnalytics(
     session!.user.id,
+    timeRange,
   );
 
   return (
     <>
       <Statistics stats={stats} />
       <div className="flex flex-col mt-2 md:mt-5  lg:flex-row lg:gap-2 lg:justify-between">
-        <MyChart data={monthlyDownloads} />
+        <MyChart data={chartData} />
         <RecentActivities activities={recentActivities} />
       </div>
     </>
   );
 };
 
-const Page = () => {
+const Page = ({
+  searchParams,
+}: {
+  searchParams: Promise<{ time?: string }>;
+}) => {
   return (
     <main className="mt-2 lg:px-4">
       <Header />
       <PageName />
       <Suspense fallback={<AnalyticsSkeleton />}>
-        <AnalyticsContent />
+        <AnalyticsContent searchParams={searchParams} />
       </Suspense>
     </main>
   );
