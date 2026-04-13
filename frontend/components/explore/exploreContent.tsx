@@ -165,7 +165,7 @@ export default function ExploreContent() {
                 : "sm:grid-cols-2 lg:grid-cols-3"
             } gap-6 lg:gap-8`}
           >
-            {documents.map((doc, index) => (
+            {documents.map((doc) => (
               <article
                 key={doc.id}
                 className={`bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300 ${
