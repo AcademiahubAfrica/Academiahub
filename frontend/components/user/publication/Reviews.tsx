@@ -22,7 +22,7 @@ const Reviews = ({ documentId, aggregate, userRating, canReview }: Props) => {
     aggregate.distribution[3],
     aggregate.distribution[4],
     aggregate.distribution[5],
-    1,
+    1
   );
 
   return (
@@ -76,9 +76,7 @@ const Reviews = ({ documentId, aggregate, userRating, canReview }: Props) => {
 
       {canReview && (
         <div className="px-8 space-y-2.5">
-          <h3 className="text-center ">
-            Share your feedback for this publication
-          </h3>
+          <h3 className="text-center ">Share your feedback for this course</h3>
           <StarRatings
             documentId={documentId}
             initialRating={userRating ?? 0}
