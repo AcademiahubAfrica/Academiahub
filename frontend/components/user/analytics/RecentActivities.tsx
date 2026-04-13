@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Activity from "./Activity";
 import type { RecentActivity } from "@/lib/analytics";
@@ -13,8 +14,8 @@ const RecentActivities = ({
         <h3 className="text-[10px] md:text-lg font-semibold">
           Recent Activities
         </h3>
-        <Button variant="link" className="text-black max-sm:text-sm">
-          View All
+        <Button asChild variant="link" className="text-black max-sm:text-sm">
+          <Link href="/dashboard">View All</Link>
         </Button>
       </div>
 
