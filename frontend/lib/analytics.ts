@@ -1,5 +1,13 @@
 import prisma from "@/prisma/connection";
 
+export type TimeRange = "yearly" | "monthly" | "weekly" | "daily";
+
+export const isTimeRange = (value: unknown): value is TimeRange =>
+  value === "yearly" ||
+  value === "monthly" ||
+  value === "weekly" ||
+  value === "daily";
+
 export type StatMetric = {
   value: number;
   percentageChange: number;
@@ -12,8 +20,8 @@ export type AnalyticsStats = {
   profileVisits: StatMetric;
 };
 
-export type MonthlyDownload = {
-  month: string;
+export type ChartPoint = {
+  label: string;
   downloads: number;
 };
 
@@ -26,7 +34,7 @@ export type RecentActivity = {
 
 export type AnalyticsPayload = {
   stats: AnalyticsStats;
-  monthlyDownloads: MonthlyDownload[];
+  chartData: ChartPoint[];
   recentActivities: RecentActivity[];
 };
 
@@ -44,21 +52,84 @@ export function formatTimeAgo(date: Date): string {
   return `${diffHr} hour${diffHr === 1 ? "" : "s"} ago`;
 }
 
-const monthKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}`;
-const monthLabel = (d: Date) =>
-  d.toLocaleString("en-US", { month: "short", year: "numeric" });
+type BucketPlan = {
+  start: Date;
+  buckets: { key: string; label: string }[];
+  keyFor: (d: Date) => string;
+};
 
-export async function getAnalytics(userId: string): Promise<AnalyticsPayload> {
+const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const MONTHS_SHORT = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
+function planBuckets(now: Date, range: TimeRange): BucketPlan {
+  if (range === "daily") {
+    const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const buckets = Array.from({ length: 24 }, (_, h) => ({
+      key: String(h),
+      label: String(h),
+    }));
+    return { start, buckets, keyFor: (d) => String(d.getHours()) };
+  }
+  if (range === "weekly") {
+    const start = new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000);
+    start.setHours(0, 0, 0, 0);
+    const buckets = Array.from({ length: 7 }, (_, i) => {
+      const date = new Date(start.getTime() + i * 24 * 60 * 60 * 1000);
+      const label = WEEKDAYS[date.getDay()];
+      const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+      return { key, label };
+    });
+    return {
+      start,
+      buckets,
+      keyFor: (d) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`,
+    };
+  }
+  if (range === "monthly") {
+    const start = new Date(now.getFullYear(), now.getMonth(), 1);
+    const daysInMonth = new Date(
+      now.getFullYear(),
+      now.getMonth() + 1,
+      0,
+    ).getDate();
+    const buckets = Array.from({ length: daysInMonth }, (_, i) => ({
+      key: String(i + 1),
+      label: String(i + 1),
+    }));
+    return { start, buckets, keyFor: (d) => String(d.getDate()) };
+  }
+  const start = new Date(now.getFullYear(), now.getMonth() - 11, 1);
+  const buckets = Array.from({ length: 12 }, (_, i) => {
+    const date = new Date(now.getFullYear(), now.getMonth() - 11 + i, 1);
+    return {
+      key: `${date.getFullYear()}-${date.getMonth()}`,
+      label: MONTHS_SHORT[date.getMonth()],
+    };
+  });
+  return {
+    start,
+    buckets,
+    keyFor: (d) => `${d.getFullYear()}-${d.getMonth()}`,
+  };
+}
+
+export async function getAnalytics(
+  userId: string,
+  timeRange: TimeRange = "yearly",
+): Promise<AnalyticsPayload> {
   const now = new Date();
   const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  const startOf12MonthsAgo = new Date(now.getFullYear(), now.getMonth() - 11, 1);
   const startOfRecentWindow = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  const plan = planBuckets(now, timeRange);
 
   const [
-    uploadsAggregate,
-    downloadsSum,
-    monthlyDownloadRecords,
+    uploadsTotal,
+    downloadsAggregate,
+    chartRecords,
     uploadsThisMonth,
     uploadsLastMonth,
     downloadsThisMonth,
@@ -79,7 +150,7 @@ export async function getAnalytics(userId: string): Promise<AnalyticsPayload> {
     prisma.downloadRecord.findMany({
       where: {
         document: { authorId: userId },
-        createdAt: { gte: startOf12MonthsAgo },
+        createdAt: { gte: plan.start },
       },
       select: { createdAt: true },
     }),
@@ -143,16 +214,15 @@ export async function getAnalytics(userId: string): Promise<AnalyticsPayload> {
     }),
   ]);
 
-  const buckets = new Map<string, { month: string; downloads: number }>();
-  for (let i = 11; i >= 0; i--) {
-    const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    buckets.set(monthKey(date), { month: monthLabel(date), downloads: 0 });
+  const bucketMap = new Map<string, ChartPoint>();
+  for (const b of plan.buckets) {
+    bucketMap.set(b.key, { label: b.label, downloads: 0 });
   }
-  for (const record of monthlyDownloadRecords) {
-    const bucket = buckets.get(monthKey(new Date(record.createdAt)));
+  for (const record of chartRecords) {
+    const bucket = bucketMap.get(plan.keyFor(new Date(record.createdAt)));
     if (bucket) bucket.downloads++;
   }
-  const monthlyDownloads = Array.from(buckets.values());
+  const chartData = plan.buckets.map((b) => bucketMap.get(b.key)!);
 
   const recentActivities: RecentActivity[] = recentDocs.map((doc) => ({
     id: doc.id,
@@ -164,11 +234,11 @@ export async function getAnalytics(userId: string): Promise<AnalyticsPayload> {
   return {
     stats: {
       uploads: {
-        value: uploadsAggregate,
+        value: uploadsTotal,
         percentageChange: pctChange(uploadsThisMonth, uploadsLastMonth),
       },
       downloads: {
-        value: downloadsSum._sum.downloads ?? 0,
+        value: downloadsAggregate._sum.downloads ?? 0,
         percentageChange: pctChange(downloadsThisMonth, downloadsLastMonth),
       },
       saves: {
@@ -183,7 +253,29 @@ export async function getAnalytics(userId: string): Promise<AnalyticsPayload> {
         ),
       },
     },
-    monthlyDownloads,
+    chartData,
     recentActivities,
   };
+}
+
+export async function recordProfileVisit(
+  visitorId: string,
+  profileOwnerId: string,
+): Promise<void> {
+  if (visitorId === profileOwnerId) return;
+
+  const since = new Date(Date.now() - 30 * 60 * 1000);
+  const recent = await prisma.profileVisit.findFirst({
+    where: {
+      profileOwnerId,
+      visitorId,
+      createdAt: { gte: since },
+    },
+    select: { id: true },
+  });
+  if (recent) return;
+
+  await prisma.profileVisit.create({
+    data: { profileOwnerId, visitorId },
+  });
 }
