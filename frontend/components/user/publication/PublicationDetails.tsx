@@ -83,9 +83,12 @@ const PublicationDetails = ({id, details, isLiked, isSaved }: { details: Documen
           documentId={details.id}
           fileUrl={details.fileUrl}
           fileName={details.fileName}
-          className=" text-xs md:text-base h-7.5 md:h-11"
+          className="w-full min-w-0 px-1 md:px-6 text-[11px] md:text-base h-7.5 md:h-11"
           onDownload={() => setDownloadCount((prev) => prev + 1)}
-        />
+        >
+          <span className="md:hidden">Download</span>
+          <span className="hidden md:inline">Download Publication</span>
+        </DownloadButton>
         <SaveButton documentId={details.id} initialSaved={isSaved} variant="button" />
        
         <Button onClick={() => router.push(`/publication/${id}/report-issue`)} className=" border-primary h-7.5 md:h-11 hover:bg-primary/85 hover:text-white text-xs md:text-base" variant={'outline'}>Report</Button>
