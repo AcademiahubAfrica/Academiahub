@@ -1,27 +1,36 @@
-// "use client"
-
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { CiClock1 } from "react-icons/ci";
+import { Button } from "@/components/ui/button";
+import type { RecentActivity } from "@/lib/analytics";
 
-const array = [...Array(4)];
-const Activity = () => {
+const Activity = ({ activities }: { activities: RecentActivity[] }) => {
+  if (activities.length === 0) {
+    return (
+      <p className="text-grey text-xs md:text-sm p-2 md:p-4">
+        No recent uploads in the last 24 hours.
+      </p>
+    );
+  }
+
   return (
     <>
-      {array.map((_, index) => (
+      {activities.map((activity) => (
         <div
           className="p-2 md:p-4 flex  items-center justify-between mb-1 "
-          key={index}
+          key={activity.id}
         >
           <div className="space-y-2 ">
             <p className="text-[10px] leading-[130%] md:text-sm line-clamp-2 w-[80%]">
-              Chidinma Okafor uploaded Smart Traffic Management System
+              {activity.authorName} uploaded {activity.title}
             </p>
             <span className="flex items-center gap-1 text-grey text-[10px]! md:text-sm!">
               <CiClock1 />
-              <small>10 minutes ago</small>
+              <small>{activity.timeAgo}</small>
             </span>
           </div>
-          <Button className="max-sm:text-xs">View</Button>
+          <Button asChild className="max-sm:text-xs">
+            <Link href={`/publication/${activity.id}`}>View</Link>
+          </Button>
         </div>
       ))}
     </>
