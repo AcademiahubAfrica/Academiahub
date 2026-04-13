@@ -14,7 +14,6 @@ interface ExploreSectionProps {
 
 const ExploreSection = async ({
 	limit = 12,
-	showSearch = true,
 	showViewAllButton = true,
 }: ExploreSectionProps) => {
 	const documents = await prisma.document.findMany({
