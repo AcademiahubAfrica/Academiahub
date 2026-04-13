@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Reviews from "./Reviews";
 import Comments from "./Comments";
 import { Button } from "@/components/ui/button";
+import type { ReviewAggregate } from "@/lib/reviews/aggregate";
+
 interface Commenter {
   id: string;
   name: string | null;
@@ -19,13 +21,21 @@ export interface Comment {
   user: Commenter;
 }
 
+type ReviewsProps = {
+  documentId: string;
+  aggregate: ReviewAggregate;
+  userRating: number | null;
+  canReview: boolean;
+};
+
 interface Props {
   comments: Comment[];
   id: string;
   totalcomments: number;
+  reviewsProps: ReviewsProps;
 }
 
-const CommentOrReview = ({ comments, id, totalcomments }: Props) => {
+const CommentOrReview = ({ comments, id, totalcomments, reviewsProps }: Props) => {
   const [showView, setShowView] = useState("comments");
 
   return (
@@ -50,7 +60,7 @@ const CommentOrReview = ({ comments, id, totalcomments }: Props) => {
           setShowView={setShowView}
         />
       ) : (
-        <Reviews />
+        <Reviews {...reviewsProps} />
       )}
     </>
   );
