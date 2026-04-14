@@ -83,15 +83,7 @@ const Navbar = () => {
 
       {/* CTA Buttons  */}
       <div className="buttons hidden md:flex items-center gap-4.5">
-        <Link href={"/signup"}>
-          <Button
-            variant="default"
-            size="lg"
-            className="font-normal cursor-pointer text-[14px] leading-[130%] w-37.5"
-          >
-            Join for free
-          </Button>
-        </Link>
+      
         <Link href={"/login"}>
           <Button
             variant="secondary"
