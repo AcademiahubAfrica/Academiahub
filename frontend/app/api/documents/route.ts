@@ -3,15 +3,42 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 
+type DocumentCategory = "RESEARCH" | "SEMINAR" | "PROJECT" | "ANALYSIS";
+
+const CATEGORY_MAP: Record<string, DocumentCategory> = {
+  research: "RESEARCH",
+  seminar: "SEMINAR",
+  project: "PROJECT",
+  analysis: "ANALYSIS",
+};
+
+const REQUIRED_FIELDS = [
+  "title",
+  "description",
+  "category",
+  "institution",
+  "year",
+  "fileUrl",
+  "fileKey",
+  "fileName",
+] as const;
+
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    // Kick off body parse and session check in parallel — they're independent.
+    const [session, body] = await Promise.all([
+      getServerSession(authOptions),
+      request.json().catch(() => null),
+    ]);
 
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body = await request.json();
+    if (!body || typeof body !== "object") {
+      return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+    }
+
     const {
       title,
       description,
@@ -24,28 +51,19 @@ export async function POST(request: NextRequest) {
       fileSize,
     } = body;
 
-    // Validate required fields
-    if (!title || !description || !category || !institution || !year || !fileUrl || !fileKey || !fileName) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+    for (const field of REQUIRED_FIELDS) {
+      if (!body[field]) {
+        return NextResponse.json(
+          { error: `Missing required field: ${field}` },
+          { status: 400 },
+        );
+      }
     }
 
-    // Map category string to enum
-    const categoryMap: Record<string, "RESEARCH" | "SEMINAR" | "PROJECT" | "ANALYSIS"> = {
-      research: "RESEARCH",
-      seminar: "SEMINAR",
-      project: "PROJECT",
-      analysis: "ANALYSIS",
-    };
-
-    const categoryEnum = categoryMap[category.toLowerCase()];
+    const categoryEnum =
+      typeof category === "string" ? CATEGORY_MAP[category.toLowerCase()] : undefined;
     if (!categoryEnum) {
-      return NextResponse.json(
-        { error: "Invalid category" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid category" }, { status: 400 });
     }
 
     const document = await prisma.document.create({
@@ -58,7 +76,7 @@ export async function POST(request: NextRequest) {
         fileUrl,
         fileKey,
         fileName,
-        fileSize: fileSize || 0,
+        fileSize: typeof fileSize === "number" ? fileSize : 0,
         authorId: session.user.id,
       },
     });
