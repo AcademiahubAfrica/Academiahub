@@ -273,7 +273,7 @@ export default function OnboardingProfileForm({
       {/* Right image */}
       <div className="hidden lg:block lg:w-1/2 relative">
         <Image
-          src="/assets/images/signup-image.png"
+          src="/assets/images/onboarding/profile-img.svg"
           alt="Create your profile"
           fill
           className="object-cover"
