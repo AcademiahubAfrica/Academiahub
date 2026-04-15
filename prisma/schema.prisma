@@ -56,7 +56,7 @@ model User {
 
 model ProfileVisit {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  profileOwner   User     @relation("profileVisitsReceived", fields: [profileOwnerId], references: [id])
+  profileOwner   User     @relation("profileVisitsReceived", fields: [profileOwnerId], references: [id], onDelete: Cascade)
   profileOwnerId String   @db.ObjectId
   visitorId      String?  @db.ObjectId
   createdAt      DateTime @default(now())
@@ -67,7 +67,7 @@ model ProfileVisit {
 model Profile {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   bio       Bio
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String   @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -94,7 +94,7 @@ model Document {
   fileSize        Int
   downloads       Int              @default(0)
   likes           Int              @default(0)
-  author          User             @relation(fields: [authorId], references: [id])
+  author          User             @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId        String           @db.ObjectId
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
@@ -107,7 +107,7 @@ model Document {
 
 model Notification {
   id         String           @id @default(auto()) @map("_id") @db.ObjectId
-  user       User             @relation(fields: [userId], references: [id])
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String           @db.ObjectId
   type       NotificationType
   message    String
@@ -122,9 +122,9 @@ model Notification {
 
 model Like {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String   @db.ObjectId
-  document   Document @relation(fields: [documentId], references: [id])
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
   documentId String   @db.ObjectId
   createdAt  DateTime @default(now())
 
@@ -134,9 +134,9 @@ model Like {
 model Comment {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   content    String
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String   @db.ObjectId
-  document   Document @relation(fields: [documentId], references: [id])
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
   documentId String   @db.ObjectId
   createdAt  DateTime @default(now())
 
@@ -145,9 +145,9 @@ model Comment {
 
 model Save {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String   @db.ObjectId
-  document   Document @relation(fields: [documentId], references: [id])
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
   documentId String   @db.ObjectId
   createdAt  DateTime @default(now())
 
@@ -157,9 +157,9 @@ model Save {
 model Review {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   rating     Int
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String   @db.ObjectId
-  document   Document @relation(fields: [documentId], references: [id])
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
   documentId String   @db.ObjectId
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -170,9 +170,9 @@ model Review {
 
 model DownloadRecord {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String   @db.ObjectId
-  document   Document @relation(fields: [documentId], references: [id])
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
   documentId String   @db.ObjectId
   createdAt  DateTime @default(now())
 
@@ -181,9 +181,9 @@ model DownloadRecord {
 
 model Conversation {
   id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  participantA   User          @relation("participantA", fields: [participantAId], references: [id])
+  participantA   User          @relation("participantA", fields: [participantAId], references: [id], onDelete: Cascade)
   participantAId String        @db.ObjectId
-  participantB   User          @relation("participantB", fields: [participantBId], references: [id])
+  participantB   User          @relation("participantB", fields: [participantBId], references: [id], onDelete: Cascade)
   participantBId String        @db.ObjectId
   createdAt      DateTime      @default(now())
   messages       Message[]
@@ -194,7 +194,7 @@ model Conversation {
 
 model Message {
   id             String       @id @default(auto()) @map("_id") @db.ObjectId
-  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   conversationId String       @db.ObjectId
   senderId       String       @db.ObjectId
   content        String
@@ -205,9 +205,9 @@ model Message {
 
 model ReadReceipt {
   id                String       @id @default(auto()) @map("_id") @db.ObjectId
-  conversation      Conversation @relation(fields: [conversationId], references: [id])
+  conversation      Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   conversationId    String       @db.ObjectId
-  user              User         @relation(fields: [userId], references: [id])
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            String       @db.ObjectId
   lastReadMessageId String       @db.ObjectId
   readAt            DateTime     @default(now())
