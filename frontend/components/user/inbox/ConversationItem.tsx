@@ -31,7 +31,7 @@ const ConversationItem = ({ currentUserId, conversation }: ConversationItemProps
       {/* Avatar */}
       <div className="mr-2 relative">
         <Avatar className="h-10 w-10">
-          <AvatarImage src={conversation.otherParticipant.image || ""} />
+          <AvatarImage src={conversation.otherParticipant.image || undefined} />
           <AvatarFallback>
             {getInitials(conversation.otherParticipant.name || "")}
           </AvatarFallback>
