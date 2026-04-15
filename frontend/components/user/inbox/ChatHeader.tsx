@@ -29,7 +29,7 @@ export default function ChatHeader({
         />
         <Avatar className="h-10 w-10 md:w-15 md:h-15">
           <AvatarImage
-            src={partner?.image || ""}
+            src={partner?.image || undefined}
             alt={`${partner?.name}'s avatar`}
           />
           <AvatarFallback>{getInitials(partner?.name || "")}</AvatarFallback>
