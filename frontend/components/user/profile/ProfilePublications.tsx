@@ -62,20 +62,14 @@ async function fetchOwnDocuments(userId: string) {
 }
 
 async function fetchLikedDocuments(userId: string) {
-  const likes = await prisma.like.findMany({
-    where: { userId },
+  return prisma.document.findMany({
+    where: { likeRecords: { some: { userId } } },
     include: {
-      document: {
-        include: {
-          author: { select: { id: true, name: true, image: true } },
-          _count: { select: { commentRecords: true } },
-        },
-      },
+      author: { select: { id: true, name: true, image: true } },
+      _count: { select: { commentRecords: true } },
     },
     orderBy: { createdAt: "desc" },
   });
-
-  return likes.map((l) => l.document);
 }
 
 export default ProfilePublications;
