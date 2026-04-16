@@ -13,6 +13,7 @@ import DownloadButton from "../shared/DownloadButton";
 import Like from "@/components/Like";
 import SaveButton from "@/components/SaveButton";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 const PublicationDetails = ({id, details, isLiked, isSaved, isOwner }: { details: Document; isLiked: boolean; isSaved: boolean; id: string; isOwner: boolean }) => {
   const [downloadCount, setDownloadCount] = useState(details.downloads);
@@ -23,7 +24,7 @@ const PublicationDetails = ({id, details, isLiked, isSaved, isOwner }: { details
       {/* profile pic and name */}
 
       <div className="flex items-start justify-between">
-        <div className="flex gap-1.5 md:gap-1 mb-2.75 items-center">
+        <Link href={`/profile/${details.authorId}`} className="flex gap-1.5 md:gap-1 mb-2.75 items-center">
           <Avatar className="size-10 p-1 max-sm:border border-white lg:size-15">
             <AvatarImage src={details.author.image || undefined} />
             <AvatarFallback>
@@ -39,7 +40,7 @@ const PublicationDetails = ({id, details, isLiked, isSaved, isOwner }: { details
               {details.institution}
             </p>
           </div>
-        </div>
+        </Link>
 
         {/* message button for mobile */}
         <MessageAuthorButton authorId={details.authorId} className="md:hidden p-1" label="Message" />
