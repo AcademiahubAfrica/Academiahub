@@ -3,7 +3,6 @@ import { Profile } from "@/app/_types/author";
 import MainDetails from "./MainDetails";
 import ProfileCard from "./ProfileCard";
 import PublicationDetails from "./PublicationDetails";
-import Comments from "./Comments";
 import CommentOrReview from "./CommentOrReview";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -75,7 +74,7 @@ const PublicationContent = async ({
   return (
     <section className="grid grid-cols-1 md:grid-cols-[2fr_1fr] relative gap-2 ">
       <MainDetails>
-        <PublicationDetails id={id} details={document} isLiked={!!existingLike} isSaved={!!existingSave} />
+        <PublicationDetails id={id} details={document} isLiked={!!existingLike} isSaved={!!existingSave} isOwner={!canReview} />
         <CommentOrReview
           comments={comments}
           id={id}
