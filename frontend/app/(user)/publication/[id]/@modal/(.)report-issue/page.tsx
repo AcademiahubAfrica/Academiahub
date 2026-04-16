@@ -1,77 +1,63 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { reports } from "@/app/data/reports";
-import { useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { useEffect, useRef, useCallback } from "react";
+import ReportForm from "@/components/user/publication/ReportForm";
 
-const ReportModal = () => {
-  const [isSubmitSuccess, setIsSubmitSuccess] = useState(false)
-	const [openInput, setOpenInput] = useState(false)
-	const router = useRouter();
+const BACKDROP_CLASS =
+  "fixed inset-0 z-50 flex items-center justify-center p-10";
+const OVERLAY_CLASS = "absolute inset-0 bg-slate-300/60 backdrop-blur-sm";
 
-	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center p-10">
-			<div className="absolute inset-0 bg-slate-300/60 backdrop-blur-sm" />
+export default function ReportModal() {
+  const router = useRouter();
+  const { id } = useParams<{ id: string }>();
+  const dialogRef = useRef<HTMLDivElement>(null);
 
-			<div
-				className="relative z-10 bg-white text-black rounded-xl shadow-lg min-w-[320px] max-w-133.75 flex justify-center"
-				onClick={(e) => e.stopPropagation()}
-			>
-        {
-          isSubmitSuccess ? (
-            <div className="w-full max-w-73.25 p-4.75 flex flex-col items-center ">
-              <h3 className="font-semibold text-center mb-3.75 text-lg">Report submitted</h3>
-              <p className="text-center mb-3 text-sm">Thanks for your feedback. We will review this publication and take appropriate action.</p>
-              <Button className="w-full" onClick={()=> router.back()} variant={'default'}>Done</Button>
-            </div>
-          ) : (<div>
-					<header className="mb-6.5 pt-6 px-6 ">
-						<h2 className="text-lg font-semibold mb-2">
-							Report this publication
-						</h2>
-						<p className="text-sm leading-snug">
-							Tell us why your are reporting this content. Your feedback helps
-							keep the platform safe
-						</p>
-					</header>
+  const handleClose = useCallback(() => router.back(), [router]);
 
-					<ul>
-						{reports.map((report, index) => (
-							<li
-								key={index}
-								className="flex justify-between items-center border-b-2 border-b-gray-300 px-6 pb-3 mt-3"
-							>
-								<p className="font-medium">{report}</p>
-								<input type="radio" value={report} name="report-issue" />
-							</li>
-						))}
+  // Trap focus and handle Escape key
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key !== "Tab" || !dialogRef.current) return;
 
-						<li onClick={() => setOpenInput(true)} className=" group flex justify-between items-center border-b-2 border-b-gray-300 px-6 pb-3 mt-3.75 cursor-pointer">
-							{
-								openInput ? <textarea placeholder="Type here..." className="w-full resize-none focus-within:outline-0"></textarea> : 	<p className="font-medium cursor-pointer ">Other</p>
-							}
-						
-						</li>
-					</ul>
+      const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
 
-					<div className="grid grid-cols-2 gap-2.5 my-6.5 px-6.5 ">
-						<Button
-							variant={"outline"}
-							onClick={() => router.back()}
-							className="border-primary-500 hover:bg-none"
-						>
-							Close
-						</Button>
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
 
-						<Button onClick={()=>setIsSubmitSuccess(true)} variant={"default"}>Submit</Button>
-					</div>
-				</div>)
-        }
-				
-			</div>
-		</div>
-	);
-};
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
 
-export default ReportModal;
+    document.addEventListener("keydown", onKeyDown);
+    dialogRef.current?.focus();
+
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [handleClose]);
+
+  return (
+    <div className={BACKDROP_CLASS}>
+      <div className={OVERLAY_CLASS} />
+
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="report-title"
+        aria-describedby="report-desc"
+        tabIndex={-1}
+        className="relative z-10 bg-white text-black rounded-xl shadow-lg min-w-[320px] max-w-133.75 flex justify-center outline-none"
+      >
+        <ReportForm documentId={id} onClose={handleClose} />
+      </div>
+    </div>
+  );
+}

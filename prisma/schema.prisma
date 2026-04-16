@@ -28,6 +28,21 @@ enum NotificationType {
   MESSAGE
 }
 
+enum ReportReason {
+  PLAGIARISM
+  MISLEADING
+  COPYRIGHT
+  INAPPROPRIATE
+  SPAM
+  OTHER
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  DISMISSED
+}
+
 model User {
   id                String         @id @default(auto()) @map("_id") @db.ObjectId
   name              String?
@@ -49,6 +64,7 @@ model User {
   saves             Save[]
   downloadRecords   DownloadRecord[]
   reviews           Review[]
+  reports           Report[]
   profileVisitsReceived ProfileVisit[] @relation("profileVisitsReceived")
   allowMessages     Boolean          @default(true)
   showInSearch      Boolean          @default(true)
@@ -103,6 +119,7 @@ model Document {
   saveRecords     Save[]
   downloadRecords DownloadRecord[]
   reviewRecords   Review[]
+  reportRecords   Report[]
 }
 
 model Notification {
@@ -165,6 +182,22 @@ model Review {
   updatedAt  DateTime @updatedAt
 
   @@unique([userId, documentId])
+  @@index([documentId])
+}
+
+model Report {
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  reason      ReportReason[]
+  description String?
+  status      ReportStatus   @default(PENDING)
+  reporter    User           @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  reporterId  String         @db.ObjectId
+  document    Document       @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId  String         @db.ObjectId
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@unique([reporterId, documentId])
   @@index([documentId])
 }
 

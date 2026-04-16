@@ -14,7 +14,7 @@ import Like from "@/components/Like";
 import SaveButton from "@/components/SaveButton";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-const PublicationDetails = ({id, details, isLiked, isSaved }: { details: Document; isLiked: boolean; isSaved: boolean, id:string }) => {
+const PublicationDetails = ({id, details, isLiked, isSaved, isOwner }: { details: Document; isLiked: boolean; isSaved: boolean; id: string; isOwner: boolean }) => {
   const [downloadCount, setDownloadCount] = useState(details.downloads);
 
   const router = useRouter()
@@ -78,7 +78,7 @@ const PublicationDetails = ({id, details, isLiked, isSaved }: { details: Documen
           <p className="">{downloadCount}</p>
         </span>
       </div>
-      <div className="grid grid-cols-3  gap-2 md:gap-5 mb-3 lg:mb-5 justify-between p">
+      <div className={`grid ${isOwner ? "grid-cols-2" : "grid-cols-3"} gap-2 md:gap-5 mb-3 lg:mb-5 justify-between`}>
         <DownloadButton
           documentId={details.id}
           fileUrl={details.fileUrl}
@@ -90,9 +90,10 @@ const PublicationDetails = ({id, details, isLiked, isSaved }: { details: Documen
           <span className="hidden md:inline">Download Publication</span>
         </DownloadButton>
         <SaveButton documentId={details.id} initialSaved={isSaved} variant="button" />
-       
-        <Button onClick={() => router.push(`/publication/${id}/report-issue`)} className=" border-primary h-7.5 md:h-11 hover:bg-primary/85 hover:text-white text-xs md:text-base" variant={'outline'}>Report</Button>
-        
+
+        {!isOwner && (
+          <Button onClick={() => router.push(`/publication/${id}/report-issue`)} className="border-primary h-7.5 md:h-11 hover:bg-primary/85 hover:text-white text-xs md:text-base" variant="outline">Report</Button>
+        )}
       </div>
 
       <Like documentId={details.id} initialLiked={isLiked} initialCount={details.likes} />
