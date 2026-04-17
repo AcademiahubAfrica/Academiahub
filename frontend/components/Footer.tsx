@@ -1,6 +1,5 @@
 import Image from "next/image";
 import {
-  AiFillFacebook,
   AiFillInstagram,
   AiFillLinkedin,
   AiOutlineMail,
@@ -124,28 +123,21 @@ const Footer = () => {
           <div className="w-full flex flex-col items-center gap-4">
             <div className="flex items-center gap-3">
               <Link
-                href="https://www.linkedin.com/"
+                href="https://www.linkedin.com/company/academiahub-africa/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <AiFillLinkedin className="text-[26px]" />
               </Link>
               <Link
-                href="https://www.facebook.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <AiFillFacebook className="text-[26px]" />
-              </Link>
-              <Link
-                href="https://www.instagram.com/"
+                href="https://www.instagram.com/academiahubafrica"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <AiFillInstagram className="text-[26px]" />
               </Link>
               <Link
-                href="https://x.com/"
+                href="https://x.com/Academiahub_A"
                 target="_blank"
                 rel="noopener noreferrer"
               >
