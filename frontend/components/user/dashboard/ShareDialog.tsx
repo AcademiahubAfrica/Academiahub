@@ -74,7 +74,7 @@ const ShareDialog = ({
             </h3>
             <div className="flex items-center   py-4 px-2 gap-1.5 mb-3 ">
               {data.author.image ? (
-                <div className="w-5 h-5 md:w-10 rounded-full border border-white md:h-10 relative">
+                <div className="w-5 h-5 md:w-10 shrink-0 rounded-full border border-white md:h-10 relative">
                   <Image
                     className="rounded-full "
                     fill
@@ -83,7 +83,7 @@ const ShareDialog = ({
                   />
                 </div>
               ) : (
-                <div className="size-5 md:size-10 rounded-full bg-grey flex items-center justify-center text-[6px] md:text-xs font-medium">
+                <div className="size-5 md:size-10 shrink-0 rounded-full bg-grey flex items-center justify-center text-[6px] md:text-xs font-medium">
                   {getInitials(data.author.name || "")}
                 </div>
               )}

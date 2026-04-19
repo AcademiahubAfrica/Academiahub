@@ -32,11 +32,11 @@ const KebabIcon = memo(function KebabIcon({
           side="bottom"
           align="start"
           sideOffset={5}
-          className="p-0 rounded-none w-22 md:w-27.5"
+          className="p-0  w-24 md:w-27.5 lg:w-34"
         >
           <DropdownMenuItem
             onSelect={handleShare}
-            className="border-[#AEAEAE] border-b max-sm:text-xs h-7 md:h-10 flex justify-center items-center rounded-none"
+            className="border-[#AEAEAE] border-b max-sm:text-xs h-7 md:h-10 flex justify-center items-center "
           >
             Share
           </DropdownMenuItem>
@@ -44,14 +44,14 @@ const KebabIcon = memo(function KebabIcon({
           {isOwnDocument ? (
             <DropdownMenuItem
               variant="destructive"
-              className="border-[#AEAEAE] border-b max-sm:text-xs h-7 md:h-10 flex justify-center items-center rounded-none"
+              className="border-[#AEAEAE] border-b max-sm:text-xs h-7 md:h-10 flex justify-center items-center "
             >
               Delete
             </DropdownMenuItem>
           ) : (
             <DropdownMenuItem
               asChild
-              className="border-[#AEAEAE] border-b max-sm:text-xs h-7 md:h-10 flex justify-center items-center rounded-none"
+              className="border-[#AEAEAE] border-b max-sm:text-xs h-7 md:h-10 flex justify-center items-center "
             >
               <Link href={`/publication/${documentId}/report-issue`}>
                 Report
