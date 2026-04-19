@@ -18,11 +18,7 @@ const chartConfig = {
   },
 };
 
-export default function MyChart({
-  data,
-}: {
-  data: ChartPoint[];
-}) {
+export default function MyChart({ data }: { data: ChartPoint[] }) {
   return (
     <section className="md:px-4 py-2 md:py-4 bg-white rounded-[20px] lg:basis-[58%] w-[97%]">
       <div className="flex justify-between items-center mb-2">
