@@ -38,7 +38,7 @@ const ShareDialog = ({
       x: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&text=${encodedText}`,
       linkedin: `https://linkedin.com/sharing/share-offsite/?url=${encodedUrl}&shareActive&mini=true&text=${encodedText}`,
-      instagram: `https://www.instagram.com/`,
+      instagram: `https://www.instagram.com://story-camera`,
     };
 
     const shareUrl = intents[platform];
