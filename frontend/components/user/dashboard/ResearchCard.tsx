@@ -34,8 +34,8 @@ const ResearchCard = ({
 }: ResearchCardProps) => {
   const [showShareDialog, setShowShareDialog] = useState(false);
   const shareData = {
-    title: "MDN",
-    text: "Hello there, check out this cool publication by",
+    title: `New Research: ${data?.title}`,
+    text: `Check out this latest publication by ${data?.author?.name} on Academia Hub Africa. It explores key insights into ${data?.title}.`,
     url: `https://academiahubafrica.org/publication/${data?.id}`,
   };
 
