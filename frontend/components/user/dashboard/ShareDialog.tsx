@@ -24,7 +24,7 @@ const ShareDialog = ({
   function copyToClipboard() {
     try {
       navigator.clipboard.writeText(shareData.url);
-      toast.success("text copied");
+      toast.success("Publication URL copied");
     } catch {
       toast.error("something went wrong");
     }
