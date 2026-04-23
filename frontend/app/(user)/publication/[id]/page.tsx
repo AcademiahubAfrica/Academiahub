@@ -45,7 +45,7 @@ export async function generateMetadata(
     twitter: {
       card: "summary_large_image",
       title: document.title,
-      description: "The React Framework for the Web",
+      description: `Written by ${userName}`,
 
       images: [currentImageUrl],
     },
