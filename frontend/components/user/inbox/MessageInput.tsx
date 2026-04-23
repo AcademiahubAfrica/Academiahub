@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Paperclip, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import { useSendMessage, useTyping } from "@/lib/messaging/hooks";
 
 interface MessageInputProps {
@@ -96,16 +96,6 @@ export default function MessageInput({
       <div className="flex items-end gap-2">
         {/* Input container */}
         <div className="flex-1 flex items-end gap-2 border border-gray-200 rounded-full px-4 py-2 bg-gray-50 focus-within:border-primary-500 focus-within:ring-1 focus-within:ring-primary-500 transition-all">
-          {/* Paperclip — non-functional placeholder per spec */}
-          <button
-            type="button"
-            className="text-gray-400 hover:text-gray-600 transition-colors shrink-0 mb-0.5"
-            aria-label="Attach file"
-            disabled
-          >
-            <Paperclip size={18} />
-          </button>
-
           {/* Textarea */}
           <textarea
             ref={textareaRef}
