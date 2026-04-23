@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Explore from "../../components/landing/ExploreSection";
-import { userImg } from "../data/userImgData";
 import ChooseUs from "../../components/landing/LandingChooseUs";
-import LandingUserSay from "../../components/landing/LandingUserSay";
 import LandingAboutUs from "../../components/landing/LandingAboutUs";
 import JoinUs from "@/components/landing/JoinUs";
 import HowItWorks from "@/components/landing/HowItWorks";
@@ -41,45 +39,6 @@ export default function Home() {
             </p>
 
             <HeroButtons />
-
-            {/* User Images + CTA text */}
-            <div className="mt-1">
-              <div className="flex pl-10">
-                {userImg.map((img) => (
-                  <Image
-                    className="-ml-10"
-                    key={img.id}
-                    src={img.imagePath}
-                    alt={`User ${img.id}`}
-                    width={60}
-                    height={60}
-                    loading="eager"
-                  />
-                ))}
-              </div>
-              <p className="text-sm sm:text-base mt-3 leading-snug text-primary font-normal">
-                Be part of a Growing Academic Network
-              </p>
-            </div>
-
-            {/* Stats */}
-            <div className="flex flex-wrap gap-6 sm:gap-8 lg:gap-10 text-left -mt-1">
-              {[
-                { value: "500+", label: "Active Users" },
-                { value: "1000+", label: "Projects available" },
-                { value: "100+", label: "Institutions" },
-              ].map(({ value, label }) => (
-                <div key={label} className="min-w-20">
-                  <p className="font-semibold text-2xl sm:text-3xl xl:text-[2.5rem] leading-tight">
-                    {value}
-                  </p>
-                  <p className="text-xs sm:text-sm xl:text-base font-medium mt-1 leading-snug">
-                    {label}
-                  </p>
-                </div>
-              ))}
-            </div>
-
           </div>
 
           {/* IMAGE COLUMN */}
@@ -100,7 +59,6 @@ export default function Home() {
       <Explore limit={3} />
       <ChooseUs />
       <HowItWorks />
-      <LandingUserSay />
       <LandingAboutUs />
       <LandingFaq />
       <JoinUs />
