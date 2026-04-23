@@ -40,7 +40,8 @@ const ResearchCard = ({
   };
 
   async function onShare() {
-    if (navigator.share && navigator.canShare(shareData)) {
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile && navigator.share && navigator.canShare(shareData)) {
       try {
         await navigator.share(shareData);
       } catch (err) {
