@@ -53,7 +53,8 @@ export default function Home() {
               alt="Hero image"
               width={704}
               height={651}
-              preload={true}
+              loading={"eager"}
+              fetchPriority="high"
             />
           </div>
         </div>
