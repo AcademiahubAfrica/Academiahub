@@ -7,6 +7,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FaMicrosoft, FaApple } from "react-icons/fa";
 import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
+import SignInImg from "../../public/assets/images/signup-image.png";
 
 interface FormData {
   email: string;
@@ -98,10 +99,12 @@ const Signincontent = () => {
       <div className="hidden lg:block lg:w-1/2 lg:sticky lg:top-0 lg:h-screen">
         <div className="h-full  relative flex items-end">
           <Image
-            src="/assets/images/signup-image.png"
+            src={SignInImg}
             alt="Education"
             fill
             className="object-cover object-bottom"
+            preload={true}
+            placeholder="blur"
           />
         </div>
       </div>
@@ -129,7 +132,13 @@ const Signincontent = () => {
           </div>
 
           {/* Form Fields */}
-          <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="space-y-5">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+            className="space-y-5"
+          >
             {/* Email */}
             <div>
               <label className="block label font-medium text-foreground mb-2">

@@ -5,6 +5,7 @@ import { Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import ResetYourPasswordImg from "@/public/assets/images/reset-password.png";
 
 interface FormData {
   email: string;
@@ -51,22 +52,21 @@ const ResetYourPasswordContent = () => {
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-muted">
-      
       {/* Left Image */}
       <div className="hidden lg:block lg:w-1/2 lg:h-screen relative">
         <Image
-          src="/assets/images/reset-password.png"
+          src={ResetYourPasswordImg}
           alt="Reset password"
           fill
           className="object-cover"
-          priority
+          preload
+          placeholder="blur"
         />
       </div>
 
       {/* Right Content */}
       <div className="flex-1 flex items-center justify-center px-6 md:px-12 py-10 bg-background">
         <div className="w-full max-w-md">
-
           {/* Logo */}
           <div className="text-center mb-10">
             <button
@@ -94,7 +94,6 @@ const ResetYourPasswordContent = () => {
 
           {/* Form */}
           <div className="space-y-6">
-
             {/* Email Field */}
             <div>
               <label className="block body-text text-foreground mb-2">
@@ -136,7 +135,6 @@ const ResetYourPasswordContent = () => {
             >
               Back to login
             </button>
-
           </div>
         </div>
       </div>
