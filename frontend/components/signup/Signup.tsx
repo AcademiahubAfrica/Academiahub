@@ -6,6 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FaMicrosoft, FaApple } from "react-icons/fa";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import SignUpImg from "../../public/assets/images/signup-image.png";
 import { useRouter } from "next/navigation";
 
 interface FormData {
@@ -117,10 +118,12 @@ const Signup = () => {
       <div className="hidden lg:block lg:w-1/2 lg:sticky lg:top-0 lg:h-screen">
         <div className="h-full w-full relative flex items-end">
           <Image
-            src="/assets/images/signup-image.png"
+            src={SignUpImg}
             alt="Education"
             fill
             className="w-full h-full object-cover object-bottom"
+            placeholder="blur"
+            preload={true}
           />
         </div>
       </div>
