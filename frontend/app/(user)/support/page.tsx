@@ -1,19 +1,23 @@
-import Image from "next/image";
+import PageName from "@/components/user/shared/PageName";
+import SupportLinks from "@/components/user/support/SupportLinks";
 
 const page = () => {
   return (
-    <div className="flex flex-col h-full mb-2 bg-white rounded-2xl mt-2 lg:mt-6 lg:mx-6 items-center justify-center text-center px-2 gap-4">
-      <Image
-        src="/assets/images/helpandsupport.svg"
-        alt="Help & Support"
-        width={80}
-        height={80}
-      />
-      <p>Help & Support</p>
-      <a href="mailto:academiahub@gmail.com">
-        Need help? Contact us at Academiahubafrica@gmail.com
-      </a>
-    </div>
+    <>
+      <PageName />
+      <div className="">
+        <div className="text-center mt-4 md:mt-0 mb-12.5 px-6">
+          <h1 className="text-xl lg:text-4xl font-semibold leading-6.75 md:leading-10 tracking-normal">
+            How can we help you?
+          </h1>
+          <p className="text-sm lg:text-[16px] font-medium leading-4.5 tracking-normal">
+            Manage your accounts, or get in touch with our support team
+          </p>
+        </div>
+
+        <SupportLinks />
+      </div>
+    </>
   );
 };
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
+import { useHashHighlight } from "@/lib/hooks/useHashHighlight";
 
 const notificationTypes = [
   {
@@ -49,6 +50,8 @@ const NotificationsSettings = () => {
     fetchSettings();
   }, []);
 
+  useHashHighlight();
+
   const handleToggle = async (id: string, checked: boolean) => {
     setSettings((prev) => ({ ...prev, [id]: checked }));
 
@@ -69,7 +72,7 @@ const NotificationsSettings = () => {
         Notification Preferences
       </h2>
 
-      <div className="space-y-7">
+      <div className="space-y-7" id="notifications">
         {notificationTypes.map((type) => (
           <div key={type.id} className="flex items-center justify-between">
             <div className="space-y-1">

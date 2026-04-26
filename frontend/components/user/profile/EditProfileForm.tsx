@@ -26,11 +26,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getInitials } from "@/lib/messaging/utils";
-import {
-  profileSchema,
-  ProfileSchemaType,
-} from "@/lib/schemas/settingsSchema";
+import { profileSchema, ProfileSchemaType } from "@/lib/schemas/settingsSchema";
 import { Bio } from "@/app/_types/author";
+import { useHashHighlight } from "@/lib/hooks/useHashHighlight";
 
 interface ProfileData {
   name: string;
@@ -43,9 +41,7 @@ const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2MB
 function findCountryByName(name: string): ICountry | undefined {
   if (!name) return undefined;
   const lower = name.toLowerCase();
-  return Country.getAllCountries().find(
-    (c) => c.name.toLowerCase() === lower,
-  );
+  return Country.getAllCountries().find((c) => c.name.toLowerCase() === lower);
 }
 
 function findStateByName(
@@ -63,6 +59,8 @@ const inputClassName =
   "bg-[#FAFAFA] text-sm leading-3.5 tracking-normal placeholder:text-grey placeholder:text-sm placeholder:leading-3.5 placeholder:tracking-normal border-none h-12 rounded-lg shadow";
 
 const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
+  useHashHighlight();
+
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -85,9 +83,7 @@ const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
   const countries = useMemo(() => Country.getAllCountries(), []);
   const states = useMemo(
     () =>
-      selectedCountryCode
-        ? State.getStatesOfCountry(selectedCountryCode)
-        : [],
+      selectedCountryCode ? State.getStatesOfCountry(selectedCountryCode) : [],
     [selectedCountryCode],
   );
 
@@ -196,10 +192,14 @@ const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
             <Field>
               <div className="flex items-center gap-4">
                 <Avatar className="border-[3px] border-white h-20 w-20 lg:w-25 lg:h-25 shadow-md">
-                  <AvatarImage src={avatarSrc} alt={profileData.name || "avatar"} />
+                  <AvatarImage
+                    src={avatarSrc}
+                    alt={profileData.name || "avatar"}
+                  />
                   <AvatarFallback>{initials}</AvatarFallback>
                 </Avatar>
                 <FieldLabel
+                  id="profilePicture"
                   className="px-4 py-2.5 rounded-4xl cursor-pointer hover:bg-primary hover:text-white duration-150 w-fit transition-all text-sm leading-4.5 tracking-normal border"
                   htmlFor="profilePicture"
                 >
@@ -227,9 +227,7 @@ const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
                 placeholder="Enter your full name"
                 {...register("name")}
               />
-              {errors.name && (
-                <FieldError>{errors.name.message}</FieldError>
-              )}
+              {errors.name && <FieldError>{errors.name.message}</FieldError>}
             </Field>
 
             {/* Institution */}
@@ -273,9 +271,7 @@ const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
                     value={selectedCountryCode}
                     onValueChange={handleCountryChange}
                   >
-                    <SelectTrigger
-                      className={`${inputClassName} w-full`}
-                    >
+                    <SelectTrigger className={`${inputClassName} w-full`}>
                       <SelectValue placeholder="Select country" />
                     </SelectTrigger>
                     <SelectContent className="max-h-60">
@@ -300,9 +296,7 @@ const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
                     onValueChange={handleStateChange}
                     disabled={!selectedCountryCode || states.length === 0}
                   >
-                    <SelectTrigger
-                      className={`${inputClassName} w-full`}
-                    >
+                    <SelectTrigger className={`${inputClassName} w-full`}>
                       <SelectValue
                         placeholder={
                           states.length === 0
@@ -313,10 +307,7 @@ const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
                     </SelectTrigger>
                     <SelectContent className="max-h-60">
                       {states.map((state) => (
-                        <SelectItem
-                          key={state.isoCode}
-                          value={state.isoCode}
-                        >
+                        <SelectItem key={state.isoCode} value={state.isoCode}>
                           {state.name}
                         </SelectItem>
                       ))}

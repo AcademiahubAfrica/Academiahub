@@ -17,8 +17,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { useHashHighlight } from "@/lib/hooks/useHashHighlight";
 
 const ChangePasswordForm = () => {
+  useHashHighlight();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -57,7 +60,10 @@ const ChangePasswordForm = () => {
   return (
     <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
       <fieldset disabled={isSubmitting}>
-        <FieldLegend className="md:text-xl font-medium leading-4.5 tracking-normal mb-8">
+        <FieldLegend
+          id="changePassword"
+          className="md:text-xl font-medium leading-4.5 tracking-normal mb-8"
+        >
           Change Password
         </FieldLegend>
 
