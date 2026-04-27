@@ -50,9 +50,19 @@ export async function GET() {
   }
 }
 
+function isValidAvatarUrl(url: string, userId: string): boolean {
+  const cloudName = (process.env.CLOUDINARY_URL || "").match(
+    /@([^/?#]+)/,
+  )?.[1];
+  if (!cloudName) return false;
+  const prefix = `https://res.cloudinary.com/${cloudName}/`;
+  if (!url.startsWith(prefix)) return false;
+  return url.includes(`/academiahub/avatars/${userId}`);
+}
+
 /**
  * PUT /api/profile/me
- * Update own profile bio fields.
+ * Update own profile bio fields, optionally including avatar URL.
  */
 export async function PUT(request: NextRequest) {
   try {
@@ -62,23 +72,30 @@ export async function PUT(request: NextRequest) {
     }
 
     const userId = session.user.id;
-    const { name, institution, department, aboutMe, state, country } =
-      await request.json();
+    const {
+      name,
+      institution,
+      department,
+      aboutMe,
+      state,
+      country,
+      image,
+    } = await request.json();
 
     if (!name || typeof name !== "string" || !name.trim()) {
       return NextResponse.json({ error: "Name is required" }, { status: 400 });
     }
 
-    // Update user name
-    await prisma.user.update({
-      where: { id: userId },
-      data: { name: String(name).trim() },
-    });
-
-    const existingProfile = await prisma.profile.findFirst({
-      where: { userId },
-      select: { id: true },
-    });
+    let imageUpdate: string | undefined;
+    if (image !== undefined) {
+      if (typeof image !== "string" || !isValidAvatarUrl(image, userId)) {
+        return NextResponse.json(
+          { error: "Invalid avatar URL" },
+          { status: 400 },
+        );
+      }
+      imageUpdate = image;
+    }
 
     const bioData = {
       institution: String(institution ?? "").trim(),
@@ -88,19 +105,34 @@ export async function PUT(request: NextRequest) {
       country: String(country ?? "").trim(),
     };
 
-    let profile;
-    if (existingProfile) {
-      profile = await prisma.profile.update({
-        where: { id: existingProfile.id },
-        data: { bio: bioData },
-      });
-    } else {
-      profile = await prisma.profile.create({
-        data: { userId, bio: bioData },
-      });
-    }
+    const existingProfile = await prisma.profile.findFirst({
+      where: { userId },
+      select: { id: true },
+    });
 
-    return NextResponse.json({ name: String(name).trim(), bio: profile.bio });
+    const [, profile] = await prisma.$transaction([
+      prisma.user.update({
+        where: { id: userId },
+        data: {
+          name: String(name).trim(),
+          ...(imageUpdate !== undefined ? { image: imageUpdate } : {}),
+        },
+      }),
+      existingProfile
+        ? prisma.profile.update({
+            where: { id: existingProfile.id },
+            data: { bio: bioData },
+          })
+        : prisma.profile.create({
+            data: { userId, bio: bioData },
+          }),
+    ]);
+
+    return NextResponse.json({
+      name: String(name).trim(),
+      bio: profile.bio,
+      ...(imageUpdate !== undefined ? { image: imageUpdate } : {}),
+    });
   } catch (error) {
     console.error("Error updating profile:", error);
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });

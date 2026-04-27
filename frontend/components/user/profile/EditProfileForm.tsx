@@ -1,12 +1,17 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Country, State, ICountry, IState } from "country-state-city";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import {
+  fetchSignedParams,
+  uploadToCloudinaryWithProgress,
+} from "@/lib/cloudinary/upload";
 import {
   Field,
   FieldError,
@@ -36,7 +41,8 @@ interface ProfileData {
   bio: Bio | null;
 }
 
-const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2MB
+const MAX_IMAGE_SIZE = 4 * 1024 * 1024;
+const ALLOWED_AVATAR_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function findCountryByName(name: string): ICountry | undefined {
   if (!name) return undefined;
@@ -62,9 +68,19 @@ const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
   useHashHighlight();
 
   const router = useRouter();
+  const { update } = useSession();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [stagedFile, setStagedFile] = useState<File | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [phase, setPhase] = useState<"idle" | "uploading" | "saving">("idle");
+
+  const isBusy = phase !== "idle";
+
+  useEffect(() => {
+    if (!imagePreview) return;
+    return () => URL.revokeObjectURL(imagePreview);
+  }, [imagePreview]);
 
   // Resolve initial country/state codes from names
   const initialCountry = findCountryByName(profileData.bio?.country ?? "");
@@ -111,20 +127,19 @@ const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (!ALLOWED_AVATAR_TYPES.includes(file.type)) {
+      toast.error("Only JPEG, PNG, or WebP images are allowed");
+      e.target.value = "";
+      return;
+    }
     if (file.size > MAX_IMAGE_SIZE) {
-      toast.error("Image must be less than 2MB");
+      toast.error("Image must be 4 MB or smaller");
       e.target.value = "";
       return;
     }
 
-    if (!file.type.startsWith("image/")) {
-      toast.error("Please select an image file");
-      e.target.value = "";
-      return;
-    }
-
-    const url = URL.createObjectURL(file);
-    setImagePreview(url);
+    setStagedFile(file);
+    setImagePreview(URL.createObjectURL(file));
   };
 
   const handleCountryChange = (countryCode: string) => {
@@ -142,26 +157,53 @@ const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
   };
 
   const onSubmit = async (data: ProfileSchemaType) => {
-    setIsSubmitting(true);
+    let uploadedUrl: string | undefined;
+    let stage: "uploading" | "saving" = "uploading";
+
     try {
+      if (stagedFile) {
+        setPhase("uploading");
+        setProgress(0);
+        const sign = await fetchSignedParams("avatar");
+        const uploaded = await uploadToCloudinaryWithProgress(
+          stagedFile,
+          sign,
+          setProgress,
+        );
+        uploadedUrl = uploaded.eager?.[0]?.secure_url ?? uploaded.secure_url;
+      }
+
+      stage = "saving";
+      setPhase("saving");
       const res = await fetch("/api/profile/me", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          ...(uploadedUrl !== undefined ? { image: uploadedUrl } : {}),
+        }),
       });
 
       if (!res.ok) {
-        const error = await res.json();
+        const error = await res.json().catch(() => ({}));
         throw new Error(error.error || "Failed to update profile");
       }
 
+      if (uploadedUrl !== undefined) {
+        await update({ image: uploadedUrl });
+      }
+
+      toast.success("Profile updated");
       router.push("/profile");
       router.refresh();
     } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Something went wrong";
       toast.error(
-        error instanceof Error ? error.message : "Something went wrong",
+        stage === "uploading" ? `Couldn't upload image: ${message}` : message,
       );
-      setIsSubmitting(false);
+      setPhase("idle");
+      setProgress(0);
     }
   };
 
@@ -182,7 +224,7 @@ const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
       </Button>
 
       <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
-        <fieldset disabled={isSubmitting}>
+        <fieldset disabled={isBusy}>
           <FieldLegend className="text-xl font-semibold leading-4.5 tracking-normal mb-6">
             Profile Information
           </FieldLegend>
@@ -191,15 +233,24 @@ const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
             {/* Avatar */}
             <Field>
               <div className="flex items-center gap-4">
-                <Avatar className="border-[3px] border-white h-20 w-20 lg:w-25 lg:h-25 shadow-md">
-                  <AvatarImage
-                    src={avatarSrc}
-                    alt={profileData.name || "avatar"}
-                  />
-                  <AvatarFallback>{initials}</AvatarFallback>
-                </Avatar>
+                <div className="relative">
+                  <Avatar className="border-[3px] border-white h-20 w-20 lg:w-25 lg:h-25 shadow-md">
+                    <AvatarImage
+                      src={avatarSrc}
+                      alt={profileData.name || "avatar"}
+                    />
+                    <AvatarFallback>{initials}</AvatarFallback>
+                  </Avatar>
+                  {phase === "uploading" ? (
+                    <div className="absolute inset-x-0 bottom-0 h-1.5 bg-black/30 rounded-b-full overflow-hidden">
+                      <div
+                        className="h-full bg-primary transition-[width] duration-150"
+                        style={{ width: `${progress}%` }}
+                      />
+                    </div>
+                  ) : null}
+                </div>
                 <FieldLabel
-                  id="profilePicture"
                   className="px-4 py-2.5 rounded-4xl cursor-pointer hover:bg-primary hover:text-white duration-150 w-fit transition-all text-sm leading-4.5 tracking-normal border"
                   htmlFor="profilePicture"
                 >
@@ -209,7 +260,7 @@ const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
                   className="hidden"
                   id="profilePicture"
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/webp"
                   ref={fileInputRef}
                   onChange={handleImageChange}
                 />
@@ -339,10 +390,14 @@ const EditProfileForm = ({ profileData }: { profileData: ProfileData }) => {
             <div>
               <Button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isBusy}
                 className="md:w-78.25"
               >
-                Save changes
+                {phase === "uploading"
+                  ? `Uploading ${progress}%`
+                  : phase === "saving"
+                    ? "Saving..."
+                    : "Save changes"}
               </Button>
             </div>
           </FieldGroup>
