@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Eye, EyeOff, Lock, CheckCircle2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
+import { Eye, EyeOff, Lock, CheckCircle2, AlertTriangle } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import ResetYourPasswordImg from "@/public/assets/images/reset-password.png";
@@ -22,38 +22,63 @@ interface PasswordRequirement {
   met: boolean;
 }
 
+const checkPasswordRequirements = (
+  password: string,
+): PasswordRequirement[] => [
+  {
+    text: "Must be 8 characters long",
+    met: password.length >= 8,
+  },
+  {
+    text: "Must have at least 1 uppercase and 1 lowercase",
+    met: /[a-z]/.test(password) && /[A-Z]/.test(password),
+  },
+  {
+    text: "Must have at least one special symbol",
+    met: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+  },
+];
+
 const ResetPasswordContent = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+
   const [formData, setFormData] = useState<FormData>({
     newPassword: "",
     confirmPassword: "",
   });
-
-  const router = useRouter();
-
   const [errors, setErrors] = useState<FormErrors>({});
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const checkPasswordRequirements = (
-    password: string,
-  ): PasswordRequirement[] => {
-    return [
-      {
-        text: "Must be 8 characters long",
-        met: password.length >= 8,
-      },
-      {
-        text: "Must have at least 1 uppercase and 1 lowercase",
-        met: /[a-z]/.test(password) && /[A-Z]/.test(password),
-      },
-      {
-        text: "Must have at least one special symbol",
-        met: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-      },
-    ];
-  };
+  const [isPending, startTransition] = useTransition();
 
   const requirements = checkPasswordRequirements(formData.newPassword);
+
+  if (!token) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background px-6">
+        <div className="text-center max-w-md w-full">
+          <div className="flex justify-center mb-6">
+            <AlertTriangle className="h-16 w-16 text-destructive" />
+          </div>
+          <h1 className="heading-1 font-semibold text-foreground mb-2">
+            Invalid reset link
+          </h1>
+          <p className="body-text text-muted-foreground mb-8">
+            This password reset link is missing required information. Please
+            request a new link.
+          </p>
+          <button
+            onClick={() => router.push("/reset-your-password")}
+            className="w-full bg-primary hover:bg-primary/90 text-background py-3 rounded-xl transition-colors"
+          >
+            Request a new link
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -75,10 +100,27 @@ const ResetPasswordContent = () => {
   };
 
   const handleSubmit = () => {
-    if (validateForm()) {
-      console.log("Password reset submitted:", formData);
-      toast.success("Password reset successful!");
-    }
+    if (!validateForm()) return;
+
+    startTransition(async () => {
+      try {
+        const res = await fetch("/api/auth/reset-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token, newPassword: formData.newPassword }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          toast.error(data.message ?? "Could not reset password.");
+          return;
+        }
+
+        router.push("/password-reset-success");
+      } catch {
+        toast.error("Network error. Please try again.");
+      }
+    });
   };
 
   const handleChange = (field: keyof FormData, value: string) => {
@@ -207,8 +249,8 @@ const ResetPasswordContent = () => {
 
             {/* Password Requirements */}
             <div className="space-y-2 pt-2">
-              {requirements.map((req, index) => (
-                <div key={index} className="flex items-center gap-2">
+              {requirements.map((req) => (
+                <div key={req.text} className="flex items-center gap-2">
                   <CheckCircle2
                     className={`h-5 w-5 ${
                       req.met ? "text-green-600" : "text-muted-foreground"
@@ -227,10 +269,12 @@ const ResetPasswordContent = () => {
 
             {/* Submit Button */}
             <button
+              type="button"
               onClick={handleSubmit}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors mt-6"
+              disabled={isPending}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors mt-6 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Reset Password
+              {isPending ? "Resetting…" : "Reset Password"}
             </button>
           </div>
 
