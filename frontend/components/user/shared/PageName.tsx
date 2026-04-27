@@ -5,7 +5,9 @@ const PageName = () => {
   const pageName = pathname.split("/").pop();
   return (
     <h2 className="md:hidden mb-1.5 text-lg capitalize text-primary font-medium leading-6 tracking-normal">
-      {pageName}
+      {pageName?.toLocaleLowerCase() === "support"
+        ? "Help & Support"
+        : pageName}
     </h2>
   );
 };
