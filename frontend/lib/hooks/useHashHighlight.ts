@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+// Hash targets must be present in the initial render — async-mounted targets won't be highlighted.
 export const useHashHighlight = () => {
   useEffect(() => {
     const handleHash = () => {
