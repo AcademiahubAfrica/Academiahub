@@ -71,7 +71,16 @@ export const authOptions:NextAuthOptions = {
       }
       return true
     },
-    async jwt({ token }) {
+    async jwt({ token, trigger, session }) {
+      if (
+        trigger === "update" &&
+        session &&
+        typeof session === "object" &&
+        "image" in session &&
+        typeof session.image === "string"
+      ) {
+        token.picture = session.image;
+      }
       if (token.email) {
         const dbUser = await prisma.user.findFirst({
           where: { email: token.email },
