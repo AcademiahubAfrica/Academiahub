@@ -97,9 +97,18 @@ const Footer = () => {
             <div>
               <h3 className="font-bold text-[20px] mb-6.25">Legal & Support</h3>
               <ul className="flex flex-col gap-5">
-                <li className="text-[14px]">Terms of Service</li>
-                <li className="text-[14px]">Privacy Policy</li>
-                <li className="text-[14px]">Cookie Settings</li>
+                <Link href={"/terms-and-conditions"} className="text-[14px]">
+                  Terms of Service
+                </Link>
+                <Link href={"/privacy-policy"} className="text-[14px]">
+                  Privacy Policy
+                </Link>
+                <Link href={"/cookie-policy"} className="text-[14px]">
+                  Cookie Policy
+                </Link>
+                <Link href={"/use-policy"} className="text-[14px]">
+                  Use Policy
+                </Link>
               </ul>
             </div>
 
