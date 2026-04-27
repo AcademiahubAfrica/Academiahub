@@ -4,10 +4,16 @@ import {
   Head,
   Hr,
   Html,
+  Img,
   Preview,
   Section,
   Text,
 } from "@react-email/components";
+
+const APP_URL = (
+  process.env.NEXTAUTH_URL ?? "http://localhost:3000"
+).replace(/\/+$/, "");
+const LOGO_URL = `${APP_URL}/assets/images/Logoimage.png`;
 
 interface VerificationEmailProps {
   code: string;
@@ -25,7 +31,12 @@ export function VerificationEmail({
       <Body style={body}>
         <Container style={container}>
           <Section style={header}>
-            <Text style={brand}>AcademiaHub</Text>
+            <Img
+              src={LOGO_URL}
+              alt="AcademiaHub"
+              width="220"
+              style={logo}
+            />
             <Text style={subtitle}>Verify your email address</Text>
           </Section>
 
@@ -83,11 +94,10 @@ const header: React.CSSProperties = {
   textAlign: "center",
 };
 
-const brand: React.CSSProperties = {
-  margin: "0 0 10px",
-  fontSize: "24px",
-  fontWeight: 600,
-  color: "#18181b",
+const logo: React.CSSProperties = {
+  display: "block",
+  margin: "0 auto 10px",
+  height: "auto",
 };
 
 const subtitle: React.CSSProperties = {

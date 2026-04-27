@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -21,6 +21,7 @@ const ResetYourPasswordContent = () => {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const validateForm = (): boolean => {
@@ -37,10 +38,27 @@ const ResetYourPasswordContent = () => {
   };
 
   const handleSubmit = () => {
-    if (validateForm()) {
-      console.log("Reset link sent to:", formData.email);
-      toast.success("Password reset link sent!");
-    }
+    if (!validateForm()) return;
+
+    startTransition(async () => {
+      try {
+        const res = await fetch("/api/auth/request-password-reset", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: formData.email }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          toast.error(data.message ?? "Could not send reset link.");
+          return;
+        }
+
+        router.push("/password-reset-confirmation");
+      } catch {
+        toast.error("Network error. Please try again.");
+      }
+    });
   };
 
   const handleChange = (value: string) => {
@@ -122,9 +140,10 @@ const ResetYourPasswordContent = () => {
             <button
               type="button"
               onClick={handleSubmit}
-              className="w-full bg-primary hover:bg-primary/90 text-background  py-3 rounded-xl transition-colors"
+              disabled={isPending}
+              className="w-full bg-primary hover:bg-primary/90 text-background py-3 rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Send reset link
+              {isPending ? "Sending…" : "Send reset link"}
             </button>
 
             {/* Secondary Button */}
