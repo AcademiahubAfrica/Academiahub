@@ -68,9 +68,7 @@ const PublicationsAndLikes = ({
             {documents.map((data) => (
               <ResearchCard
                 key={data.id}
-                isOwnDocument={
-                  filter.toLocaleLowerCase() === "likes" ? false : true
-                }
+                isOwnDocument={filter.toLowerCase() !== "likes"}
                 data={data}
                 isLiked={likedDocumentIds.has(data.id as string)}
                 isSaved={savedDocumentIds.has(data.id as string)}

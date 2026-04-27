@@ -39,7 +39,7 @@ const LandingFaq = ({ hideHeader, fullWidth = false }: LandingFaqProps) => {
           >
             {faqData.map((faq, index) => (
               <AccordionItem
-                key={index}
+                key={faq.question}
                 value={`item-${index}`}
                 className={`rounded-md border ${fullWidth ? "" : "lg:w-250 "} md:max-lg:w-2xl  border-gray-400 px-4 py-2`}
               >

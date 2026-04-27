@@ -98,7 +98,7 @@ const ResetPasswordContent = () => {
             alt="Security"
             fill
             className="object-cover"
-            preload={true}
+            priority
             placeholder="blur"
           />
         </div>
