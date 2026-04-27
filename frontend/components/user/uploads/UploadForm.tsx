@@ -30,6 +30,10 @@ import { z } from "zod";
 import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  fetchSignedParams,
+  uploadToCloudinaryWithProgress,
+} from "@/lib/cloudinary/upload";
 
 const PDF_MIME = "application/pdf";
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
@@ -58,21 +62,6 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-type SignResponse = {
-  signature: string;
-  timestamp: number;
-  apiKey: string;
-  cloudName: string;
-  folder: string;
-};
-
-type CloudinaryUploadResponse = {
-  secure_url: string;
-  public_id: string;
-  original_filename: string;
-  bytes: number;
-};
-
 const CATEGORY_OPTIONS = [
   { value: "research", label: "Research" },
   { value: "seminar", label: "Seminar Paper" },
@@ -82,34 +71,9 @@ const CATEGORY_OPTIONS = [
 
 const formatMb = (bytes: number) => (bytes / (1024 * 1024)).toFixed(2);
 
-const uploadToCloudinary = async (
-  file: File,
-  sign: SignResponse,
-): Promise<CloudinaryUploadResponse> => {
-  const body = new FormData();
-  body.append("file", file);
-  body.append("api_key", sign.apiKey);
-  body.append("timestamp", String(sign.timestamp));
-  body.append("signature", sign.signature);
-  body.append("folder", sign.folder);
-
-  const response = await fetch(
-    `https://api.cloudinary.com/v1_1/${sign.cloudName}/auto/upload`,
-    { method: "POST", body },
-  );
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(
-      errorData?.error?.message || "Cloudinary upload failed",
-    );
-  }
-
-  return (await response.json()) as CloudinaryUploadResponse;
-};
-
 const UploadForm = () => {
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
   const router = useRouter();
 
   const {
@@ -160,18 +124,16 @@ const UploadForm = () => {
 
   const onSubmit = async (data: FormValues) => {
     setUploadError(null);
+    setProgress(0);
 
     try {
-      const signRes = await fetch("/api/sign-cloudinary-params", {
-        method: "POST",
-      });
-      if (!signRes.ok) {
-        const errorData = await signRes.json().catch(() => ({}));
-        throw new Error(errorData.error || "Failed to prepare upload");
-      }
-      const sign = (await signRes.json()) as SignResponse;
+      const sign = await fetchSignedParams("document");
 
-      const uploaded = await uploadToCloudinary(data.file, sign);
+      const uploaded = await uploadToCloudinaryWithProgress(
+        data.file,
+        sign,
+        setProgress,
+      );
 
       const response = await fetch("/api/documents", {
         method: "POST",
@@ -244,9 +206,20 @@ const UploadForm = () => {
                       {selectedFile.name}
                     </p>
                     <small className="text-grey">
-                      {formatMb(selectedFile.size)} MB
+                      {isSubmitting && progress > 0
+                        ? `Uploading ${progress}%`
+                        : `${formatMb(selectedFile.size)} MB`}
                     </small>
                   </div>
+
+                  {isSubmitting ? (
+                    <div className="absolute inset-x-0 bottom-0 h-1.5 bg-grey/20 overflow-hidden">
+                      <div
+                        className="h-full bg-primary transition-[width] duration-150"
+                        style={{ width: `${progress}%` }}
+                      />
+                    </div>
+                  ) : null}
                 </>
               ) : (
                 <div className="flex flex-col items-center gap-2 text-center">

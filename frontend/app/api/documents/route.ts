@@ -12,6 +12,19 @@ const CATEGORY_MAP: Record<string, DocumentCategory> = {
   analysis: "ANALYSIS",
 };
 
+const MAX_DOCUMENT_BYTES = 10 * 1024 * 1024;
+
+function isValidDocumentUrl(url: string): boolean {
+  const cloudName = (process.env.CLOUDINARY_URL || "").match(
+    /@([^/?#]+)/,
+  )?.[1];
+  if (!cloudName) return false;
+  return (
+    url.startsWith(`https://res.cloudinary.com/${cloudName}/`) &&
+    url.includes("/academiahub/documents/")
+  );
+}
+
 const REQUIRED_FIELDS = [
   "title",
   "description",
@@ -66,6 +79,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid category" }, { status: 400 });
     }
 
+    if (typeof fileUrl !== "string" || !isValidDocumentUrl(fileUrl)) {
+      return NextResponse.json(
+        { error: "Invalid file URL" },
+        { status: 400 },
+      );
+    }
+
+    if (typeof fileSize !== "number" || fileSize > MAX_DOCUMENT_BYTES) {
+      return NextResponse.json(
+        { error: "File exceeds 10 MB limit" },
+        { status: 400 },
+      );
+    }
+
     const document = await prisma.document.create({
       data: {
         title,
@@ -76,7 +103,7 @@ export async function POST(request: NextRequest) {
         fileUrl,
         fileKey,
         fileName,
-        fileSize: typeof fileSize === "number" ? fileSize : 0,
+        fileSize,
         authorId: session.user.id,
       },
     });
