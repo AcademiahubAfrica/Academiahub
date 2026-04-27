@@ -1,19 +1,15 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import { supportHelpData } from "@/app/data/Exports";
 
 export default function SupportLinks() {
-  const router = useRouter();
-
   return (
     <div className="flex flex-wrap gap-4 mb-20">
       {supportHelpData.map(({ icon: Icon, title, description, href }) => (
-        <div
+        <Link
           key={href}
-          onClick={() => router.push(href)}
-          className="group cursor-pointer flex-1 basis-[calc(50%-1rem)] md:basis-[calc(25%-1rem)] min-w-[140px] bg-white border-2 min-h-[160px] lg:h-50 shadow-xs rounded-2xl border-[#FAFAFA] flex p-4 flex-col items-center text-center justify-between transition-all hover:border-primary/20 hover:shadow-md"
+          href={href}
+          className="group flex-1 basis-[calc(50%-1rem)] md:basis-[calc(25%-1rem)] min-w-35 bg-white border-2 min-h-40 lg:h-50 shadow-xs rounded-2xl border-[#FAFAFA] flex p-4 flex-col items-center text-center justify-between transition-all hover:border-primary/20 hover:shadow-md"
         >
           <Icon
             size={28}
@@ -38,7 +34,7 @@ export default function SupportLinks() {
               />
             </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );
