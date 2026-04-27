@@ -8,6 +8,7 @@ import { FaMicrosoft, FaApple } from "react-icons/fa";
 import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import SignInImg from "../../public/assets/images/signup-image.png";
+import Link from "next/link";
 
 interface FormData {
   email: string;
@@ -288,12 +289,22 @@ const Signincontent = () => {
             </button>
           </p>
 
-          {/* Terms & Conditions */}
+          {/* Terms & Conditions and privacy policy */}
           <p className="text-center label text-muted-foreground mt-6">
             By proceeding, you consent to our{" "}
-            <button className="text-primary underline">
+            <Link
+              href="/terms-and-conditions"
+              className="text-primary underline hover:text-primary/80 transition-colors"
+            >
               Terms & Conditions
-            </button>
+            </Link>{" "}
+            and{" "}
+            <Link
+              href="/privacy-policy"
+              className="text-primary underline hover:text-primary/80 transition-colors"
+            >
+              Privacy Policy
+            </Link>
           </p>
         </div>
       </div>

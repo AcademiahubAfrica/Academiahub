@@ -189,6 +189,9 @@
 }
 
 /* Custom Classes based on design system */
+html {
+  scroll-behavior: smooth;
+}
 .hero-text {
   @apply text-4xl font-medium leading-[130%] tracking-normal;
 }
