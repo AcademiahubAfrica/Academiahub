@@ -9,6 +9,9 @@ import { GoSignOut } from "react-icons/go";
 import { BiSupport } from "react-icons/bi";
 import { IoMdNotificationsOutline } from "react-icons/io";
 
+import { SlNote } from "react-icons/sl";
+import { MdPersonOutline } from "react-icons/md";
+
 interface SideLink {
   icon: ReactNode;
   label: string;
@@ -119,3 +122,80 @@ export const userPagesMetadata: Record<
     description: "Customize your account preferences.",
   },
 };
+
+// for support layout
+
+export const supportHelpData = [
+  {
+    icon: SlNote,
+    title: "Publications",
+    description: "Uploading, downloading, managing files",
+    href: "/support/publications",
+  },
+  {
+    icon: MdPersonOutline,
+    title: "Account & Profile",
+    description: "Login, password reset, profile setup",
+    href: "/support/account",
+  },
+  {
+    icon: IoMdNotificationsOutline,
+    title: "Notifications",
+    description: "App updates, messages, alerts",
+    href: "/support/notifications",
+  },
+  {
+    icon: CiSettings,
+    title: "Settings & Privacy",
+    description: "Preferences, visibility, permissions",
+    href: "/support/settings",
+  },
+];
+
+export const publicationLinks = [
+  {
+    label: "Upload a publication",
+    href: "/uploads",
+  },
+  {
+    label: "Go to downloads",
+    href: "/downloads",
+  },
+  {
+    label: "Go to saves",
+    href: "/saved",
+  },
+];
+
+export const AccountProfileLinks = [
+  {
+    label: "Change your password",
+    href: "/settings#changePassword",
+  },
+  {
+    label: "Edit Profile",
+    href: "/profile/edit",
+  },
+  {
+    label: "Change profile picture",
+    href: "/profile/edit#profilePicture",
+  },
+];
+
+export const notificationsLinks = [
+  {
+    label: "Go to notifications",
+    href: "/notifications",
+  },
+  {
+    label: "Update notification settings",
+    href: "/settings#notifications",
+  },
+];
+
+export const settingsLinks = [
+  {
+    label: "Go to settings",
+    href: "/settings",
+  },
+];
