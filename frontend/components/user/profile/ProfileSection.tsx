@@ -79,7 +79,7 @@ const ProfileSection = async () => {
             </div>
             <Button
               variant={"outline2"}
-              className="max-w-23.75 text-sm leading-3.5 font-normal mr-3.75 border-[#1E3A8A] hover:bg-[#adadad] hover:text-current"
+              className="max-w-23.75 text-sm leading-3.5 font-normal lg:mr-3.75 border-[#1E3A8A] hover:bg-[#adadad] hover:text-current"
               asChild
             >
               <Link href="/profile/edit">Edit profile</Link>
