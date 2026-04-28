@@ -24,7 +24,6 @@ const AcceptableUsePolicy = () => {
           </h2>
           <div className="mt-4 text-sm text-slate-500 space-y-1">
             <p>Effective Date: 1 April 2026</p>
-            <p>Version 1.0</p>
           </div>
         </header>
 
