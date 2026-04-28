@@ -11,9 +11,19 @@ import { getInitials } from "@/lib/messaging/utils";
 import Link from "next/link";
 import KebabIcon from "../shared/KebabIcon";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import ShareDialog from "./ShareDialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 type ResearchCardProps = {
   data: ResearchCardType;
@@ -22,6 +32,7 @@ type ResearchCardProps = {
   isSaved: boolean;
   showSaveButton?: boolean;
   onSaveToggle?: (isSaved: boolean) => void;
+  onDelete?: (id: string) => void;
 };
 
 const ResearchCard = ({
@@ -31,8 +42,11 @@ const ResearchCard = ({
   isSaved,
   showSaveButton = true,
   onSaveToggle,
+  onDelete,
 }: ResearchCardProps) => {
   const [showShareDialog, setShowShareDialog] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [isDeleting, startDeleteTransition] = useTransition();
   const shareData = {
     title: `New Research: ${data?.title}`,
     text: `Check out this latest publication by ${data?.author?.name} on Academia Hub Africa. It explores key insights into ${data?.title}.`,
@@ -53,6 +67,28 @@ const ResearchCard = ({
       setShowShareDialog(true);
     }
   }
+
+  function handleConfirmDelete(e: React.MouseEvent) {
+    e.preventDefault();
+    startDeleteTransition(async () => {
+      try {
+        const res = await fetch(`/api/documents/${data.id}`, {
+          method: "DELETE",
+        });
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          toast.error(body.error || "Failed to delete publication");
+          return;
+        }
+        setConfirmOpen(false);
+        toast.success("Publication deleted");
+        onDelete?.(data.id as string);
+      } catch {
+        toast.error("Failed to delete publication");
+      }
+    });
+  }
+
   return (
     <>
       <article
@@ -63,6 +99,7 @@ const ResearchCard = ({
           isOwnDocument={isOwnDocument}
           documentId={data.id as string}
           handleShare={onShare}
+          onDeleteRequest={() => setConfirmOpen(true)}
         />
 
         <div className="relative aspect-343/240 w-full">
@@ -152,6 +189,33 @@ const ResearchCard = ({
         showShareDialog={showShareDialog}
         shareData={shareData}
       />
+
+      <AlertDialog
+        open={confirmOpen}
+        onOpenChange={(open) => {
+          if (!isDeleting) setConfirmOpen(open);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this publication?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This permanently removes &ldquo;{data.title}&rdquo; along with its
+              likes, saves, and comments. This can&rsquo;t be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              disabled={isDeleting}
+              onClick={handleConfirmDelete}
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
