@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { $Enums } from "@prisma/client";
 import ResearchCard from "./ResearchCard";
 
@@ -37,12 +37,16 @@ interface FilterDocumentsProp {
 }
 const FilterDocuments = ({userId, documents, likedDocumentIds, savedDocumentIds}: FilterDocumentsProp) => {
    const searchParams = useSearchParams()
+   const router = useRouter();
+   const [hiddenIds, setHiddenIds] = useState<Set<string>>(() => new Set());
 
   const filterDocuments = () => {
     const category = searchParams.get("category");
     const search = searchParams.get("search");
 
     const filteredDocuments = documents.filter((doc) => {
+      if (hiddenIds.has(doc.id)) return false;
+
       const categoryMatch =
         !category || category === "all" || doc.category === category;
 
@@ -56,6 +60,15 @@ const FilterDocuments = ({userId, documents, likedDocumentIds, savedDocumentIds}
 
   const filteredDocuments = filterDocuments();
 
+  const handleDelete = (id: string) => {
+    setHiddenIds((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+    router.refresh();
+  };
+
   return (
     <section className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
       {filteredDocuments.map((data) => (
@@ -66,6 +79,7 @@ const FilterDocuments = ({userId, documents, likedDocumentIds, savedDocumentIds}
           isLiked={likedDocumentIds.has(data.id)}
           isSaved={savedDocumentIds.has(data.id)}
           showSaveButton={data.author.id !== userId}
+          onDelete={handleDelete}
         />
       ))}
     </section>
