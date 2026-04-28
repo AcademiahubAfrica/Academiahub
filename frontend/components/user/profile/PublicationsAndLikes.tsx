@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ResearchCardType } from "@/app/_types/documents";
 import ResearchCard from "@/components/user/dashboard/ResearchCard";
@@ -25,6 +26,7 @@ const PublicationsAndLikes = ({
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const [hiddenIds, setHiddenIds] = useState<Set<string>>(() => new Set());
 
   const filter = searchParams.get("show") || "publications";
 
@@ -34,7 +36,17 @@ const PublicationsAndLikes = ({
     router.push(`${pathname}?${params.toString()}`);
   }
 
-  const documents = filter === "publications" ? ownDocuments : likedDocuments;
+  const handleDelete = (id: string) => {
+    setHiddenIds((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+    router.refresh();
+  };
+
+  const sourceDocuments = filter === "publications" ? ownDocuments : likedDocuments;
+  const documents = sourceDocuments.filter((d) => !hiddenIds.has(d.id as string));
   const emptyTitle =
     filter === "publications"
       ? "No publications yet"
@@ -73,6 +85,7 @@ const PublicationsAndLikes = ({
                 isLiked={likedDocumentIds.has(data.id as string)}
                 isSaved={savedDocumentIds.has(data.id as string)}
                 showSaveButton={data.author.id !== userId}
+                onDelete={handleDelete}
               />
             ))}
           </section>

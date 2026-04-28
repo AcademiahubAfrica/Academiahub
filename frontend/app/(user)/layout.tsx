@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import prisma from "@/prisma/connection";
 import Sidebar from "../../components/Sidebar";
 import UserHeader from "../../components/UserHeader";
+import MobileSidebarSwipeZone from "../../components/MobileSidebarSwipeZone";
 import { SidebarProvider } from "@/components/SidebarContext";
 export default async function UserLayout({
   children,
@@ -40,6 +41,7 @@ export default async function UserLayout({
   }
   return (
     <SidebarProvider>
+      <MobileSidebarSwipeZone />
       <div className="h-screen w-full bg-[#FAFAFA] flex overflow-hidden">
         {/* DESKTOP SIDEBAR */}
         <div className="hidden relative md:block h-full">

@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import { IoMdNotificationsOutline, IoMdSearch } from "react-icons/io";
+import { IoMdNotificationsOutline } from "react-icons/io";
 import { RiShareForwardLine } from "react-icons/ri";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FaBars, FaSearch } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Sidebar from "./Sidebar";
 import Link from "next/link";
@@ -103,7 +103,7 @@ const UserHeader = () => {
 				<div className="flex flex-1 md:hidden w-full px-1 items-center justify-between">
 					<div className="flex items-center gap-1.25">
 						{pathName === "/settings" ? (
-							<h3 className="text-lg capitalize text-primary font-medium leading-[24px] tracking-normal">
+							<h3 className="text-lg capitalize text-primary font-medium leading-6 tracking-normal">
 								Settings
 							</h3>
 						) : (
@@ -126,7 +126,7 @@ const UserHeader = () => {
 						)}
 					</div>
 
-					<div className="flex items-center gap-1.25">
+					<div className="flex items-center gap-2">
 						<Link
 							href={"/notifications"}
 							className="relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full"
@@ -138,8 +138,14 @@ const UserHeader = () => {
 								</span>
 							)}
 						</Link>
-						<SheetTrigger>
-							<FaBars className="text-xl" />
+						<SheetTrigger asChild>
+							<button
+								type="button"
+								aria-label="Open menu"
+								className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full"
+							>
+								<FaBars className="text-xl" />
+							</button>
 						</SheetTrigger>
 					</div>
 				</div>
