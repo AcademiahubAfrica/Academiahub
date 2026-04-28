@@ -27,10 +27,10 @@ export default function SupportLayout({ children }: { children: ReactNode }) {
         </p>
         <div className="flex items-center justify-center">
           <a
-            href="mailto:message@mail.academiahubafrica.org"
+            href="mailto:support@mail.academiahubafrica.org"
             className="flex items-center gap-2"
           >
-            <CiMail /> message@mail.academiahubafrica.org
+            <CiMail /> support@mail.academiahubafrica.org
           </a>
         </div>
       </div>
