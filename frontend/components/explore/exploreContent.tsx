@@ -69,7 +69,7 @@ export default function ExploreContent() {
     fetchDocuments(searchQuery, 1);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSearch();
     }
@@ -112,7 +112,7 @@ export default function ExploreContent() {
                 placeholder="Search for Projects, Schools...."
                 value={searchQuery}
                 onChange={(e) => {setSearchQuery(e.target.value)}}
-                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyDown}
                 className="w-full pl-12 pr-4 py-6 text-base rounded-full border-gray-300 focus:border-blue-500 focus:ring-2 bg-white"
               />
             </div>

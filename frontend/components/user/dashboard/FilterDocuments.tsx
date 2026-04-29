@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { $Enums } from "@prisma/client";
 import ResearchCard from "./ResearchCard";
 
@@ -36,29 +36,10 @@ interface FilterDocumentsProp {
   savedDocumentIds: Set<string>;
 }
 const FilterDocuments = ({userId, documents, likedDocumentIds, savedDocumentIds}: FilterDocumentsProp) => {
-   const searchParams = useSearchParams()
    const router = useRouter();
    const [hiddenIds, setHiddenIds] = useState<Set<string>>(() => new Set());
 
-  const filterDocuments = () => {
-    const category = searchParams.get("category");
-    const search = searchParams.get("search");
-
-    const filteredDocuments = documents.filter((doc) => {
-      if (hiddenIds.has(doc.id)) return false;
-
-      const categoryMatch =
-        !category || category === "all" || doc.category === category;
-
-      const searchMatch =
-        !search || doc.title.toLowerCase().includes(search.toLowerCase());
-
-      return categoryMatch && searchMatch;
-    });
-    return filteredDocuments;
-  };
-
-  const filteredDocuments = filterDocuments();
+  const filteredDocuments = documents.filter((doc) => !hiddenIds.has(doc.id));
 
   const handleDelete = (id: string) => {
     setHiddenIds((prev) => {
