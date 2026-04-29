@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/select";
 
 const filterButtons = [
-  { label: "all", variant: "ghost2" as const },
-  { label: "RESEARCH", variant: "outline2" as const },
-  { label: "SEMINAR", variant: "outline2" as const },
-  { label: "FINAL YEAR PROJECT", variant: "outline2" as const },
-  { label: "ANALYSIS", variant: "outline2" as const },
+  { label: "All", value: "all", variant: "ghost2" as const },
+  { label: "Research", value: "RESEARCH", variant: "outline2" as const },
+  { label: "Seminar", value: "SEMINAR", variant: "outline2" as const },
+  { label: "Final Year Project", value: "PROJECT", variant: "outline2" as const },
+  { label: "Analysis", value: "ANALYSIS", variant: "outline2" as const },
 ];
 
 const sortOptions = [
@@ -40,21 +40,21 @@ const ResearchFilters = () => {
   return (
     <div className=" mb-2 ">
       {/* page title */}
-      <h2 className="md:hidden mt-2 mb-1.5 text-lg capitalize text-primary font-medium leading-[24px] tracking-normal">
+      <h2 className="md:hidden mt-2 mb-1.5 text-lg capitalize text-primary font-medium leading-6 tracking-normal">
         {pageName}
       </h2>
 
       <div className="flex lg:bg-white rounded-b-2xl   items-center lg:min-h-16 lg:px-9 min-h-7 justify-between ">
         {/* CATEGORY FILTER */}
         <div className="lg:flex items-center flex-wrap gap-7.75 hidden">
-          {filterButtons.map(({ label, variant }) => (
+          {filterButtons.map(({ label, value, variant }) => (
             <Button
-              key={label}
+              key={value}
               variant={variant}
-              onClick={() => updateParam("category", label)}
-              className={`${filterBy === label ? "bg-primary text-white" : "border-grey "} `}
+              onClick={() => updateParam("category", value)}
+              className={`${filterBy === value ? "bg-primary text-white" : "border-grey "} `}
             >
-              {label.charAt(0).toUpperCase() + label.slice(1).toLowerCase()}
+              {label}
             </Button>
           ))}
         </div>
@@ -69,10 +69,10 @@ const ResearchFilters = () => {
             </SelectTrigger>
 
             <SelectContent>
-              {filterButtons.map(({ label }) => (
+              {filterButtons.map(({ label, value }) => (
                 <SelectItem
-                  key={label}
-                  value={label}
+                  key={value}
+                  value={value}
                   className="cursor-pointer capitalize"
                 >
                   {label}
