@@ -138,7 +138,13 @@ export async function GET(request: NextRequest) {
     }
 
     if (q && q.trim().length > 0) {
-      where.title = { contains: q.trim(), mode: "insensitive" };
+      const term = q.trim();
+      where.OR = [
+        { title: { contains: term, mode: "insensitive" } },
+        { description: { contains: term, mode: "insensitive" } },
+        { institution: { contains: term, mode: "insensitive" } },
+        { author: { is: { name: { contains: term, mode: "insensitive" } } } },
+      ];
     }
 
     const skip = (page - 1) * limit;

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { ResearchCardType } from "@/app/_types/documents";
 import ResearchCard from "@/components/user/dashboard/ResearchCard";
 import EmptySection from "../shared/EmptySection";
@@ -19,6 +20,17 @@ const DownloadedList = ({
   likedDocumentIds,
   savedDocumentIds,
 }: DownloadedListProps) => {
+  const searchParams = useSearchParams();
+  const search = (searchParams.get("search") ?? "").trim().toLowerCase();
+
+  const filteredDocuments = search
+    ? documents.filter((d) => {
+        const title = d.title?.toLowerCase() ?? "";
+        const author = d.author?.name?.toLowerCase() ?? "";
+        return title.includes(search) || author.includes(search);
+      })
+    : documents;
+
   return (
     <>
       <div className="px-4 bg-white lg:px-12 lg:py-4 md:mb-4 mb-2 flex items-center justify-between">
@@ -28,9 +40,9 @@ const DownloadedList = ({
       </div>
 
       <div className="lg:px-6.25">
-        {documents.length ? (
+        {filteredDocuments.length ? (
           <section className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5">
-            {documents.map((data) => (
+            {filteredDocuments.map((data) => (
               <ResearchCard
                 isOwnDocument={userId === data.author.id}
                 key={data.id}

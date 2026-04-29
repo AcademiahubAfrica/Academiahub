@@ -4,8 +4,16 @@ import FilterDocuments from "./FilterDocuments";
 import SearchBar from "../SearchBar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import type { Prisma } from "@prisma/client";
 
-const MainContent = async () => {
+type MainContentProps = {
+  search?: string;
+  category?: string;
+};
+
+const VALID_CATEGORIES = new Set(["RESEARCH", "SEMINAR", "PROJECT", "ANALYSIS"]);
+
+const MainContent = async ({ search = "", category = "" }: MainContentProps) => {
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
 
@@ -14,9 +22,9 @@ const MainContent = async () => {
   let savedDocumentIds: Set<string> = new Set();
 
   try {
-    documents = await fetchDocuments();
+    documents = await fetchDocuments(search.trim(), category.trim());
 
-    if (userId) {
+    if (userId && documents.length > 0) {
       const documentIds = documents.map((d) => d.id);
       const [likes, saves] = await Promise.all([
         prisma.like.findMany({
@@ -43,16 +51,37 @@ const MainContent = async () => {
           <SearchBar />
         </div>
         <h4 className="text-lg mb-3 lg:mb-5.5 p-2.5  w-fit bg-white rounded-2xl font-medium leading-[130%]">
-          Research of the week
+          {search ? `Results for "${search}"` : "Research of the week"}
         </h4>
-        <FilterDocuments userId={userId} documents={documents} likedDocumentIds={likedDocumentIds} savedDocumentIds={savedDocumentIds} />
+        <FilterDocuments
+          userId={userId}
+          documents={documents}
+          likedDocumentIds={likedDocumentIds}
+          savedDocumentIds={savedDocumentIds}
+        />
       </div>
     </>
   );
 };
 
-async function fetchDocuments() {
+async function fetchDocuments(search: string, category: string) {
+  const where: Prisma.DocumentWhereInput = {};
+
+  if (category && VALID_CATEGORIES.has(category.toUpperCase())) {
+    where.category = category.toUpperCase() as Prisma.DocumentWhereInput["category"];
+  }
+
+  if (search) {
+    where.OR = [
+      { title: { contains: search, mode: "insensitive" } },
+      { description: { contains: search, mode: "insensitive" } },
+      { institution: { contains: search, mode: "insensitive" } },
+      { author: { is: { name: { contains: search, mode: "insensitive" } } } },
+    ];
+  }
+
   return prisma.document.findMany({
+    where,
     include: {
       author: {
         select: { id: true, name: true, image: true },
@@ -62,7 +91,7 @@ async function fetchDocuments() {
       },
     },
     orderBy: { createdAt: "desc" },
-    take: 12,
+    take: search ? 50 : 12,
   });
 }
 
