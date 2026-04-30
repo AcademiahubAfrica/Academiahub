@@ -23,7 +23,16 @@ export default async function UserLayout({
       name: true,
       Profile: {
         take: 1,
-        select: { bio: true },
+        select: {
+          bio: true,
+          user: {
+            select: {
+              id: true,
+              image: true,
+              name: true,
+            },
+          },
+        },
       },
     },
   });
@@ -39,6 +48,8 @@ export default async function UserLayout({
   if (!isProfileComplete) {
     redirect("/onboarding");
   }
+  const userInfoToShare = user?.Profile[0]?.user;
+  console.log("user info to share :", userInfoToShare);
   return (
     <SidebarProvider>
       <MobileSidebarSwipeZone />
@@ -51,7 +62,7 @@ export default async function UserLayout({
         {/* RIGHT SIDE (HEADER + OUTLET) */}
         <div className="flex-1 flex flex-col h-full overflow-y-auto">
           <header className="sticky top-0 z-50 w-full backdrop-blur-lg">
-            <UserHeader />
+            <UserHeader userInfoToShare={userInfoToShare} />
           </header>
 
           {/* OUTLET */}
