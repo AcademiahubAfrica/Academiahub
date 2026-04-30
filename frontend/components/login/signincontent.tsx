@@ -4,7 +4,6 @@ import { useState, useEffect, useTransition } from "react";
 import Image from "next/image";
 import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
-import { FaMicrosoft, FaApple } from "react-icons/fa";
 import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import SignInImg from "../../public/assets/images/signup-image.png";
@@ -253,26 +252,6 @@ const Signincontent = () => {
                 <FcGoogle className="h-5 w-5" />
                 <span className="font-medium text-foreground">
                   Continue with Google
-                </span>
-              </button>
-
-              <button
-                type="button"
-                className="w-full flex items-center justify-center gap-3 py-3 rounded-xl border border-border hover:bg-muted transition-colors"
-              >
-                <FaMicrosoft className="h-5 w-5 text-[#00a4ef]" />
-                <span className="font-medium text-foreground">
-                  Continue with Microsoft
-                </span>
-              </button>
-
-              <button
-                type="button"
-                className="w-full flex items-center justify-center gap-3 py-3 rounded-xl border border-border hover:bg-muted transition-colors"
-              >
-                <FaApple className="h-5 w-5 text-foreground" />
-                <span className="font-medium text-foreground">
-                  Continue with Apple
                 </span>
               </button>
             </div>
