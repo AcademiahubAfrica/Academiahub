@@ -6,7 +6,11 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import Like from "@/components/Like";
 import { ResearchCardType } from "@/app/_types/documents";
 import SaveButton from "@/components/SaveButton";
-import { getCategoryImage } from "@/lib/categoryImage";
+import {
+  getCategoryBackground,
+  getCategoryImage,
+  getCategoryOverlay,
+} from "@/lib/categoryImage";
 import { getInitials } from "@/lib/messaging/utils";
 import Link from "next/link";
 import KebabIcon from "../shared/KebabIcon";
@@ -184,11 +188,62 @@ const ResearchCard = ({
       </article>
 
       <ShareDialog
-        data={data}
         setShowShareDialog={setShowShareDialog}
         showShareDialog={showShareDialog}
         shareData={shareData}
-      />
+        type={"Publication"}
+      >
+        <div
+          className="w-full h-75 md:h-87.5 flex items-center justify-center flex-col  text-white   border-0 p-0 "
+          style={{
+            backgroundImage: `url(${getCategoryBackground(data.category)})`,
+            backgroundPosition: " left bottom",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+          }}
+        >
+          <div
+            className="h-[80%] flex relative flex-col justify-end  rounded-t-2xl  w-[80%]"
+            style={{
+              backgroundImage: `url(${getCategoryOverlay(data.category)})`,
+              backgroundPosition: "top right",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "140%",
+              objectFit: "cover",
+            }}
+          >
+            <h3 className="absolute top-4 right-4 capitalize! text-white z-50">
+              {data?.category.toLocaleLowerCase() === "project"
+                ? "Final Year Project"
+                : data?.category}
+            </h3>
+            <div className="flex items-center   py-4 px-2 gap-1.5 mb-3 ">
+              {data.author.image ? (
+                <div className="w-5 h-5 md:w-10 shrink-0 rounded-full border border-white md:h-10 relative">
+                  <Image
+                    className="rounded-full "
+                    fill
+                    src={data.author.image}
+                    alt={`${data.author.name}'s profile picture`}
+                  />
+                </div>
+              ) : (
+                <div className="size-5 md:size-10 shrink-0 rounded-full bg-grey flex items-center justify-center text-[6px] md:text-xs font-medium">
+                  {getInitials(data.author.name || "")}
+                </div>
+              )}
+              <div>
+                <p className="text-[8px] line-clamp-1 font-medium md:text-sm  leading-[130%] mb-0.5">
+                  {data.title}
+                </p>
+                <p className="text-grey text-[8px] md:text-xs leading-[130%]">
+                  {data.author.name}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ShareDialog>
 
       <AlertDialog
         open={confirmOpen}

@@ -61,7 +61,15 @@ const ProfileSection = async () => {
 
   return (
     <div className="md:bg-white md:m-4 md:py-6 md:px-4 rounded-2xl">
-      <div className="h-19.25 lg:h-36.25 relative bg-linear-to-r from-primary/30 to-primary/10" />
+      <div
+        className="h-19.25 lg:h-36.25 relative rounded-t-2xl bg-linear-to-r from-primary/30 to-primary/10"
+        style={{
+          backgroundImage: `url(${avatarSrc})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      ></div>
       <div className="flex gap-4 flex-col md:flex-row">
         <Avatar className="border-[3px] hidden md:block border-white shadow-md h-10 w-10 lg:w-25 lg:h-25 -mt-5">
           <AvatarImage src={avatarSrc} alt={name || "avatar"} />
