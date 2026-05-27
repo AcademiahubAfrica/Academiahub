@@ -1,7 +1,7 @@
 import { settingsLinks } from "@/app/data/Exports";
 import Back from "@/components/user/shared/Back";
 import Link from "next/link";
-import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
+import { ChevronsRight } from "lucide-react";
 
 export default function Page() {
   return (
@@ -24,7 +24,7 @@ export default function Page() {
             className=" items-center inline-flex  gap-1 group"
           >
             {label}
-            <MdOutlineKeyboardDoubleArrowRight className="text-primary-500 group-hover:translate-x-1 duration-150 transition-transform" />
+            <ChevronsRight strokeWidth={1.5} color="#1e3a8a" className="group-hover:translate-x-1 duration-150 transition-transform" />
           </Link>
         ))}
       </div>

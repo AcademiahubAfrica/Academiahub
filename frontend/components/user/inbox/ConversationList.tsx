@@ -1,7 +1,7 @@
 "use client";
 import { ConversationListItem } from "@/app/_types/messaging";
 import { Input } from "@/components/ui/input";
-import { FaSearch } from "react-icons/fa";
+import { Search } from "lucide-react";
 import ConversationItem from "./ConversationItem";
 import { useMemo, useState } from "react";
 import { isUnread } from "@/lib/messaging/utils";
@@ -37,7 +37,7 @@ const ConversationList = ({ conversations, selectedId }: ConversationListProps) 
     <div className="h-full flex flex-col mt-2 p-5 max-md:max-w-97.5 md:max-w-87.5">
       <header className="">
         <div className="relative mb-3">
-          <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300 " />
+          <Search strokeWidth={1.5} className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300 " />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}

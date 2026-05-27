@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -62,7 +61,7 @@ export function AccountLinks({ link, label, icon }: AccountLinksProps) {
         >
           {icon}
           <p
-            className={`capitalize truncate hidden md:block xl:hidden transition-all  duration-150 ${isExpanded ? " opacity-100 translate-x-0" : " opacity-0 -translate-x-0.5"}`}
+            className={`capitalize truncate text-base hidden md:block xl:hidden transition-all  duration-150 ${isExpanded ? " opacity-100 translate-x-0" : " opacity-0 -translate-x-0.5"}`}
           >
             {label}
           </p>
@@ -71,20 +70,24 @@ export function AccountLinks({ link, label, icon }: AccountLinksProps) {
           </p>
         </Link>
       ) : (
-        <Button
-          onClick={() => signOut({ callbackUrl: "/" })}
-          className=" flex items-center hover:text-primary pl-0!    bg-transparent text-black hover:bg-transparent transition duration-150 gap-2.5 overflow-hidden"
+        <button
+          type="button"
+          onClick={() => {
+            setOpenMobileSidebar(false);
+            signOut({ callbackUrl: "/" });
+          }}
+          className="flex items-center hover:text-primary w-full h-full transition duration-150 gap-2.5 overflow-hidden text-left bg-transparent p-0 cursor-pointer"
         >
           {icon}
-          <p className="capitalize md:hidden xl:block text-[16px] truncate">
-            {label}
-          </p>
           <p
-            className={`capitalize truncate hidden md:block xl:hidden transition-all  duration-150 ${isExpanded ? " opacity-100 translate-x-0" : " opacity-0 -translate-x-0.5"}`}
+            className={`capitalize truncate text-base hidden md:block xl:hidden transition-all  duration-150 ${isExpanded ? " opacity-100 translate-x-0" : " opacity-0 -translate-x-0.5"}`}
           >
             {label}
           </p>
-        </Button>
+          <p className="capitalize md:hidden xl:block text-[16px] truncate">
+            {label}
+          </p>
+        </button>
       )}
     </li>
   );

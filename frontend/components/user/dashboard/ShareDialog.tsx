@@ -2,6 +2,7 @@
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Image from "next/image";
+import { Copy } from "lucide-react";
 import React from "react";
 import toast from "react-hot-toast";
 
@@ -55,12 +56,11 @@ const ShareDialog = ({
             Share Your {type}
           </h5>
           <div className="flex items-center gap-2">
-            <Image
-              alt="copy to clipboard"
-              src={`/assets/images/user/copy.svg`}
-              width={36}
-              height={36}
-              className="hover:scale-95 transition-all duration-150 cursor-pointer ease-in-out"
+            <Copy
+              aria-label="copy to clipboard"
+              size={36}
+              strokeWidth={1.5}
+              className="hover:scale-95 transition-all duration-150 cursor-pointer ease-in-out p-2 rounded-full border border-grey/30"
               onClick={copyToClipboard}
             />
 

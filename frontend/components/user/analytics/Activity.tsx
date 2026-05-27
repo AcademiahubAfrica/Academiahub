@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CiClock1 } from "react-icons/ci";
+import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { RecentActivity } from "@/lib/analytics";
 
@@ -24,7 +24,7 @@ const Activity = ({ activities }: { activities: RecentActivity[] }) => {
               {activity.authorName} uploaded {activity.title}
             </p>
             <span className="flex items-center gap-1 text-grey text-[10px]! md:text-sm!">
-              <CiClock1 />
+              <Clock size={12} strokeWidth={1.5} />
               <small>{activity.timeAgo}</small>
             </span>
           </div>

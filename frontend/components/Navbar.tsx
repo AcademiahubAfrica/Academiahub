@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { FaBars } from "react-icons/fa";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -50,9 +50,11 @@ const Navbar = () => {
     <nav className="flex relative items-center justify-between bg-white py-5 px-6">
       <div className="right flex items-center gap-7">
         {/* Menu Button */}
-        <FaBars
+        <Menu
+          size={18}
+          strokeWidth={1.5}
           onClick={() => setOpenMenu(true)}
-          className="text-[18px] min-[1140px]:hidden cursor-pointer"
+          className="min-[1140px]:hidden cursor-pointer"
         />
         {/* Logo - Updated path to match your auth pages */}
         {/* updated image to use Logo component with Link to help with navigating to "/" */}

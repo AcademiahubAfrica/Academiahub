@@ -1,23 +1,42 @@
-import Image from "next/image";
+import type { LucideIcon } from "lucide-react";
+import { Heart, MessageCircle, User } from "lucide-react";
 
-const ICON_MAP: Record<string, { src: string; alt: string }> = {
+type IconEntry = {
+  Icon: LucideIcon;
+  label: string;
+  color: string;
+};
+
+const ICON_MAP: Record<string, IconEntry> = {
   comment: {
-    src: "/assets/images/user/notification/message.svg",
-    alt: "Comment notification",
+    Icon: MessageCircle,
+    label: "Comment notification",
+    color: "#2aff00",
   },
   like: {
-    src: "/assets/images/user/notification/love.svg",
-    alt: "Like notification",
+    Icon: Heart,
+    label: "Like notification",
+    color: "#ff0000",
   },
   message: {
-    src: "/assets/images/user/notification/person.svg",
-    alt: "Message notification",
+    Icon: User,
+    label: "Message notification",
+    color: "#ffd700",
   },
 };
 
 export default function NotificationIcon({ type }: { type: string }) {
-  const icon = ICON_MAP[type];
-  if (!icon) return null;
+  const entry = ICON_MAP[type];
+  if (!entry) return null;
 
-  return <Image fill alt={icon.alt} src={icon.src} />;
+  const { Icon, label, color } = entry;
+  return (
+    <Icon
+      strokeWidth={1.5}
+      color={color}
+      className="w-full h-full"
+      role="img"
+      aria-label={label}
+    />
+  );
 }

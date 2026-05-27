@@ -1,16 +1,18 @@
 import { type ReactNode } from "react";
-import { AiOutlineCloudUpload } from "react-icons/ai";
-import { CiBookmark, CiSettings } from "react-icons/ci";
-import { FiDownloadCloud } from "react-icons/fi";
-import { HiOutlineEnvelope } from "react-icons/hi2";
-import { MdOutlineExplore, MdOutlinePersonOutline } from "react-icons/md";
-import { RiBarChart2Line } from "react-icons/ri";
-import { GoSignOut } from "react-icons/go";
-import { BiSupport } from "react-icons/bi";
-import { IoMdNotificationsOutline } from "react-icons/io";
-
-import { SlNote } from "react-icons/sl";
-import { MdPersonOutline } from "react-icons/md";
+import {
+  Bell,
+  Bookmark,
+  ChartNoAxesColumn,
+  CloudDownload,
+  CloudUpload,
+  Compass,
+  FileText,
+  Headset,
+  LogOut,
+  Mail,
+  Settings,
+  User,
+} from "lucide-react";
 
 interface SideLink {
   icon: ReactNode;
@@ -26,32 +28,32 @@ interface AccountLink {
 
 export const sideLinks: SideLink[] = [
   {
-    icon: <MdOutlineExplore size={20} />,
+    icon: <Compass size={20} strokeWidth={1.5} />,
     label: "Explore",
     link: "/dashboard",
   },
   {
-    icon: <FiDownloadCloud size={20} />,
+    icon: <CloudDownload size={20} strokeWidth={1.5} />,
     label: "Downloads",
     link: "/downloads",
   },
   {
-    icon: <CiBookmark size={20} />,
+    icon: <Bookmark size={20} strokeWidth={1.5} />,
     label: "Saved",
     link: "/saved",
   },
   {
-    icon: <RiBarChart2Line size={20} />,
+    icon: <ChartNoAxesColumn size={20} strokeWidth={1.5} />,
     label: "Analytics",
     link: "/analytics",
   },
   {
-    icon: <HiOutlineEnvelope size={20} />,
+    icon: <Mail size={20} strokeWidth={1.5} />,
     label: "inbox",
     link: "/inbox",
   },
   {
-    icon: <AiOutlineCloudUpload size={20} />,
+    icon: <CloudUpload size={20} strokeWidth={1.5} />,
     label: "upload",
     link: "/uploads",
   },
@@ -59,27 +61,27 @@ export const sideLinks: SideLink[] = [
 
 export const accountLinks: AccountLink[] = [
   {
-    icon: <MdOutlinePersonOutline size={20} />,
+    icon: <User size={20} strokeWidth={1.5} />,
     label: "Profile",
     link: "/profile",
   },
   {
-    icon: <IoMdNotificationsOutline size={20} />,
+    icon: <Bell size={20} strokeWidth={1.5} />,
     label: "Notification",
     link: "/notifications",
   },
   {
-    icon: <CiSettings size={20} />,
+    icon: <Settings size={20} strokeWidth={1.5} />,
     label: "Settings",
     link: "/settings",
   },
   {
-    icon: <BiSupport size={20} />,
+    icon: <Headset size={20} strokeWidth={1.5} />,
     label: "Help & Support",
     link: "/support",
   },
   {
-    icon: <GoSignOut size={20} />,
+    icon: <LogOut size={20} strokeWidth={1.5} />,
     label: "Sign Out",
   },
 ];
@@ -127,25 +129,25 @@ export const userPagesMetadata: Record<
 
 export const supportHelpData = [
   {
-    icon: SlNote,
+    icon: FileText,
     title: "Publications",
     description: "Uploading, downloading, managing files",
     href: "/support/publications",
   },
   {
-    icon: MdPersonOutline,
+    icon: User,
     title: "Account & Profile",
     description: "Login, password reset, profile setup",
     href: "/support/account",
   },
   {
-    icon: IoMdNotificationsOutline,
+    icon: Bell,
     title: "Notifications",
     description: "App updates, messages, alerts",
     href: "/support/notifications",
   },
   {
-    icon: CiSettings,
+    icon: Settings,
     title: "Settings & Privacy",
     description: "Preferences, visibility, permissions",
     href: "/support/settings",

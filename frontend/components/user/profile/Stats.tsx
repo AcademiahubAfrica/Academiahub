@@ -1,5 +1,4 @@
-import { GoHeart } from "react-icons/go";
-import { IoCloudDownloadOutline, IoCloudUploadOutline } from "react-icons/io5";
+import { CloudDownload, CloudUpload, Heart } from "lucide-react";
 
 interface StatsProps {
   stats?: {
@@ -14,20 +13,31 @@ const Stats = ({ stats }: StatsProps) => {
   const statsOptions = [
     {
       icon: (
-        <IoCloudDownloadOutline className="text-green-500 text-sm md:text-xl" />
+        <CloudDownload
+          strokeWidth={1.5}
+          className="text-green-500 size-3.5 md:size-5"
+        />
       ),
       label: "Downloads",
       count: stats?.downloads ?? 0,
     },
     {
       icon: (
-        <IoCloudUploadOutline className="text-primary text-sm md:text-xl" />
+        <CloudUpload
+          strokeWidth={1.5}
+          className="text-primary size-3.5 md:size-5"
+        />
       ),
       label: "Uploads",
       count: stats?.uploads ?? 0,
     },
     {
-      icon: <GoHeart className="text-red-500 text-sm md:text-xl" />,
+      icon: (
+        <Heart
+          strokeWidth={1.5}
+          className="text-red-500 size-3.5 md:size-5"
+        />
+      ),
       label: "Likes",
       count: stats?.likes ?? 0,
     },

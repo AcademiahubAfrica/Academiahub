@@ -1,9 +1,7 @@
 "use client";
 import { useState } from "react";
-import { IoMdNotificationsOutline } from "react-icons/io";
-import { RiShareForwardLine } from "react-icons/ri";
+import { Bell, Menu, Search, Share2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FaBars } from "react-icons/fa";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Sidebar from "./Sidebar";
 import Link from "next/link";
@@ -15,7 +13,6 @@ import { useSidebar } from "./SidebarContext";
 import { getInitials } from "@/lib/messaging/utils";
 import { useUnreadCount } from "@/lib/notifications/hooks";
 import SearchBar from "./user/SearchBar";
-import { MdSearch } from "react-icons/md";
 import ShareDialog from "./user/dashboard/ShareDialog";
 import toast from "react-hot-toast";
 
@@ -87,8 +84,9 @@ const UserHeader = ({ userInfoToShare }: UserHeaderProps) => {
       <div className="md:flex hidden pr-7.5   items-center justify-end   gap-4.5  w-1/2  ">
         {openSearchBar === false && (
           <div className="w-10 h-10 md:flex  lg:hidden items-center justify-center bg-gray-100 rounded-full hidden ">
-            <MdSearch
-              className="text-xl "
+            <Search
+              size={20}
+              strokeWidth={1.5}
               onClick={() => setOpenSearchBar(true)}
             />
           </div>
@@ -99,7 +97,7 @@ const UserHeader = ({ userInfoToShare }: UserHeaderProps) => {
             href={"/notifications"}
             className="relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full"
           >
-            <IoMdNotificationsOutline className="text-2xl lg:block" />
+            <Bell size={24} strokeWidth={1.5} className="lg:block" />
             {!!unreadCount && unreadCount > 0 && (
               <span className="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 flex items-center justify-center rounded-full bg-primary-500 text-white text-[10px] font-medium leading-none">
                 {unreadCount > 99 ? "99+" : unreadCount}
@@ -126,8 +124,9 @@ const UserHeader = ({ userInfoToShare }: UserHeaderProps) => {
           className="w-10 h-10 hidden lg:flex items-center justify-center bg-gray-100 rounded-full"
           onClick={() => onShare()}
         >
-          <RiShareForwardLine
+          <Share2
             size={20}
+            strokeWidth={1.5}
             className="hidden cursor-pointer md:block"
           />
         </div>
@@ -206,7 +205,7 @@ const UserHeader = ({ userInfoToShare }: UserHeaderProps) => {
               href={"/notifications"}
               className="relative flex items-center justify-center"
             >
-              <IoMdNotificationsOutline className="text-2xl" />
+              <Bell size={24} strokeWidth={1.5} />
               {!!unreadCount && unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 flex items-center justify-center rounded-full bg-primary-500 text-white text-[10px] font-medium leading-none">
                   {unreadCount > 99 ? "99+" : unreadCount}
@@ -219,7 +218,7 @@ const UserHeader = ({ userInfoToShare }: UserHeaderProps) => {
                 aria-label="Open menu"
                 className="flex items-center justify-center"
               >
-                <FaBars className="text-xl" />
+                <Menu size={20} strokeWidth={1.5} />
               </button>
             </SheetTrigger>
           </div>

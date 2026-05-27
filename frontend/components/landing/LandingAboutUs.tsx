@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
+import { MdCheckCircleOutline } from "react-icons/md";
 
 const LandingAboutUs = () => {
   return (
@@ -27,45 +28,25 @@ const LandingAboutUs = () => {
               </p>
               <ul className="space-y-2">
                 <li className="flex items-center gap-1.5">
-                  <Image
-                    src={"/assets/images/LandingPage/checked-icon.png"}
-                    alt="check-icon"
-                    width={24}
-                    height={24}
-                  />{" "}
+                  <MdCheckCircleOutline size={24} aria-hidden />{" "}
                   <p className="font-normal text-sm leading-[130%]">
                     Peer-reviewed content
                   </p>
                 </li>
                 <li className="flex items-center gap-1.5">
-                  <Image
-                    src={"/assets/images/LandingPage/checked-icon.png"}
-                    alt="check-icon"
-                    width={24}
-                    height={24}
-                  />{" "}
+                  <MdCheckCircleOutline size={24} aria-hidden />{" "}
                   <p className="font-normal text-sm leading-[130%]">
                     Global academic network
                   </p>
                 </li>
                 <li className="flex items-center gap-1.5">
-                  <Image
-                    src={"/assets/images/LandingPage/checked-icon.png"}
-                    alt="check-icon"
-                    width={24}
-                    height={24}
-                  />{" "}
+                  <MdCheckCircleOutline size={24} aria-hidden />{" "}
                   <p className="font-normal text-sm leading-[130%]">
                     Secure and reliable platform
                   </p>
                 </li>
                 <li className="flex items-center gap-1.5">
-                  <Image
-                    src={"/assets/images/LandingPage/checked-icon.png"}
-                    alt="check-icon"
-                    width={24}
-                    height={24}
-                  />{" "}
+                  <MdCheckCircleOutline size={24} aria-hidden />{" "}
                   <p className="font-normal text-sm leading-[130%]">
                     Free access to resources
                   </p>

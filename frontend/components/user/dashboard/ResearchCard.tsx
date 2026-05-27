@@ -1,8 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { FaRegComment } from "react-icons/fa";
-import { MdOutlineFileDownload } from "react-icons/md";
+import { Download, MessageCircle } from "lucide-react";
 import Like from "@/components/Like";
 import { ResearchCardType } from "@/app/_types/documents";
 import SaveButton from "@/components/SaveButton";
@@ -162,13 +161,13 @@ const ResearchCard = ({
                 initialCount={data.likes}
               />
               <div className="flex items-center gap-0.75">
-                <FaRegComment className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
+                <MessageCircle strokeWidth={1.5} className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
                 <small className="text-[6.84px] md:text-sm">
                   {data._count.commentRecords}
                 </small>
               </div>
               <div className="flex items-center gap-0.75">
-                <MdOutlineFileDownload className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
+                <Download strokeWidth={1.5} className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
                 <small className="text-[6.84px] md:text-sm">
                   {data?.downloads}
                 </small>

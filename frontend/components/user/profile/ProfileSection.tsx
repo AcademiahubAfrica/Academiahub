@@ -1,8 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { LuSchool } from "react-icons/lu";
-import { RiGraduationCapLine } from "react-icons/ri";
-import { IoLocationOutline } from "react-icons/io5";
+import { GraduationCap, MapPin, School } from "lucide-react";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -98,14 +96,14 @@ const ProfileSection = async () => {
             {/* info */}
             <div className="flex md:items-center text-black flex-col md:flex-row  gap-4 lg:gap-8">
               <div className="flex items-center gap-1">
-                <LuSchool />
+                <School size={16} strokeWidth={1.5} />
                 <h5 className="text-xs md:text-sm leading-3.5 md:leading-4.5">
                   {bio?.institution || "Institution not specified"}
                 </h5>
               </div>
 
               <div className="flex  items-center gap-1">
-                <RiGraduationCapLine />
+                <GraduationCap size={16} strokeWidth={1.5} />
                 <h5 className="text-xs md:text-sm leading-3.5 md:leading-4.5">
                   {bio?.department || "Department not specified"}
                 </h5>
@@ -113,7 +111,7 @@ const ProfileSection = async () => {
             </div>
 
             <div className="flex items-center text-black mt-4 mb-6.5 gap-1">
-              <IoLocationOutline />
+              <MapPin size={16} strokeWidth={1.5} />
               <h5 className="text-xs md:text-sm leading-3.5 md:leading-4.5">
                 {location ? location : "Location not specified"}
               </h5>

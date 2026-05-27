@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaArrowRight } from "react-icons/fa";
+import { ArrowRight } from "lucide-react";
 import { supportHelpData } from "@/app/data/Exports";
 
 export default function SupportLinks() {
@@ -13,6 +13,7 @@ export default function SupportLinks() {
         >
           <Icon
             size={28}
+            strokeWidth={1.5}
             className="shrink-0 text-black group-hover:text-primary transition-colors"
           />
 
@@ -28,8 +29,9 @@ export default function SupportLinks() {
           <div className="hidden md:block">
             <div className="flex items-center gap-1 text-sm font-medium text-black group-hover:underline">
               View
-              <FaArrowRight
+              <ArrowRight
                 size={12}
+                strokeWidth={1.5}
                 className="transition-transform duration-200 group-hover:translate-x-1 opacity-75"
               />
             </div>

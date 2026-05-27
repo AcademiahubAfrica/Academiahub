@@ -22,12 +22,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import { HiOutlineUpload } from "react-icons/hi";
+import { Upload, X } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useCallback } from "react";
 import { z } from "zod";
-import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -191,8 +190,10 @@ const UploadForm = () => {
 
               {selectedFile ? (
                 <>
-                  <FaTimes
-                    className="absolute text-primary text-2xl cursor-pointer top-2 right-2 z-10"
+                  <X
+                    size={24}
+                    strokeWidth={1.5}
+                    className="absolute text-primary cursor-pointer top-2 right-2 z-10"
                     onClick={handleRemoveFile}
                   />
 
@@ -223,7 +224,7 @@ const UploadForm = () => {
                 </>
               ) : (
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <HiOutlineUpload size={32} />
+                  <Upload size={32} strokeWidth={1.5} />
                   <p>Click to upload PDF document</p>
                   <small>PDF up to 10MB</small>
                 </div>

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { FaBookmark, FaRegBookmark } from "react-icons/fa";
+import { Bookmark } from "lucide-react";
 
 interface SaveButtonProps {
   documentId: string;
@@ -57,12 +57,11 @@ const SaveButton = ({
     );
   }
 
-  const Icon = isSaved ? FaBookmark : FaRegBookmark;
-
   return (
-    <Icon
-      className="cursor-pointer text-primary w-1.75 h-2.25 md:w-3.5 md:h-4.5"
-      style={{ width: undefined, height: undefined }}
+    <Bookmark
+      strokeWidth={1.5}
+      fill={isSaved ? "#1e3a8a" : "none"}
+      className="cursor-pointer text-primary w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5"
       onClick={handleToggle}
     />
   );

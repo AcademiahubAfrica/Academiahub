@@ -1,7 +1,7 @@
 import LandingFaq from "@/components/landing/LandingFaq";
 import { Metadata } from "next";
 import { ReactNode } from "react";
-import { CiMail } from "react-icons/ci";
+import { Mail } from "lucide-react";
 
 export const metadata: Metadata = {
   title: {
@@ -30,7 +30,7 @@ export default function SupportLayout({ children }: { children: ReactNode }) {
             href="mailto:support@mail.academiahubafrica.org"
             className="flex items-center gap-2"
           >
-            <CiMail /> support@mail.academiahubafrica.org
+            <Mail size={18} strokeWidth={1.5} /> support@mail.academiahubafrica.org
           </a>
         </div>
       </div>

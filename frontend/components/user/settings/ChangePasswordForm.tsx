@@ -15,7 +15,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 import { useHashHighlight } from "@/lib/hooks/useHashHighlight";
 
@@ -80,12 +80,16 @@ const ChangePasswordForm = () => {
                 {...register("currentPassword")}
               />
               {showPassword ? (
-                <FaEye
+                <Eye
+                  size={16}
+                  strokeWidth={1.5}
                   className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 />
               ) : (
-                <FaEyeSlash
+                <EyeOff
+                  size={16}
+                  strokeWidth={1.5}
                   className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 />
@@ -108,12 +112,16 @@ const ChangePasswordForm = () => {
                 {...register("newPassword")}
               />
               {showNewPassword ? (
-                <FaEye
+                <Eye
+                  size={16}
+                  strokeWidth={1.5}
                   className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
                   onClick={() => setShowNewPassword(!showNewPassword)}
                 />
               ) : (
-                <FaEyeSlash
+                <EyeOff
+                  size={16}
+                  strokeWidth={1.5}
                   className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
                   onClick={() => setShowNewPassword(!showNewPassword)}
                 />
@@ -135,12 +143,16 @@ const ChangePasswordForm = () => {
                 {...register("confirmPassword")}
               />
               {showConfirmPassword ? (
-                <FaEye
+                <Eye
+                  size={16}
+                  strokeWidth={1.5}
                   className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 />
               ) : (
-                <FaEyeSlash
+                <EyeOff
+                  size={16}
+                  strokeWidth={1.5}
                   className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 />

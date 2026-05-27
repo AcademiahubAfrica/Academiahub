@@ -1,8 +1,11 @@
-import { AiOutlineCloudUpload } from "react-icons/ai";
-import { CiBookmark } from "react-icons/ci";
-import { FiDownloadCloud } from "react-icons/fi";
-import { IoTrendingDown, IoTrendingUp } from "react-icons/io5";
-import { MdPersonOutline } from "react-icons/md";
+import {
+  Bookmark,
+  CloudDownload,
+  CloudUpload,
+  TrendingDown,
+  TrendingUp,
+  User,
+} from "lucide-react";
 import type { AnalyticsStats } from "@/lib/analytics";
 
 type Card = {
@@ -18,25 +21,25 @@ const Statistics = ({ stats }: { stats: AnalyticsStats }) => {
       label: "Total Downloads",
       value: stats.downloads.value,
       percentage: stats.downloads.percentageChange,
-      icon: <FiDownloadCloud />,
+      icon: <CloudDownload size={20} strokeWidth={1.5} />,
     },
     {
       label: "Total Uploads",
       value: stats.uploads.value,
       percentage: stats.uploads.percentageChange,
-      icon: <AiOutlineCloudUpload />,
+      icon: <CloudUpload size={20} strokeWidth={1.5} />,
     },
     {
       label: "Total Saves",
       value: stats.saves.value,
       percentage: stats.saves.percentageChange,
-      icon: <CiBookmark />,
+      icon: <Bookmark size={20} strokeWidth={1.5} />,
     },
     {
       label: "Profile Visits",
       value: stats.profileVisits.value,
       percentage: stats.profileVisits.percentageChange,
-      icon: <MdPersonOutline size={24} />,
+      icon: <User size={24} strokeWidth={1.5} />,
     },
   ];
 
@@ -49,7 +52,7 @@ const Statistics = ({ stats }: { stats: AnalyticsStats }) => {
         >
           {(() => {
             const negative = percentage < 0;
-            const TrendIcon = negative ? IoTrendingDown : IoTrendingUp;
+            const TrendIcon = negative ? TrendingDown : TrendingUp;
             const colorClass = negative ? "text-red-500" : "text-green-500";
             const display = negative ? `${percentage}%` : `+${percentage}%`;
             return (
@@ -58,7 +61,7 @@ const Statistics = ({ stats }: { stats: AnalyticsStats }) => {
                   {label}
                 </p>
                 <span className="flex items-center gap-0.5">
-                  <TrendIcon size={12} className={colorClass} />
+                  <TrendIcon size={12} strokeWidth={1.5} className={colorClass} />
                   <small className={`leading-5.25 ${colorClass} font-normal`}>
                     {display}{" "}
                     <span className="hidden md:inline">from last month</span>

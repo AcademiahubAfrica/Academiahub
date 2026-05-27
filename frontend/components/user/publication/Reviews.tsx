@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import Image from "next/image";
+import { Star } from "lucide-react";
 import StarRatings from "./StarRatings";
 import type { ReviewAggregate } from "@/lib/reviews/aggregate";
 
@@ -37,11 +37,12 @@ const Reviews = ({ documentId, aggregate, userRating, canReview }: Props) => {
               >
                 {avgDisplay}
               </h2>
-              <Image
-                alt="stars"
-                src={"/assets/images/star.svg"}
-                height={23}
-                width={23}
+              <Star
+                aria-label="stars"
+                size={23}
+                strokeWidth={1.5}
+                fill="#1e3a8a"
+                stroke="#1e3a8a"
               />
             </div>
             <Badge variant={"default"} className="px-3.5 py-1.5">
@@ -56,11 +57,12 @@ const Reviews = ({ documentId, aggregate, userRating, canReview }: Props) => {
               return (
                 <div className="flex gap-px items-center " key={star}>
                   <small className="text-[#6A6A6A]">{star}</small>
-                  <Image
-                    alt="stars"
-                    src={"/assets/images/star.svg"}
-                    height={9}
-                    width={9}
+                  <Star
+                    aria-label="stars"
+                    size={9}
+                    strokeWidth={1.5}
+                    fill="#1e3a8a"
+                    stroke="#1e3a8a"
                   />
                   <Progress
                     bg={`bg-linear-170 from-[#1E3A8A] from-50% to-80% to-[#F8BD00]`}

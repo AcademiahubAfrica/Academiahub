@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
-import { FaEnvelope } from "react-icons/fa";
+import { Mail } from "lucide-react";
 
 import { FaXTwitter } from "react-icons/fa6";
 import { AiFillInstagram, AiFillLinkedin } from "react-icons/ai";
@@ -85,10 +85,21 @@ const Footer = () => {
               loading="lazy"
             />
           </div>
-          <p className="md:text-base font-normal text-[14px] leading-4.5 md:leading-5 tracking-normal">
-            Browse the highest-rated projects and papers recommended by students
-            and academic supervisors.
-          </p>
+          <div className="flex flex-col h-[78%] justify-between ">
+            <p className="md:text-base font-normal text-[14px] leading-4.5 md:leading-5 tracking-normal">
+              Browse the highest-rated projects and papers recommended by
+              students and academic supervisors.
+            </p>
+            <div className="flex items-center gap-2  ">
+              <Mail size={16} strokeWidth={1.5} className="shrink-0" />
+              <a
+                href="mailto:support@mail.academiahubafrica.org"
+                className="text-sm lg:text-base leading-4.5"
+              >
+                support@mail.academiahubafrica.org
+              </a>
+            </div>
+          </div>
         </div>
         {/* grid 2 */}
 
@@ -148,7 +159,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="flex items-center gap-2 max-sm:-order-1 basis-full">
-          <FaEnvelope className="shrink-0" />
+          <Mail size={16} strokeWidth={1.5} className="shrink-0" />
           <a
             href="mailto:support@mail.academiahubafrica.org"
             className="text-sm lg:text-base leading-4.5"

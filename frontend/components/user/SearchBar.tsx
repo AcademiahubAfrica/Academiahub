@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FaSearch } from "react-icons/fa";
+import { Search } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
@@ -33,7 +33,7 @@ export default function SearchBar() {
   return (
     <div className=" flex items-center gap-5 w-full max-md:justify-between ">
       <div className="sm:w-4/5 max-sm:w-full border h-10 max-sm:h-7 flex items-center p-3 focus-within:border-2 focus-within:border-gray-600 rounded-lg max-sm:rounded-sm">
-        <FaSearch className="text-gray-400" />
+        <Search size={16} strokeWidth={1.5} className="text-gray-400" />
         <Input
           value={value}
           onChange={(e) => setValue(e.target.value)}

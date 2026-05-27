@@ -4,7 +4,7 @@ import { sideLinks } from "@/app/data/Exports";
 import SideLink from "./SideLink";
 import CollaspeSide from "./CollaspeSide";
 import { useSidebar } from "./SidebarContext";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { ChevronRight } from "lucide-react";
 
 const Sidebar = () => {
   const { isExpanded, toggleSidebar } = useSidebar();
@@ -17,8 +17,10 @@ const Sidebar = () => {
       >
         <Logo />
       </div>
-      <MdOutlineKeyboardArrowRight
-        className={`hidden text-3xl text-black md:block xl:hidden absolute top-6 ${isExpanded ? "right-0 " : " translate-x-1/2 right-1/2"} z-60  cursor-pointer transition-transform duration-300`}
+      <ChevronRight
+        size={28}
+        strokeWidth={1.5}
+        className={`hidden text-black md:block xl:hidden absolute top-6 ${isExpanded ? "right-0 " : " translate-x-1/2 right-1/2"} z-60  cursor-pointer transition-transform duration-300`}
         onClick={toggleSidebar}
         style={{
           transform: isExpanded ? " rotate(180deg)" : " rotate(0deg)",
