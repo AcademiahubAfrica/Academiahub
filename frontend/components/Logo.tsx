@@ -1,8 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-const Logo = () => {
+const Logo = ({ href = "/" }: { href?: string }) => {
   return (
-    <Link href="/">
+    <Link href={href}>
       <Image
         src={"/assets/images/logo.png"}
         alt="AcademiaHub logo"

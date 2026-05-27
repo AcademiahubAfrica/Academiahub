@@ -15,7 +15,7 @@ const Sidebar = () => {
       <div
         className={`${!isExpanded ? "block md:hidden xl:block" : "md:block hidden"}`}
       >
-        <Logo />
+        <Logo href="/dashboard" />
       </div>
       <ChevronRight
         size={28}
