@@ -20,20 +20,30 @@ const SORT_OPTIONS: Record<string, Prisma.DocumentFindManyArgs["orderBy"]> = {
   popular: [{ likes: "desc" }, { createdAt: "desc" }],
 };
 
+const PAGE_SIZE = 12;
+
 const MainContent = async ({
   search = "",
   category = "",
   sort = "",
 }: MainContentProps) => {
+  const trimmedSearch = search.trim();
+  const trimmedCategory = category.trim();
+  const trimmedSort = sort.trim();
+
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
 
-  let documents: Awaited<ReturnType<typeof fetchDocuments>> = [];
-  let likedDocumentIds: Set<string> = new Set();
-  let savedDocumentIds: Set<string> = new Set();
+  let documents: Awaited<ReturnType<typeof fetchFirstPage>> = [];
+  let total = 0;
+  let likedIds: string[] = [];
+  let savedIds: string[] = [];
 
   try {
-    documents = await fetchDocuments(search.trim(), category.trim(), sort.trim());
+    [documents, total] = await Promise.all([
+      fetchFirstPage(trimmedSearch, trimmedCategory, trimmedSort),
+      countDocuments(trimmedSearch, trimmedCategory),
+    ]);
 
     if (userId && documents.length > 0) {
       const documentIds = documents.map((d) => d.id);
@@ -47,12 +57,14 @@ const MainContent = async ({
           select: { documentId: true },
         }),
       ]);
-      likedDocumentIds = new Set(likes.map((l) => l.documentId));
-      savedDocumentIds = new Set(saves.map((s) => s.documentId));
+      likedIds = likes.map((l) => l.documentId);
+      savedIds = saves.map((s) => s.documentId);
     }
   } catch (error) {
     console.error("Failed to fetch documents:", error);
   }
+
+  const hasMore = documents.length < total;
 
   return (
     <>
@@ -61,23 +73,29 @@ const MainContent = async ({
         <div className="md:hidden w-full my-3">
           <SearchBar />
         </div>
-        {search ? (
+        {trimmedSearch ? (
           <h4 className="text-lg mb-3 lg:mb-5.5 p-2.5  w-fit bg-white rounded-2xl font-medium leading-[130%]">
-            {`Results for "${search}"`}
+            {`Results for "${trimmedSearch}"`}
           </h4>
         ) : null}
         <FilterDocuments
+          key={`${trimmedSearch}|${trimmedCategory}|${trimmedSort}`}
           userId={userId}
-          documents={documents}
-          likedDocumentIds={likedDocumentIds}
-          savedDocumentIds={savedDocumentIds}
+          initialDocuments={documents}
+          initialLikedIds={likedIds}
+          initialSavedIds={savedIds}
+          initialHasMore={hasMore}
+          pageSize={PAGE_SIZE}
+          search={trimmedSearch}
+          category={trimmedCategory}
+          sort={trimmedSort}
         />
       </div>
     </>
   );
 };
 
-async function fetchDocuments(search: string, category: string, sort: string) {
+function buildWhere(search: string, category: string): Prisma.DocumentWhereInput {
   const where: Prisma.DocumentWhereInput = {};
 
   if (category && VALID_CATEGORIES.has(category.toUpperCase())) {
@@ -93,8 +111,12 @@ async function fetchDocuments(search: string, category: string, sort: string) {
     ];
   }
 
+  return where;
+}
+
+function fetchFirstPage(search: string, category: string, sort: string) {
   return prisma.document.findMany({
-    where,
+    where: buildWhere(search, category),
     include: {
       author: {
         select: { id: true, name: true, image: true },
@@ -104,8 +126,12 @@ async function fetchDocuments(search: string, category: string, sort: string) {
       },
     },
     orderBy: SORT_OPTIONS[sort] ?? SORT_OPTIONS.recent,
-    take: search ? 50 : 12,
+    take: PAGE_SIZE,
   });
+}
+
+function countDocuments(search: string, category: string) {
+  return prisma.document.count({ where: buildWhere(search, category) });
 }
 
 export default MainContent;

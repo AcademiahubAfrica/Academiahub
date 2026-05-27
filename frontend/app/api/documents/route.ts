@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
+import type { Prisma } from "@prisma/client";
 
 type DocumentCategory = "RESEARCH" | "SEMINAR" | "PROJECT" | "ANALYSIS";
 
@@ -10,6 +11,12 @@ const CATEGORY_MAP: Record<string, DocumentCategory> = {
   seminar: "SEMINAR",
   project: "PROJECT",
   analysis: "ANALYSIS",
+};
+
+const SORT_OPTIONS: Record<string, Prisma.DocumentFindManyArgs["orderBy"]> = {
+  recent: { createdAt: "desc" },
+  oldest: { createdAt: "asc" },
+  popular: [{ likes: "desc" }, { createdAt: "desc" }],
 };
 
 const MAX_DOCUMENT_BYTES = 10 * 1024 * 1024;
@@ -124,17 +131,18 @@ export async function GET(request: NextRequest) {
     const authorId = searchParams.get("authorId");
     const category = searchParams.get("category");
     const q = searchParams.get("q");
+    const sort = searchParams.get("sort") || "recent";
     const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
     const limit = Math.min(50, Math.max(1, parseInt(searchParams.get("limit") || "12")));
 
-    const where: Record<string, unknown> = {};
+    const where: Prisma.DocumentWhereInput = {};
 
     if (authorId) {
       where.authorId = authorId;
     }
 
     if (category && category !== "all") {
-      where.category = category.toUpperCase();
+      where.category = category.toUpperCase() as Prisma.DocumentWhereInput["category"];
     }
 
     if (q && q.trim().length > 0) {
@@ -149,7 +157,7 @@ export async function GET(request: NextRequest) {
 
     const skip = (page - 1) * limit;
 
-    const [documents, total] = await Promise.all([
+    const [documents, total, session] = await Promise.all([
       prisma.document.findMany({
         where,
         include: {
@@ -160,18 +168,46 @@ export async function GET(request: NextRequest) {
               image: true,
             },
           },
+          _count: {
+            select: { commentRecords: true },
+          },
         },
-        orderBy: {
-          createdAt: "desc",
-        },
+        orderBy: SORT_OPTIONS[sort] ?? SORT_OPTIONS.recent,
         skip,
         take: limit,
       }),
       prisma.document.count({ where }),
+      getServerSession(authOptions),
     ]);
 
+    const userId = session?.user?.id;
+    let documentsWithUserState: Array<
+      (typeof documents)[number] & { isLiked?: boolean; isSaved?: boolean }
+    > = documents;
+
+    if (userId && documents.length > 0) {
+      const documentIds = documents.map((d) => d.id);
+      const [likes, saves] = await Promise.all([
+        prisma.like.findMany({
+          where: { userId, documentId: { in: documentIds } },
+          select: { documentId: true },
+        }),
+        prisma.save.findMany({
+          where: { userId, documentId: { in: documentIds } },
+          select: { documentId: true },
+        }),
+      ]);
+      const likedSet = new Set(likes.map((l) => l.documentId));
+      const savedSet = new Set(saves.map((s) => s.documentId));
+      documentsWithUserState = documents.map((d) => ({
+        ...d,
+        isLiked: likedSet.has(d.id),
+        isSaved: savedSet.has(d.id),
+      }));
+    }
+
     return NextResponse.json({
-      documents,
+      documents: documentsWithUserState,
       pagination: {
         page,
         limit,
