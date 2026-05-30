@@ -12,6 +12,27 @@ interface DownloadButtonProps {
   children?: React.ReactNode;
 }
 
+/**
+ * Rewrite a Cloudinary delivery URL to force a browser download with a clean
+ * filename. The `fl_attachment` flag makes Cloudinary respond with
+ * `Content-Disposition: attachment` and appends the asset's extension, so we
+ * pass the bare name (without `.pdf`). Falls back to the original URL if it
+ * isn't a standard `/upload/` delivery URL.
+ */
+function buildDownloadUrl(fileUrl: string, fileName: string): string {
+  const marker = "/upload/";
+  const idx = fileUrl.indexOf(marker);
+  if (idx === -1) return fileUrl;
+
+  const baseName = fileName.replace(/\.pdf$/i, "").trim() || "document";
+  const encoded = encodeURIComponent(baseName);
+  return (
+    fileUrl.slice(0, idx + marker.length) +
+    `fl_attachment:${encoded}/` +
+    fileUrl.slice(idx + marker.length)
+  );
+}
+
 const DownloadButton = ({
   documentId,
   fileUrl,
@@ -27,20 +48,24 @@ const DownloadButton = ({
     setLoading(true);
 
     try {
-      const [, response] = await Promise.all([
-        fetch(`/api/documents/${documentId}/download`, { method: "POST" }),
-        fetch(fileUrl),
-      ]);
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
+      // Trigger the download via Cloudinary's attachment URL. The browser
+      // handles it natively (Content-Disposition), so there's no cross-origin
+      // fetch/blob/CORS round-trip to fail. target=_blank keeps the page intact
+      // even if the attachment header is ever missing.
       const link = document.createElement("a");
-      link.href = url;
-      link.download = fileName;
+      link.href = buildDownloadUrl(fileUrl, fileName);
+      link.target = "_blank";
+      link.rel = "noopener";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-      onDownload?.();
+
+      // Record the download separately; only bump the optimistic counter if it
+      // was actually recorded.
+      const response = await fetch(`/api/documents/${documentId}/download`, {
+        method: "POST",
+      });
+      if (response.ok) onDownload?.();
     } catch (error) {
       console.error("Download failed:", error);
     } finally {
