@@ -13,6 +13,13 @@ import {
 import { getInitials } from "@/lib/messaging/utils";
 import Link from "next/link";
 import KebabIcon from "../shared/KebabIcon";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useIsTruncated } from "@/lib/hooks/useIsTruncated";
+import { cn } from "@/lib/utils";
 
 import { useState, useTransition } from "react";
 import toast from "react-hot-toast";
@@ -52,6 +59,8 @@ const ResearchCard = ({
   const [showShareDialog, setShowShareDialog] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [isDeleting, startDeleteTransition] = useTransition();
+  const { ref: titleRef, isTruncated: isTitleTruncated } =
+    useIsTruncated<HTMLHeadingElement>();
   const shareData = {
     title: `New Research: ${data?.title}`,
     text: `Check out this latest publication by ${data?.author?.name} on Academia Hub Africa. It explores key insights into ${data?.title}.`,
@@ -120,9 +129,32 @@ const ResearchCard = ({
         </div>
         {/* content */}
         <div className=" mt-2  w-full">
-          <h3 className="font-medium line-clamp-1 text-[8px]  md:text-lg leading-[130%]">
-            {data.title}
-          </h3>
+          {(() => {
+            const heading = (
+              <h3
+                ref={titleRef}
+                tabIndex={isTitleTruncated ? 0 : undefined}
+                className={cn(
+                  "font-medium line-clamp-1 text-[8px]  md:text-lg leading-[130%]",
+                  isTitleTruncated &&
+                    "rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                )}
+              >
+                {data.title}
+              </h3>
+            );
+
+            if (!isTitleTruncated) return heading;
+
+            return (
+              <Tooltip>
+                <TooltipTrigger asChild>{heading}</TooltipTrigger>
+                <TooltipContent side="top" className="max-w-xs">
+                  {data.title}
+                </TooltipContent>
+              </Tooltip>
+            );
+          })()}
           <div className="flex items-center  mt-2  gap-1.5 mb-3 ">
             {data.author.image ? (
               <div className="w-5 h-5 md:w-10 md:h-10 relative">

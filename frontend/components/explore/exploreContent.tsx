@@ -11,6 +11,7 @@ import { Search, Loader2 } from "lucide-react";
 import { getInitials } from "@/lib/messaging/utils";
 import JoinUs from "@/components/landing/JoinUs";
 import ExploreSkeleton from "@/components/explore/ExploreSkeleton";
+import ExploreCardTitle from "@/components/explore/ExploreCardTitle";
 import type { Document } from "@/app/_types/documents";
 import { getCategoryImage } from "@/lib/categoryImage";
 
@@ -188,9 +189,7 @@ export default function ExploreContent() {
 
                 {/* Publication Content */}
                 <div className="p-5">
-                  <h3 className="font-semibold text-lg text-gray-900 mb-4.5 line-clamp-2 truncate ">
-                    {doc.title}
-                  </h3>
+                  <ExploreCardTitle title={doc.title} />
 
                   {/* Author Info */}
                   <div className="flex items-center gap-3 mb-4">
