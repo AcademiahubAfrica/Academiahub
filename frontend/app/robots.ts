@@ -17,7 +17,6 @@ export default function robots(): MetadataRoute.Robots {
         "/inbox",
         "/profile",
         "/settings",
-        "/docs",
       ],
     },
     sitemap: `${siteUrl}/sitemap.xml`,
