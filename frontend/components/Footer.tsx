@@ -90,7 +90,7 @@ const Footer = () => {
               Browse the highest-rated projects and papers recommended by
               students and academic supervisors.
             </p>
-            <div className="flex items-center gap-2  ">
+            <div className="flex items-center gap-2  mb-4">
               <Mail size={16} strokeWidth={1.5} className="shrink-0" />
               <a
                 href="mailto:support@mail.academiahubafrica.org"
@@ -157,15 +157,6 @@ const Footer = () => {
             />
             <Button className="rounded-2xl">Subscribe</Button>
           </div>
-        </div>
-        <div className="flex items-center gap-2 max-sm:-order-1 basis-full">
-          <Mail size={16} strokeWidth={1.5} className="shrink-0" />
-          <a
-            href="mailto:support@mail.academiahubafrica.org"
-            className="text-sm lg:text-base leading-4.5"
-          >
-            support@mail.academiahubafrica.org
-          </a>
         </div>
       </div>
       <Separator className="mb-11.25" />
