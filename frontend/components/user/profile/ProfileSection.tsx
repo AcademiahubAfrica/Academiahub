@@ -8,6 +8,7 @@ import prisma from "@/prisma/connection";
 import { Bio } from "@/app/_types/author";
 import { getInitials } from "@/lib/messaging/utils";
 import Stats from "./Stats";
+import ProfileBannerPicker from "./ProfileBannerPicker";
 
 const ProfileSection = async () => {
   const session = await getServerSession(authOptions);
@@ -51,23 +52,15 @@ const ProfileSection = async () => {
     };
   }
 
-  const avatarSrc = image || undefined;
+  const avatarSrc = image || "";
   const initials = getInitials(name);
   const location = bio
     ? [bio.state, bio.country].filter(Boolean).join(", ")
     : "";
-
+  const bannerId = 0;
   return (
     <div className="md:bg-white md:m-4 md:py-6 md:px-4 rounded-2xl">
-      <div
-        className="h-19.25 lg:h-36.25 relative rounded-t-2xl bg-linear-to-r from-primary/30 to-primary/10"
-        style={{
-          backgroundImage: `url(${avatarSrc})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      ></div>
+      <ProfileBannerPicker bannerId={bannerId} />
       <div className="flex gap-4 flex-col md:flex-row">
         <Avatar className="border-[3px] hidden md:block border-white shadow-md h-10 w-10 lg:w-25 lg:h-25 -mt-5">
           <AvatarImage src={avatarSrc} alt={name || "avatar"} />
