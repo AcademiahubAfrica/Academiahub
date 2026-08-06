@@ -250,3 +250,9 @@ model ReadReceipt {
 
   @@unique([conversationId, userId])
 }
+
+model NewsletterSubscriber {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  createdAt DateTime @default(now())
+}

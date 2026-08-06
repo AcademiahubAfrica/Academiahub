@@ -1,9 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useTransition } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Mail } from "lucide-react";
+import toast from "react-hot-toast";
 
 import { FaXTwitter } from "react-icons/fa6";
 import { AiFillInstagram, AiFillLinkedin } from "react-icons/ai";
@@ -71,6 +75,43 @@ const footerLinks = {
 const date = new Date();
 const currentYear = date.getFullYear();
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubscribe = async () => {
+    const value = (email || "").trim().toLowerCase();
+    if (!value) {
+      toast.error("Please enter an email address.");
+      return;
+    }
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(value)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    startTransition(async () => {
+      try {
+        const res = await fetch(`/api/newsletter/subscribe`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: value }),
+        });
+        if (!res.ok) throw new Error("Request failed");
+        const data = await res.json();
+        if (data?.alreadySubscribed) {
+          toast("You're already subscribed.");
+        } else {
+          toast.success("Subscribed successfully! Thank you.");
+          setEmail("");
+        }
+      } catch (err) {
+        toast.error("Could not subscribe. Please try again later.");
+        console.error(err);
+      }
+    });
+  };
+
   return (
     <footer className="bg-black w-full text-white px-4.5 pt-10.25 pb-13.5 md:pt-24.5 md:pb-26.5 md:px-10">
       <div className="flex gap-2 justify-between gap-y-4 lg:gap-4 pb-30 flex-wrap md:pe-6.5  ">
@@ -152,10 +193,25 @@ const Footer = () => {
           </p>
           <div className="flex items-center gap-2">
             <Input
-              className="pl-4 rounded-2xl w-[70%] "
+              className="pl-4 rounded-2xl w-[70%]"
               placeholder="Ochife@Mustapha.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSubscribe();
+                }
+              }}
             />
-            <Button className="rounded-2xl">Subscribe</Button>
+            <Button
+              type="button"
+              className="rounded-2xl"
+              onClick={handleSubscribe}
+              disabled={isPending}
+            >
+              {isPending ? "Subscribing..." : "Subscribe"}
+            </Button>
           </div>
         </div>
       </div>
