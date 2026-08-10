@@ -71,7 +71,7 @@ export const authOptions:NextAuthOptions = {
       }
       return true
     },
-    async jwt({ token, trigger, session }) {
+    async jwt({ token, user, trigger, session }) {
       if (
         trigger === "update" &&
         session &&
@@ -81,7 +81,8 @@ export const authOptions:NextAuthOptions = {
       ) {
         token.picture = session.image;
       }
-      if (token.email) {
+      
+      if (user && token.email) {
         const dbUser = await prisma.user.findFirst({
           where: { email: token.email },
           select: { id: true },
@@ -92,15 +93,10 @@ export const authOptions:NextAuthOptions = {
       }
       return token;
     },
-    async session({ session }) {
-      const loggedInUser = await prisma.user.findFirst({
-         where: { email: session.user?.email },
-         select: { id: true }
-        });
-      session.user.id = loggedInUser!.id;
-      session.user.name = session.user.name!;
-      session.user.email = session.user.email!;
-      session.user.image = session.user.image!;
+    async session({ session, token }) {
+      if (session.user && token.sub) {
+        session.user.id = token.sub;
+      }
 
       return session
     },
