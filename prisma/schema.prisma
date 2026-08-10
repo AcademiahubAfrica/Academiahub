@@ -48,6 +48,7 @@ model User {
   name              String?
   email             String         @unique
   image             String?
+  bannerKey         String?
   password          String?
   emailVerified     DateTime?
   verificationCode  String?
