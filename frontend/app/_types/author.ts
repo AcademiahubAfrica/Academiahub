@@ -14,6 +14,7 @@ export interface Bio {
 
 export interface Profile extends Author {
   bio: Bio | null;
+  bannerKey?: string | null;
   stats: {
     uploads: number;
     downloads: number;
