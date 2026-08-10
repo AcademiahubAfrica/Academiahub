@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState, useTransition } from "react";
+import { useCallback, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { $Enums } from "@prisma/client";
@@ -71,14 +71,19 @@ const FilterDocuments = ({
     [documents, hiddenIds],
   );
 
-  const handleDelete = (id: string) => {
-    setHiddenIds((prev) => {
-      const next = new Set(prev);
-      next.add(id);
-      return next;
-    });
-    router.refresh();
-  };
+  // Stable across renders (functional setState needs no state dep), so memoized
+  // ResearchCards don't re-render when this component re-renders while paginating.
+  const handleDelete = useCallback(
+    (id: string) => {
+      setHiddenIds((prev) => {
+        const next = new Set(prev);
+        next.add(id);
+        return next;
+      });
+      router.refresh();
+    },
+    [router],
+  );
 
   const loadMore = () => {
     const nextPage = page + 1;

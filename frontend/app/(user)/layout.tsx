@@ -60,7 +60,7 @@ export default async function UserLayout({
 
         {/* RIGHT SIDE (HEADER + OUTLET) */}
         <div className="flex-1 flex flex-col h-full overflow-y-auto">
-          <header className="sticky top-0 z-50 w-full backdrop-blur-lg">
+          <header className="sticky top-0 z-50 w-full bg-white/90">
             <UserHeader userInfoToShare={userInfoToShare} />
           </header>
 
