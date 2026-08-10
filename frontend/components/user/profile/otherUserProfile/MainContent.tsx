@@ -77,6 +77,7 @@ async function fetchProfile(userId: string): Promise<Profile> {
       id: true,
       name: true,
       image: true,
+      bannerKey: true,
       Profile: {
         take: 1,
         select: { bio: true },
@@ -106,6 +107,7 @@ async function fetchProfile(userId: string): Promise<Profile> {
     id: user.id,
     name: user.name || "",
     image: user.image,
+    bannerKey: user.bannerKey,
     bio: user.Profile[0]?.bio ?? null,
     stats: {
       uploads: uploadCount,

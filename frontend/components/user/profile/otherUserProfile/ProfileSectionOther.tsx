@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { GraduationCap, MapPin, School } from "lucide-react";
 import { Profile, Bio } from "@/app/_types/author";
 import { getInitials } from "@/lib/messaging/utils";
+import ProfileBanner from "../ProfileBanner";
 
 const ProfileSectionOther = ({ profile }: { profile: Profile }) => {
   const avatarSrc = profile.image || undefined;
@@ -14,7 +15,7 @@ const ProfileSectionOther = ({ profile }: { profile: Profile }) => {
 
   return (
     <div className="md:bg-white md:m-4 pb-6 md:py-6 md:px-4 rounded-2xl">
-      <div className="h-19.25 lg:h-36.25 relative bg-linear-to-r from-primary/30 to-primary/10" />
+      <ProfileBanner bannerKey={profile.bannerKey} />
       <div className="flex gap-4 flex-col md:flex-row">
         <Avatar className="border-[3px] hidden md:block border-white shadow-md h-10 w-10 lg:w-25 lg:h-25 -mt-5">
           <AvatarImage src={avatarSrc} alt={profile.name || "avatar"} />

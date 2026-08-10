@@ -17,6 +17,7 @@ const ProfileSection = async () => {
   let name = session?.user?.name || "";
   let image: string | null = session?.user?.image || null;
   let bio: Bio | null = null;
+  let bannerKey: string | null = null;
   let stats = { uploads: 0, downloads: 0, likes: 0, saves: 0 };
 
   if (userId) {
@@ -26,6 +27,7 @@ const ProfileSection = async () => {
         select: {
           name: true,
           image: true,
+          bannerKey: true,
           Profile: { take: 1, select: { bio: true } },
         },
       }),
@@ -42,6 +44,7 @@ const ProfileSection = async () => {
       name = user.name || name;
       image = user.image;
       bio = (user.Profile[0]?.bio as Bio) ?? null;
+      bannerKey = user.bannerKey;
     }
 
     stats = {
@@ -57,10 +60,9 @@ const ProfileSection = async () => {
   const location = bio
     ? [bio.state, bio.country].filter(Boolean).join(", ")
     : "";
-  const bannerId = 0;
   return (
     <div className="md:bg-white md:m-4 md:py-6 md:px-4 rounded-2xl">
-      <ProfileBannerPicker bannerId={bannerId} />
+      <ProfileBannerPicker bannerKey={bannerKey} />
       <div className="flex gap-4 flex-col md:flex-row">
         <Avatar className="border-[3px] hidden md:block border-white shadow-md h-10 w-10 lg:w-25 lg:h-25 -mt-5">
           <AvatarImage src={avatarSrc} alt={name || "avatar"} />
