@@ -14,7 +14,6 @@ interface FormData {
   email: string;
   password: string;
   confirmPassword: string;
-  rememberMe: boolean;
 }
 
 interface FormErrors {
@@ -30,7 +29,6 @@ const Signup = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    rememberMe: false,
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -105,7 +103,7 @@ const Signup = () => {
     });
   };
 
-  const handleChange = (field: keyof FormData, value: string | boolean) => {
+  const handleChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field as keyof FormErrors]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
@@ -238,7 +236,9 @@ const Signup = () => {
             </div>
 
             {/* Confirm Password */}
-            <div>
+            {/* mb-8 must exceed the parent's space-y-5 (20px) — adjacent block
+                margins collapse to the larger, so anything smaller has no effect. */}
+            <div className="mb-8">
               <label className="block label font-medium text-foreground mb-2">
                 Confirm Password
               </label>
@@ -274,26 +274,6 @@ const Signup = () => {
                   {errors.confirmPassword}
                 </p>
               )}
-            </div>
-
-            {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between label">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.rememberMe}
-                  onChange={(e) => handleChange("rememberMe", e.target.checked)}
-                  className="h-4 w-4 rounded border-input text-primary"
-                />
-                <span className="text-foreground text-sm">Remember me</span>
-              </label>
-              <button
-                type="button"
-                onClick={() => router.push("/reset-your-password")}
-                className="text-foreground text-sm hover:underline"
-              >
-                Forgotten password?
-              </button>
             </div>
 
             {/* Sign Up Button */}
