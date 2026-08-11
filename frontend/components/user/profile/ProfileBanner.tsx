@@ -14,7 +14,7 @@ const ProfileBanner = ({
 }) => (
   <div
     className={cn(
-      "h-19.25 lg:h-36.25 relative rounded-t-xl overflow-hidden bg-cover bg-center bg-no-repeat",
+      "h-19.25 lg:h-36.25 relative rounded-t-xl overflow-hidden w-full bg-cover bg-right   bg-no-repeat",
       className,
     )}
     style={{ backgroundImage: `url(${getBanner(bannerKey).cover})` }}
