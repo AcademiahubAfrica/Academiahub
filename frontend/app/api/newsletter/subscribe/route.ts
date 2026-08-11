@@ -33,6 +33,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid email" }, { status: 400 });
     }
 
+    // In production, require DATABASE_URL to ensure subscribers persist to the primary DB.
+    if (process.env.NODE_ENV === "production" && !process.env.DATABASE_URL) {
+      return NextResponse.json(
+        { error: "DATABASE_URL is required in production to persist newsletter subscribers" },
+        { status: 500 }
+      );
+    }
+
     if (process.env.DATABASE_URL) {
       const { default: prisma } = await import("@/prisma/connection");
       const existing = await prisma.newsletterSubscriber.findUnique({ where: { email } });

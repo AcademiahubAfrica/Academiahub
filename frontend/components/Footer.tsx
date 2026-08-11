@@ -10,7 +10,7 @@ import { Mail } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { FaXTwitter } from "react-icons/fa6";
-import { AiFillInstagram, AiFillLinkedin } from "react-icons/ai";
+import { AiFillInstagram, AiFillLinkedin } from "react-icons/ai";6 
 const footerLinks = {
   platform: {
     name: "Platform",
