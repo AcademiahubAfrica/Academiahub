@@ -21,7 +21,7 @@ import {
 import { useIsTruncated } from "@/lib/hooks/useIsTruncated";
 import { cn } from "@/lib/utils";
 
-import { useState, useTransition } from "react";
+import { memo, useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import ShareDialog from "./ShareDialog";
 import {
@@ -313,4 +313,9 @@ const ResearchCard = ({
   );
 };
 
-export default ResearchCard;
+/* 
+Memoized so a growing, paginated grid re-renders only newly appended cards:
+appended pages preserve existing element identities and every prop here is a
+primitive or a stable ref, so unchanged cards bail out of re-render.
+*/
+export default memo(ResearchCard);

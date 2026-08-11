@@ -31,19 +31,21 @@ const MainContent = async ({
   const trimmedCategory = category.trim();
   const trimmedSort = sort.trim();
 
-  const session = await getServerSession(authOptions);
-  const userId = session?.user?.id;
-
   let documents: Awaited<ReturnType<typeof fetchFirstPage>> = [];
   let total = 0;
+  let userId: string | undefined;
   let likedIds: string[] = [];
   let savedIds: string[] = [];
 
   try {
-    [documents, total] = await Promise.all([
+    const [session, firstPage, matchCount] = await Promise.all([
+      getServerSession(authOptions),
       fetchFirstPage(trimmedSearch, trimmedCategory, trimmedSort),
       countDocuments(trimmedSearch, trimmedCategory),
     ]);
+    documents = firstPage;
+    total = matchCount;
+    userId = session?.user?.id;
 
     if (userId && documents.length > 0) {
       const documentIds = documents.map((d) => d.id);

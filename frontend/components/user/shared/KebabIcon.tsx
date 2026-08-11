@@ -25,7 +25,7 @@ const KebabIcon = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <EllipsisVertical strokeWidth={1.5} className="absolute max-sm:top-4 max-sm:left-2 max-lg:top-8 max-lg:left-4 lg:top-8 lg:left-4 cursor-pointer text-white z-50" />
+        <EllipsisVertical strokeWidth={1.5} className="absolute max-sm:top-4 max-sm:left-2 max-lg:top-8 max-lg:left-4 lg:top-8 lg:left-4 cursor-pointer text-white z-20" />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
