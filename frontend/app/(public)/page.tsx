@@ -8,6 +8,8 @@ import LandingFaq from "@/components/landing/LandingFaq";
 import HeroButtons from "@/components/landing/HeroButtons";
 import HeroImg from "@/public/assets/images/LandingPage/desktop-hero-img.svg";
 
+export const revalidate = 300;
+
 export default function Home() {
   return (
     <main className="flex flex-col items-center bg-white font-sans">
