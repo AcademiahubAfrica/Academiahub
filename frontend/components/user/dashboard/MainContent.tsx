@@ -4,6 +4,7 @@ import FilterDocuments from "./FilterDocuments";
 import SearchBar from "../SearchBar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { DOCUMENT_CARD_SELECT } from "@/lib/documentSelect";
 import type { Prisma } from "@prisma/client";
 
 type MainContentProps = {
@@ -119,14 +120,7 @@ function buildWhere(search: string, category: string): Prisma.DocumentWhereInput
 function fetchFirstPage(search: string, category: string, sort: string) {
   return prisma.document.findMany({
     where: buildWhere(search, category),
-    include: {
-      author: {
-        select: { id: true, name: true, image: true },
-      },
-      _count: {
-        select: { commentRecords: true },
-      },
-    },
+    select: DOCUMENT_CARD_SELECT,
     orderBy: SORT_OPTIONS[sort] ?? SORT_OPTIONS.recent,
     take: PAGE_SIZE,
   });

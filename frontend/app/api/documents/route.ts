@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
+import { DOCUMENT_CARD_SELECT } from "@/lib/documentSelect";
 import type { Prisma } from "@prisma/client";
 
 type DocumentCategory = "RESEARCH" | "SEMINAR" | "PROJECT" | "ANALYSIS";
@@ -160,18 +161,7 @@ export async function GET(request: NextRequest) {
     const [documents, total, session] = await Promise.all([
       prisma.document.findMany({
         where,
-        include: {
-          author: {
-            select: {
-              id: true,
-              name: true,
-              image: true,
-            },
-          },
-          _count: {
-            select: { commentRecords: true },
-          },
-        },
+        select: DOCUMENT_CARD_SELECT,
         orderBy: SORT_OPTIONS[sort] ?? SORT_OPTIONS.recent,
         skip,
         take: limit,
