@@ -21,7 +21,7 @@ const AllForms = () => {
   return (
     <div className="space-y-6  max-sm:p-2 md:space-y-20">
       {/* Mobile Tab Navigation */}
-      <div className="md:hidden flex overflow-x-auto no-scrollbar">
+      <div className="md:hidden flex overflow-x-auto scrollbar-hide">
         {tabs.map((tab) => (
           <button
             key={tab.id}
