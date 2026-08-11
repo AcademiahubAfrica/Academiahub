@@ -13,7 +13,7 @@ export default async function UserLayout({
 }) {
   const userInfo = await getServerSession(authOptions);
   if (!userInfo?.user) {
-    redirect("/");
+    redirect("/login");
   }
 
   // Check if profile is complete — redirect to onboarding if not
