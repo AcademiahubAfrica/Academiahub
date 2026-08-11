@@ -21,10 +21,6 @@ type DashboardDocument = {
   description: string;
   institution: string;
   year: string;
-  fileUrl: string;
-  fileKey: string;
-  fileName: string;
-  fileSize: number;
   downloads: number;
   likes: number;
   authorId: string;
