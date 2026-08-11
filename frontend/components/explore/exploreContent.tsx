@@ -2,9 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import ViewDetailsButton from "@/components/ViewDetailsButton";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Search, Loader2 } from "lucide-react";
@@ -23,8 +22,6 @@ interface Pagination {
 }
 
 export default function ExploreContent() {
-  const { status } = useSession();
-  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [documents, setDocuments] = useState<Document[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
@@ -220,19 +217,10 @@ export default function ExploreContent() {
                   </div>
 
                   {/* View Details Button */}
-                  <Button
+                  <ViewDetailsButton
+                    documentId={doc.id}
                     className="w-full rounded-lg font-medium"
-                    size="lg"
-                    onClick={() => {
-                      if (status === "authenticated") {
-                        router.push(`/publication/${doc.id}`);
-                      } else {
-                        router.push("/signup");
-                      }
-                    }}
-                  >
-                    View Details
-                  </Button>
+                  />
                 </div>
               </article>
             ))}

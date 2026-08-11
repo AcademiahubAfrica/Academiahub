@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/messaging/utils";
 import { getCategoryImage } from "@/lib/categoryImage";
+import ViewDetailsButton from "@/components/ViewDetailsButton";
 import prisma from "@/prisma/connection";
 
 interface ExploreSectionProps {
@@ -86,14 +87,7 @@ const ExploreSection = async ({
                     </div>
                   </div>
                 </div>
-                <Button
-                  asChild
-                  variant="default"
-                  size="lg"
-                  className="w-full font-medium text-[16px] leading-[130%]"
-                >
-                  <Link href={`/publication/${doc.id}`}>View Details</Link>
-                </Button>
+                <ViewDetailsButton documentId={doc.id} />
               </section>
             ))}
           </div>
@@ -101,15 +95,14 @@ const ExploreSection = async ({
       </div>
 
       {showViewAllButton && (
-        <Link href="/explore">
-          <Button
-            variant={"outline2"}
-            size={"lg"}
-            className="w-68 border-primary text-primary h-11 font-medium text-[16px] leading-[130%] mt-9"
-          >
-            Explore full library
-          </Button>
-        </Link>
+        <Button
+          asChild
+          variant={"outline2"}
+          size={"lg"}
+          className="w-68 border-primary text-primary h-11 font-medium text-[16px] leading-[130%] mt-9"
+        >
+          <Link href="/explore">Explore full library</Link>
+        </Button>
       )}
     </section>
   );
