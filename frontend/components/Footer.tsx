@@ -1,9 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Mail } from "lucide-react";
+import SubscribeForm from "./SubscribeForm";
 
 import { FaXTwitter } from "react-icons/fa6";
 import { AiFillInstagram, AiFillLinkedin } from "react-icons/ai";
@@ -71,6 +74,47 @@ const footerLinks = {
 const date = new Date();
 const currentYear = date.getFullYear();
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [isPending, startTransition] = useTransition();
+
+  const validateEmail = (value: string) => {
+    return /^\S+@\S+\.\S+$/.test(value);
+  };
+
+  const handleSubscribe = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+
+    if (!email.trim()) {
+      toast.error("Please enter your email address.");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    startTransition(async () => {
+      try {
+        const res = await fetch("/api/subscribe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.message || "Subscription failed.");
+        }
+
+        toast.success("Subscribed successfully. Thank you!");
+        setEmail("");
+      } catch (err: any) {
+        toast.error(err?.message || "Could not subscribe. Try again later.");
+      }
+    });
+  };
+
   return (
     <footer className="bg-black w-full text-white px-4.5 pt-10.25 pb-13.5 md:pt-24.5 md:pb-26.5 md:px-10">
       <div className="flex gap-2 justify-between gap-y-4 lg:gap-4 pb-30 flex-wrap md:pe-6.5  ">
@@ -150,13 +194,8 @@ const Footer = () => {
           <p className="md:text-base font-normal mb-3 text-[14px] leading-4.5 md:leading-5 tracking-normal">
             Get notified about new features, institutions and academic resources
           </p>
-          <div className="flex items-center gap-2">
-            <Input
-              className="pl-4 rounded-2xl w-[70%] "
-              placeholder="Ochife@Mustapha.com"
-            />
-            <Button className="rounded-2xl">Subscribe</Button>
-          </div>
+          {/* Modular subscribe form component (keeps Footer small) */}
+          <SubscribeForm className="flex items-center gap-2 w-full" />
         </div>
       </div>
       <Separator className="mb-11.25" />
