@@ -1,9 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Mail } from "lucide-react";
+import SubscribeForm from "./SubscribeForm";
 
 import { FaXTwitter } from "react-icons/fa6";
 import { AiFillInstagram, AiFillLinkedin } from "react-icons/ai";
@@ -150,15 +149,11 @@ const Footer = () => {
           <p className="md:text-base font-normal mb-3 text-[14px] leading-4.5 md:leading-5 tracking-normal">
             Get notified about new features, institutions and academic resources
           </p>
-          <div className="flex items-center gap-2">
-            <Input
-              className="pl-4 rounded-2xl w-[70%] "
-              placeholder="Ochife@Mustapha.com"
-            />
-            <Button className="rounded-2xl">Subscribe</Button>
-          </div>
+          {/* Subscription behaviour is isolated in the reusable client component. */}
+          <SubscribeForm className="flex w-full items-center gap-2" />
         </div>
       </div>
+
       <Separator className="mb-11.25" />
       {/* icons */}
       <div className="w-full flex flex-col md:flex-row  items-center gap-4">
