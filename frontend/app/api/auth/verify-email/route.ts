@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/connection";
+import {
+  MAX_VERIFICATION_ATTEMPTS,
+  verificationCodeMatches,
+} from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
@@ -44,9 +48,30 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (user.verificationCode !== code) {
+    if (!verificationCodeMatches(String(code), user.verificationCode)) {
+      // Count the wrong guess, and burn the code once the budget is spent.
+      // Without this a script can walk the whole million-value space well
+      // inside the code's five-minute lifetime.
+      const attempts = (user.verificationAttempts ?? 0) + 1;
+      const exhausted = attempts >= MAX_VERIFICATION_ATTEMPTS;
+
+      await prisma.user.update({
+        where: { email },
+        data: exhausted
+          ? {
+              verificationCode: null,
+              codeExpiry: null,
+              verificationAttempts: 0,
+            }
+          : { verificationAttempts: attempts },
+      });
+
       return NextResponse.json(
-        { message: "Invalid verification code" },
+        {
+          message: exhausted
+            ? "Too many incorrect attempts. Please request a new code."
+            : "Invalid verification code",
+        },
         { status: 400 }
       );
     }
@@ -58,6 +83,7 @@ export async function POST(req: NextRequest) {
         emailVerified: new Date(),
         verificationCode: null,
         codeExpiry: null,
+        verificationAttempts: 0,
       },
     });
 

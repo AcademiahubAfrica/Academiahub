@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/connection";
-import { sendVerificationEmail, generateVerificationCode, getCodeExpiry } from "@/lib/email";
+import { sendVerificationEmail, generateVerificationCode, getCodeExpiry, hashVerificationCode } from "@/lib/email";
 
 const RATE_LIMIT_SECONDS = 60;
 
@@ -51,13 +51,15 @@ export async function POST(req: NextRequest) {
     const verificationCode = generateVerificationCode();
     const codeExpiry = getCodeExpiry();
 
-    // Update user with new code and rate limit timestamp
+    // Update user with new code and rate limit timestamp. Only the digest is
+    // stored, and the attempt budget resets with the new code.
     await prisma.user.update({
       where: { email },
       data: {
-        verificationCode,
+        verificationCode: hashVerificationCode(verificationCode),
         codeExpiry,
         lastCodeRequestAt: new Date(),
+        verificationAttempts: 0,
       },
     });
 
