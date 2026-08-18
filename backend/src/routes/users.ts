@@ -10,7 +10,7 @@ const router = Router();
  * GET /users/search?q=
  * Search for users by name to start a DM.
  * Requires minimum 3 characters. Returns max 10 results.
- * Excludes the requesting user from results.
+ * Excludes the requesting user, and anyone who has turned off `showInSearch`.
  */
 router.get(
   "/search",
@@ -31,6 +31,7 @@ router.get(
       const users = await prisma.user.findMany({
         where: {
           id: { not: userId },
+          showInSearch: true,
           name: {
             startsWith: sanitizedQuery,
             mode: "insensitive",
@@ -39,7 +40,6 @@ router.get(
         select: {
           id: true,
           name: true,
-          email: true,
           image: true,
         },
         take: 10,
