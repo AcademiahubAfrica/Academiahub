@@ -52,38 +52,12 @@ export async function POST(req:NextRequest) {
     }
 }
 
-// Delete user
-export async function DELETE(req:NextRequest) {
-    const { id } = await req.json();
-    try {
-        const deletedUser = await prisma.user.delete({
-            where: { id }
-        })
-        return NextResponse.json(deletedUser, {status: 200})
-    } catch (_error) {
-        return NextResponse.json(
-            {message:"Something went wrong"},
-            {status: 501}
-        )
-    }
-}
-
-// Update user
-export async function PUT(req:NextRequest) {
-    const { id, ...body } = await req.json();
-    try {
-        const updatedUser = await prisma.user.update({
-            where: { id },
-            data: { updatedAt: new Date(), ...body }
-        })
-        return NextResponse.json(updatedUser, {status: 200})
-    } catch (_error) {
-        return NextResponse.json(
-            {message:"Something went wrong"},
-            {status: 501}
-        )
-    }
-}
+/* NOTE: there is deliberately no PUT or DELETE handler here.
+Account updates go through the session-scoped routes, which derive the
+target user from `session.user.id` rather than the request body.
+Account deletion is not implemented yet. When it is, it belongs on a
+session-scoped route that takes no user ID from the caller.
+*/
 
 // Get all users
 export async function GET() {
