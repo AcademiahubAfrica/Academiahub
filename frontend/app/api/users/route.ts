@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/connection";
 import argon2 from "argon2";
-import { sendVerificationEmail, generateVerificationCode, getCodeExpiry } from "@/lib/email";
+import { sendVerificationEmail, generateVerificationCode, getCodeExpiry, hashVerificationCode } from "@/lib/email";
 import { signupSchema } from "@/lib/schemas/signupSchema";
 
 // Create user
@@ -43,7 +43,8 @@ export async function POST(req:NextRequest) {
 
         const hashedPassword = await argon2.hash(password);
 
-        // Generate verification code
+        /* Generate verification code. Only the digest is stored — the code
+           itself exists only in the email.*/
         const verificationCode = generateVerificationCode();
         const codeExpiry = getCodeExpiry();
 
@@ -54,9 +55,10 @@ export async function POST(req:NextRequest) {
                 name,
                 email,
                 password: hashedPassword,
-                verificationCode,
+                verificationCode: hashVerificationCode(verificationCode),
                 codeExpiry,
                 lastCodeRequestAt: new Date(),
+                verificationAttempts: 0,
              },
         });
 

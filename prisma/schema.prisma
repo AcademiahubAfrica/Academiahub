@@ -54,6 +54,7 @@ model User {
   verificationCode  String?
   codeExpiry        DateTime?
   lastCodeRequestAt DateTime?
+  verificationAttempts Int?
   passwordResetTokenHash      String?
   passwordResetExpiry         DateTime?
   lastPasswordResetRequestAt  DateTime?
