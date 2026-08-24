@@ -75,6 +75,12 @@ model User {
   showInSearch      Boolean          @default(true)
 }
 
+model NewsletterSubscriber {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
 model ProfileVisit {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   profileOwner   User     @relation("profileVisitsReceived", fields: [profileOwnerId], references: [id], onDelete: Cascade)
