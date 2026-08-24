@@ -30,7 +30,7 @@ function setState(partial: Partial<SocketState>) {
 
 async function fetchToken(): Promise<string | null> {
   try {
-    const res = await fetch("/api/auth/token");
+    const res = await fetch("/api/auth/ws-token");
     if (!res.ok) return null;
     const data = await res.json();
     return data.token ?? null;
@@ -43,15 +43,28 @@ export async function connect() {
   if (connecting || state.socket?.connected) return;
   connecting = true;
 
-  const token = await fetchToken();
-  if (!token) {
+  const initialToken = await fetchToken();
+  if (!initialToken) {
     connecting = false;
     return;
   }
 
+  // Spent on the first handshake; every later one mints its own.
+  let unusedToken: string | null = initialToken;
+
   const socket = io(BACKEND_URL, {
     path: "/ws",
-    auth: { token },
+    /* A function rather than a fixed object: socket.io calls it for every
+       handshake, reconnects included. Tokens expire in minutes, so a
+       reconnect after any real outage has to carry a fresh one. */
+    auth: (cb) => {
+      if (unusedToken) {
+        cb({ token: unusedToken });
+        unusedToken = null;
+        return;
+      }
+      void fetchToken().then((token) => cb({ token: token ?? "" }));
+    },
     transports: ["websocket", "polling"],
   }) as TypedSocket;
 
@@ -63,6 +76,12 @@ export async function connect() {
   socket.on("disconnect", () => {
     connecting = false;
     setState({ socket: null, isConnected: false });
+  });
+
+  // Without this a rejected handshake leaves `connecting` stuck true and
+  // blocks every later attempt.
+  socket.on("connect_error", () => {
+    connecting = false;
   });
 
   // Store socket immediately so disconnect() can reach it
