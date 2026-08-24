@@ -4,13 +4,10 @@ import { v2 as cloudinary } from "cloudinary";
 import { revalidatePath } from "next/cache";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
-
-type CloudinaryResourceType = "image" | "raw" | "video";
-
-function parseResourceType(fileUrl: string): CloudinaryResourceType {
-  const match = fileUrl.match(/\/(image|raw|video)\/upload\//);
-  return (match?.[1] as CloudinaryResourceType) ?? "image";
-}
+import {
+  deriveDocumentFileKey,
+  parseResourceType,
+} from "@/lib/cloudinary/documentAsset";
 
 /**
  * GET /api/documents/:id
@@ -79,7 +76,7 @@ export async function DELETE(
 
     const document = await prisma.document.findUnique({
       where: { id: documentId },
-      select: { authorId: true, fileKey: true, fileUrl: true },
+      select: { authorId: true, fileUrl: true },
     });
 
     if (!document) {
@@ -90,17 +87,30 @@ export async function DELETE(
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    cloudinary.config({ secure: true });
-    try {
-      await cloudinary.uploader.destroy(document.fileKey, {
-        resource_type: parseResourceType(document.fileUrl),
-        invalidate: true,
-      });
-    } catch (cloudErr) {
-      // Best-effort: log and continue. An orphaned Cloudinary asset is
-      // recoverable via a sweeper; a dangling DB row pointing at a deleted
-      // file is not.
-      console.error("Cloudinary destroy failed for", document.fileKey, cloudErr);
+    /* Recompute the key from the stored URL instead of trusting the stored
+       `fileKey`. Rows created before the key was derived server-side may hold
+       a value that never matched their own file, and destroy() acts on
+       whatever key it is given. */
+    const fileKey = deriveDocumentFileKey(document.fileUrl);
+
+    if (!fileKey) {
+      console.error(
+        "Skipping Cloudinary destroy: unrecognised file URL on document",
+        documentId,
+      );
+    } else {
+      cloudinary.config({ secure: true });
+      try {
+        await cloudinary.uploader.destroy(fileKey, {
+          resource_type: parseResourceType(document.fileUrl),
+          invalidate: true,
+        });
+      } catch (cloudErr) {
+        // Best-effort: log and continue. An orphaned Cloudinary asset is
+        // recoverable via a sweeper; a dangling DB row pointing at a deleted
+        // file is not.
+        console.error("Cloudinary destroy failed for", fileKey, cloudErr);
+      }
     }
 
     await prisma.document.delete({ where: { id: documentId } });

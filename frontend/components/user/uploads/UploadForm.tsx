@@ -144,7 +144,6 @@ const UploadForm = () => {
           institution: data.institution,
           year: data.year,
           fileUrl: uploaded.secure_url,
-          fileKey: uploaded.public_id,
           fileName: uploaded.original_filename,
           fileSize: uploaded.bytes,
         }),

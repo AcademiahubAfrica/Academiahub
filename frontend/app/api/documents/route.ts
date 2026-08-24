@@ -3,6 +3,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { DOCUMENT_CARD_SELECT } from "@/lib/documentSelect";
+import {
+  deriveDocumentFileKey,
+  isValidDocumentUrl,
+} from "@/lib/cloudinary/documentAsset";
 import type { Prisma } from "@prisma/client";
 
 type DocumentCategory = "RESEARCH" | "SEMINAR" | "PROJECT" | "ANALYSIS";
@@ -22,17 +26,6 @@ const SORT_OPTIONS: Record<string, Prisma.DocumentFindManyArgs["orderBy"]> = {
 
 const MAX_DOCUMENT_BYTES = 10 * 1024 * 1024;
 
-function isValidDocumentUrl(url: string): boolean {
-  const cloudName = (process.env.CLOUDINARY_URL || "").match(
-    /@([^/?#]+)/,
-  )?.[1];
-  if (!cloudName) return false;
-  return (
-    url.startsWith(`https://res.cloudinary.com/${cloudName}/`) &&
-    url.includes("/academiahub/documents/")
-  );
-}
-
 const REQUIRED_FIELDS = [
   "title",
   "description",
@@ -40,7 +33,6 @@ const REQUIRED_FIELDS = [
   "institution",
   "year",
   "fileUrl",
-  "fileKey",
   "fileName",
 ] as const;
 
@@ -67,7 +59,6 @@ export async function POST(request: NextRequest) {
       institution,
       year,
       fileUrl,
-      fileKey,
       fileName,
       fileSize,
     } = body;
@@ -88,6 +79,17 @@ export async function POST(request: NextRequest) {
     }
 
     if (typeof fileUrl !== "string" || !isValidDocumentUrl(fileUrl)) {
+      return NextResponse.json(
+        { error: "Invalid file URL" },
+        { status: 400 },
+      );
+    }
+
+    /* The storage key is what a later delete acts on, so it is derived from
+       the URL we just validated rather than read from the body. Taking it from
+       the caller would let an upload point at somebody else's asset. */
+    const fileKey = deriveDocumentFileKey(fileUrl);
+    if (!fileKey) {
       return NextResponse.json(
         { error: "Invalid file URL" },
         { status: 400 },
