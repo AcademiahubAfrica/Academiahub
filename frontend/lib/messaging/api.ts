@@ -17,7 +17,7 @@ export class ApiError extends Error {
 }
 
 async function authFetch<T>(path: string, options?: RequestInit): Promise<T> {
-  const tokenRes = await fetch("/api/auth/token");
+  const tokenRes = await fetch("/api/auth/ws-token");
   if (!tokenRes.ok) throw new Error("Not authenticated");
   const { token } = await tokenRes.json();
 
