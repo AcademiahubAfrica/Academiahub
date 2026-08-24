@@ -1,7 +1,7 @@
 import { promisify } from "util";
 import crypto from "crypto";
 import { Request, Response, NextFunction } from "express";
-import { jwtDecrypt, jwtVerify } from "jose";
+import { jwtVerify } from "jose";
 import "../types";
 
 const hkdf = promisify(crypto.hkdf);
@@ -16,21 +16,6 @@ const WS_TOKEN_AUDIENCE = "academiahub-ws";
 /** Separates the signing key from the one NextAuth derives for sessions. */
 const WS_TOKEN_HKDF_INFO = "AcademiaHub WebSocket Token";
 
-/**
- * Derives the encryption key from NEXTAUTH_SECRET using HKDF,
- * matching NextAuth v4's internal key derivation.
- */
-async function getDerivedEncryptionKey(secret: string): Promise<Uint8Array> {
-  const derivedKey = await hkdf(
-    "sha256",
-    secret,
-    "",
-    "NextAuth.js Generated Encryption Key",
-    32
-  );
-  return new Uint8Array(derivedKey);
-}
-
 async function getWsSigningKey(secret: string): Promise<Uint8Array> {
   const derivedKey = await hkdf("sha256", secret, "", WS_TOKEN_HKDF_INFO, 32);
   return new Uint8Array(derivedKey);
@@ -39,13 +24,9 @@ async function getWsSigningKey(secret: string): Promise<Uint8Array> {
 /**
  * Resolves a bearer token to a user id, or null.
  *
- * Two shapes are accepted for now. The first is the intended one: a short-lived
- * HS256 token scoped to this service. The second is a NextAuth session JWE,
- * which is what the frontend used to send.
- *
- * TODO: delete the legacy branch once the frontend that issues `ws-token` has
- * fully rolled out. It is only here so the two services can deploy in any
- * order without messaging going down in between.
+ * Only the scoped token is accepted. `algorithms` and `audience` are both
+ * pinned: the first refuses an unsigned `alg: "none"` forgery, the second
+ * refuses anything minted for a different consumer.
  */
 async function resolveUserId(token: string): Promise<string | null> {
   const secret = process.env.NEXTAUTH_SECRET;
@@ -57,17 +38,6 @@ async function resolveUserId(token: string): Promise<string | null> {
       algorithms: ["HS256"],
       clockTolerance: 15,
     });
-    if (payload.sub) return payload.sub;
-  } catch {
-    // Falls through to the legacy check below.
-  }
-
-  try {
-    const { payload } = await jwtDecrypt(
-      token,
-      await getDerivedEncryptionKey(secret),
-      { clockTolerance: 15 }
-    );
     return payload.sub ?? null;
   } catch {
     return null;
@@ -75,8 +45,8 @@ async function resolveUserId(token: string): Promise<string | null> {
 }
 
 /**
- * Express middleware that verifies NextAuth v4 encrypted JWTs (JWE).
- * Extracts userId from the decrypted payload and attaches it to req.userId.
+ * Express middleware that verifies the scoped token from the `Authorization`
+ * header and attaches its subject to req.userId.
  */
 export async function verifySession(
   req: Request,
@@ -109,8 +79,8 @@ export async function verifySession(
 }
 
 /**
- * Standalone function for verifying a JWT token outside of Express middleware.
- * Used by the Socket.IO authentication handler.
+ * Standalone verification for use outside Express — the Socket.IO handshake
+ * reads the token from `socket.handshake.auth` rather than a header.
  * Returns the userId if valid, null otherwise.
  */
 export async function verifyToken(token: string): Promise<string | null> {
