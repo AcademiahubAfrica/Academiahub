@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { createWsToken, WS_TOKEN_TTL_SECONDS } from "@/lib/auth/wsToken";
+import { denied } from "@/lib/logging/denied";
 
 /**
  * GET /api/auth/ws-token
@@ -15,7 +16,11 @@ export async function GET() {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
-    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    return denied({
+      route: "/api/auth/ws-token",
+      reason: "no_session",
+      message: "Not authenticated",
+    });
   }
 
   const token = await createWsToken(session.user.id);

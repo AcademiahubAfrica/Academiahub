@@ -4,6 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { revalidatePath } from "next/cache";
 import { pushNotification } from "@/lib/notifications/pushNotification";
+import { denied } from "@/lib/logging/denied";
 
 /**
  * POST /api/documents/:id/like
@@ -16,7 +17,10 @@ export async function POST(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return denied({
+        route: "/api/documents/[id]/like",
+        reason: "no_session",
+      });
     }
 
     const { id: documentId } = await params;
@@ -82,7 +86,10 @@ export async function DELETE(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return denied({
+        route: "/api/documents/[id]/like",
+        reason: "no_session",
+      });
     }
 
     const { id: documentId } = await params;

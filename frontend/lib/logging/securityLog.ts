@@ -27,22 +27,22 @@ export type SecurityEventName =
   | "auth.email.verification.locked"
   | "auth.password.reset.requested"
   | "auth.password.reset.completed"
-  | "auth.password.changed";
+  | "auth.password.changed"
+  /* A request was refused by a session or ownership check. Matches the name the
+     messaging service uses for the same thing, so one query covers both. */
+  | "authz.denied";
 
 export type SecurityOutcome = "success" | "failure";
 
 export type SecurityActor = {
   userId?: string;
-  /* The address that was *attempted*, which on a failed login is the only
-     identifier there is — no account may exist behind it. It is what makes a
-     "same address, forty attempts, nine countries" query possible, so it is
-     worth the PII cost; see the retention note in the module docs above. */
   email?: string | null;
 };
 
 export type SecurityRequestContext = {
   ip?: string;
   userAgent?: string;
+  path?: string;
 };
 
 export type SecurityLogEntry = {
@@ -53,9 +53,6 @@ export type SecurityLogEntry = {
   detail?: Record<string, unknown>;
 };
 
-/* Belt and braces. Call sites are not supposed to pass any of these, but a
-   security log is exactly the wrong place to find out that one did. Matching is
-   on the key name, case-insensitive, at any depth. */
 const SENSITIVE_KEY = /pass|token|secret|code|otp|authorization|cookie|hash/i;
 
 const MAX_DEPTH = 4;
@@ -83,7 +80,13 @@ export function requestContext(
   if (!headers) return {};
 
   const get = (name: string): string | undefined => {
-    if (headers instanceof Headers) return headers.get(name) ?? undefined;
+    /* Duck-typed rather than `instanceof Headers`. `headers()` in a route
+       handler hands back a sealed Proxy, and one that failed the instanceof
+       check would fall through to the plain-object branch and silently return
+       nothing for every header — losing the IP without any error to notice. */
+    const bag = headers as { get?: (name: string) => string | null };
+    if (typeof bag.get === "function") return bag.get(name) ?? undefined;
+
     const raw = (headers as Record<string, unknown>)[name];
     if (typeof raw === "string") return raw;
     if (Array.isArray(raw) && typeof raw[0] === "string") return raw[0];
@@ -119,6 +122,7 @@ export function securityLog(entry: SecurityLogEntry): void {
       email: entry.actor?.email ?? undefined,
       ip: entry.request?.ip,
       userAgent: entry.request?.userAgent,
+      path: entry.request?.path,
     };
 
     /* Flattened rather than nested, so each one is a field you can search on

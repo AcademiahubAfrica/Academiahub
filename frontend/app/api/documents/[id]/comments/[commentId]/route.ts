@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { revalidatePath } from "next/cache";
+import { denied } from "@/lib/logging/denied";
 
 type Params = { params: Promise<{ id: string; commentId: string }> };
 
@@ -15,7 +16,10 @@ export async function PUT(request: NextRequest, { params }: Params) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return denied({
+        route: "/api/documents/[id]/comments/[commentId]",
+        reason: "no_session",
+      });
     }
 
     const { id: documentId, commentId } = await params;
@@ -42,7 +46,13 @@ export async function PUT(request: NextRequest, { params }: Params) {
     }
 
     if (comment.userId !== session.user.id) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return denied({
+        route: "/api/documents/[id]/comments/[commentId]",
+        status: 403,
+        reason: "not_comment_owner",
+        userId: session.user.id,
+        detail: { commentId, documentId, action: "edit" },
+      });
     }
 
     const hoursSinceCreation =
@@ -77,7 +87,10 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return denied({
+        route: "/api/documents/[id]/comments/[commentId]",
+        reason: "no_session",
+      });
     }
 
     const { id: documentId, commentId } = await params;
@@ -92,7 +105,13 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
     }
 
     if (comment.userId !== session.user.id) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return denied({
+        route: "/api/documents/[id]/comments/[commentId]",
+        status: 403,
+        reason: "not_comment_owner",
+        userId: session.user.id,
+        detail: { commentId, documentId, action: "delete" },
+      });
     }
 
     await prisma.comment.delete({ where: { id: commentId } });
