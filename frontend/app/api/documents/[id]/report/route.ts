@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { ReportReason } from "@prisma/client";
+import { denied } from "@/lib/logging/denied";
 
 const VALID_REASONS = new Set<string>(Object.values(ReportReason));
 
@@ -17,7 +18,10 @@ export async function POST(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return denied({
+        route: "/api/documents/[id]/report",
+        reason: "no_session",
+      });
     }
 
     const { id: documentId } = await params;
