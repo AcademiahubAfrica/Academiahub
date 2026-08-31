@@ -3,6 +3,7 @@ import crypto from "crypto";
 import { Request, Response, NextFunction } from "express";
 import { jwtVerify } from "jose";
 import "../types";
+import { requestContext, securityLog } from "../lib/securityLog";
 
 const hkdf = promisify(crypto.hkdf);
 
@@ -53,24 +54,43 @@ export async function verifySession(
   res: Response,
   next: NextFunction
 ): Promise<void> {
+  /* The reason is recorded but never returned: the caller keeps getting a bare
+     "Unauthorized" either way, so nothing here tells an attacker which of their
+     guesses was closer. */
+  const refuse = (reason: string): void => {
+    securityLog({
+      event: "authz.denied",
+      outcome: "failure",
+      request: requestContext(req.headers, {
+        method: req.method,
+        path: req.originalUrl,
+      }),
+      detail: { reason },
+    });
+    res.status(401).json({ error: "Unauthorized" });
+  };
+
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    res.status(401).json({ error: "Unauthorized" });
+    refuse(authHeader ? "malformed_authorization_header" : "no_authorization_header");
     return;
   }
 
   const token = authHeader.slice(7);
 
   if (!token) {
-    res.status(401).json({ error: "Unauthorized" });
+    refuse("empty_token");
     return;
   }
 
   const userId = await resolveUserId(token);
 
   if (!userId) {
-    res.status(401).json({ error: "Unauthorized" });
+    /* Covers every way jwtVerify can say no: expired, wrong audience, wrong
+       algorithm, bad signature. Worth watching as one number — these tokens
+       last five minutes, so a steady trickle is normal and a spike is not. */
+    refuse("invalid_token");
     return;
   }
 

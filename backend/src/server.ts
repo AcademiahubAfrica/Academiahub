@@ -1,5 +1,6 @@
-import dotenv from "dotenv";
-dotenv.config();
+/* Must stay first. It loads the environment and starts Sentry before anything
+   else is required, so nothing that happens during startup goes unrecorded. */
+import { Sentry } from "./instrument";
 
 import http from "http";
 import express from "express";
@@ -51,3 +52,18 @@ const PORT = parseInt(process.env.PORT || "4000", 10);
 server.listen(PORT, () => {
   console.log(`Backend server running on port ${PORT}`);
 });
+
+/**
+ * Sentry batches log events for a few seconds before sending them, and a
+ * stopped process takes that buffer with it. This host stops idle instances
+ * routinely, so the events most likely to be lost are the last ones before a
+ * shutdown — which, if something was happening, are the ones that mattered.
+ */
+async function shutdown(): Promise<void> {
+  server.close();
+  await Sentry.flush(2000);
+  process.exit(0);
+}
+
+process.on("SIGTERM", () => void shutdown());
+process.on("SIGINT", () => void shutdown());
