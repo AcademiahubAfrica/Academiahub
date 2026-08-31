@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import "../types";
 import prisma from "../lib/prisma";
+import { requestContext, securityLog } from "../lib/securityLog";
 
 /**
  * Middleware that verifies the authenticated user is a participant
@@ -36,6 +37,19 @@ export async function requireParticipant(
       conversation.participantAId !== userId &&
       conversation.participantBId !== userId
     ) {
+      /* The sharpest signal this service produces. Reaching a conversation you
+         are not in is not something the UI can do by accident — it means a
+         valid session was pointed at somebody else's identifier on purpose. */
+      securityLog({
+        event: "authz.denied",
+        outcome: "failure",
+        userId,
+        request: requestContext(req.headers, {
+          method: req.method,
+          path: req.originalUrl,
+        }),
+        detail: { reason: "not_a_participant", conversationId },
+      });
       res.status(403).json({ error: "Forbidden" });
       return;
     }

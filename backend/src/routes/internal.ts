@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import { sendToUser } from "../ws/connections";
+import { requestContext, securityLog } from "../lib/securityLog";
 
 const router = Router();
 
@@ -15,6 +16,18 @@ router.post(
   (req: Request, res: Response): void => {
     const authHeader = req.headers.authorization;
     if (authHeader !== `Bearer ${process.env.INTERNAL_API_SECRET}`) {
+      /* This endpoint is only ever called by our own web app, so a failure
+         here is either a misconfigured deploy or somebody outside guessing at
+         the shared secret. Neither should pass unremarked. */
+      securityLog({
+        event: "internal.auth.failed",
+        outcome: "failure",
+        request: requestContext(req.headers, {
+          method: req.method,
+          path: req.originalUrl,
+        }),
+        detail: { reason: authHeader ? "wrong_secret" : "no_authorization_header" },
+      });
       res.status(401).json({ error: "Unauthorized" });
       return;
     }

@@ -4,6 +4,7 @@ import { verifyToken } from "../middleware/verifySession";
 import { addSocket, removeSocket, isUserOnline, broadcastPresence, getOnlinePartners } from "./connections";
 import { handleMessageSend, handleReadMark, handleTyping } from "./events";
 import { MessageSendPayload, ReadMarkPayload, TypingPayload } from "../types";
+import { requestContext, securityLog } from "../lib/securityLog";
 
 export function createSocketServer(httpServer: HttpServer): Server {
   const io = new Server(httpServer, {
@@ -19,14 +20,32 @@ export function createSocketServer(httpServer: HttpServer): Server {
   // Authenticate on connection via handshake auth token
   io.use(async (socket, next) => {
     const token = socket.handshake.auth?.token as string | undefined;
+    const request = requestContext(socket.handshake.headers, {
+      path: socket.handshake.url,
+    });
 
     if (!token) {
+      securityLog({
+        event: "ws.auth.rejected",
+        outcome: "failure",
+        request,
+        detail: { reason: "no_token" },
+      });
       return next(new Error("Authentication required"));
     }
 
     const userId = await verifyToken(token);
 
     if (!userId) {
+      /* Tokens live five minutes and the client mints a fresh one per
+         handshake, so an occasional one of these is a reconnect racing an
+         expiry. A sustained run of them is not. */
+      securityLog({
+        event: "ws.auth.rejected",
+        outcome: "failure",
+        request,
+        detail: { reason: "invalid_token" },
+      });
       return next(new Error("Invalid or expired token"));
     }
 
@@ -39,6 +58,12 @@ export function createSocketServer(httpServer: HttpServer): Server {
 
     // Enforce max connections per user
     if (!addSocket(userId, socket)) {
+      securityLog({
+        event: "ws.connection.limited",
+        outcome: "failure",
+        userId,
+        request: requestContext(socket.handshake.headers),
+      });
       socket.emit("error", { message: "Too many connections" });
       socket.disconnect(true);
       return;
