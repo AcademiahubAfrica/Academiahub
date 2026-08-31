@@ -37,6 +37,14 @@ const Signincontent = () => {
     if (searchParams.get("verified") === "true") {
       toast.success("Email verified! You can now sign in.");
     }
+
+    // Set by the Google sign-in flow when Google reports the address as
+    // unconfirmed, which it does for some Workspace domains.
+    if (searchParams.get("error") === "GoogleEmailUnverified") {
+      toast.error(
+        "Google hasn't confirmed that email address. Sign in with your password instead.",
+      );
+    }
   }, [searchParams]);
 
   const validateForm = (): boolean => {
@@ -57,7 +65,6 @@ const Signincontent = () => {
   };
 
   // submit logic
-
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = () => {
