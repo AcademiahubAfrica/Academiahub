@@ -5,11 +5,15 @@ import prisma from "@/prisma/connection";
 import argon2 from "argon2";
 import { passwordSchema } from "@/lib/schemas/settingsSchema";
 import { requestContext, securityLog } from "@/lib/logging/securityLog";
+import { denied } from "@/lib/logging/denied";
 
 export async function PUT(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return denied({
+      route: "/api/user/change-password",
+      reason: "no_session",
+    });
   }
 
   const body = await request.json();

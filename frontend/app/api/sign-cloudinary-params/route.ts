@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { denied } from "@/lib/logging/denied";
 
 type UploadKind = "avatar" | "document";
 
@@ -43,7 +44,10 @@ function isUploadKind(value: unknown): value is UploadKind {
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return denied({
+      route: "/api/sign-cloudinary-params",
+      reason: "no_session",
+    });
   }
 
   const { kind } = await request.json().catch(() => ({}));

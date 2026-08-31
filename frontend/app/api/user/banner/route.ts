@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { isBannerKey } from "@/lib/profileBanner";
+import { denied } from "@/lib/logging/denied";
 
 /**
  * PATCH /api/user/banner
@@ -13,7 +14,10 @@ export async function PATCH(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return denied({
+        route: "/api/user/banner",
+        reason: "no_session",
+      });
     }
 
     const { bannerKey } = (await request.json()) as { bannerKey: unknown };

@@ -8,6 +8,7 @@ import {
   isValidDocumentUrl,
 } from "@/lib/cloudinary/documentAsset";
 import type { Prisma } from "@prisma/client";
+import { denied } from "@/lib/logging/denied";
 
 type DocumentCategory = "RESEARCH" | "SEMINAR" | "PROJECT" | "ANALYSIS";
 
@@ -45,7 +46,10 @@ export async function POST(request: NextRequest) {
     ]);
 
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return denied({
+        route: "/api/documents",
+        reason: "no_session",
+      });
     }
 
     if (!body || typeof body !== "object") {

@@ -8,6 +8,7 @@ import {
   deriveDocumentFileKey,
   parseResourceType,
 } from "@/lib/cloudinary/documentAsset";
+import { denied } from "@/lib/logging/denied";
 
 /**
  * GET /api/documents/:id
@@ -20,7 +21,10 @@ export async function GET(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return denied({
+        route: "/api/documents/[id]",
+        reason: "no_session",
+      });
     }
 
     const { id: documentId } = await params;
@@ -69,7 +73,10 @@ export async function DELETE(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return denied({
+        route: "/api/documents/[id]",
+        reason: "no_session",
+      });
     }
 
     const { id: documentId } = await params;
@@ -84,7 +91,15 @@ export async function DELETE(
     }
 
     if (document.authorId !== session.user.id) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      /* An attempt to delete somebody else's publication, and the file behind
+         it. Irreversible had it succeeded, so the record matters. */
+      return denied({
+        route: "/api/documents/[id]",
+        status: 403,
+        reason: "not_document_owner",
+        userId: session.user.id,
+        detail: { documentId, action: "delete" },
+      });
     }
 
     /* Recompute the key from the stored URL instead of trusting the stored
