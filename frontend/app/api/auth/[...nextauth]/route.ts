@@ -4,6 +4,15 @@ import GoogleProvider, { type GoogleProfile } from "next-auth/providers/google";
 import prisma from "@/prisma/connection";
 import argon2 from "argon2";
 import { decideGoogleSignIn } from "@/lib/auth/googleSignIn";
+import { requestContext, securityLog } from "@/lib/logging/securityLog";
+
+const LOGIN_ERRORS = {
+  no_such_account: "No user found with the given email",
+  password_missing: "Password is required",
+  oauth_account: "This account uses OAuth. Please sign in with Google or GitHub",
+  bad_password: "Invalid email or password",
+  email_unverified: "EMAIL_NOT_VERIFIED",
+} as const;
 
 declare module "next-auth" {
   interface Session {
@@ -24,30 +33,52 @@ export const authOptions:NextAuthOptions = {
       email: { label: "Email", type: "text" },
       password: { label: "Password", type: "password" }
     },
-    async authorize(credentials) {
+    async authorize(credentials, req) {
+        const email = credentials?.email;
+        const request = requestContext(req?.headers);
+
+        /* Records why the attempt was turned away and hands back the error to
+           throw. The reason is for us; the message thrown to the caller is
+           unchanged from before. */
+        const loginFailure = (
+          reason: keyof typeof LOGIN_ERRORS,
+          userId?: string,
+        ): Error => {
+          securityLog({
+            event: "auth.login.failure",
+            outcome: "failure",
+            actor: { userId, email },
+            request,
+            detail: { reason },
+          });
+          return new Error(LOGIN_ERRORS[reason]);
+        };
+
          const user = await prisma.user.findFirst({where:{email:credentials?.email}})
             if (!user) {
-                throw new Error("No user found with the given email")
+                throw loginFailure("no_such_account")
             }
             if (!credentials?.password) {
-                throw new Error("Password is required")
+                throw loginFailure("password_missing", user.id)
             }
             if (!user.password) {
-                throw new Error("This account uses OAuth. Please sign in with Google or GitHub")
+                throw loginFailure("oauth_account", user.id)
             }
             const isValid = await argon2.verify(user.password, credentials.password);
-            if (!isValid) throw new Error("Invalid email or password");
+            if (!isValid) throw loginFailure("bad_password", user.id);
 
             // Check if email is verified
             if (!user.emailVerified) {
-                throw new Error("EMAIL_NOT_VERIFIED")
+                throw loginFailure("email_unverified", user.id)
             }
 
-        try {
-            return user
-        } catch (_error) {
-            throw new Error("Check your credentials")
-        }
+        securityLog({
+          event: "auth.login.success",
+          outcome: "success",
+          actor: { userId: user.id, email },
+          request,
+        });
+        return user
     }
   }),
   GoogleProvider({
@@ -75,6 +106,12 @@ export const authOptions:NextAuthOptions = {
 
       switch (decision.action) {
         case "refuse":
+          securityLog({
+            event: "auth.oauth.refused",
+            outcome: "failure",
+            actor: { userId: existingUser?.id, email },
+            detail: { provider: "google", reason: "email_unverified_by_provider" },
+          });
           return "/login?error=GoogleEmailUnverified";
 
         case "create":
@@ -98,6 +135,16 @@ export const authOptions:NextAuthOptions = {
               codeExpiry: null,
               verificationAttempts: 0,
             },
+          });
+          /* Worth a record of its own: a password was removed from an account
+             without its holder asking. If that holder was an impostor this is
+             the moment the trap was disarmed, and if it was not, this is the
+             line that explains why someone's password stopped working. */
+          securityLog({
+            event: "auth.oauth.account_reclaimed",
+            outcome: "success",
+            actor: { userId: existingUser!.id, email },
+            detail: { provider: "google", clearedPassword: true },
           });
           return true;
 

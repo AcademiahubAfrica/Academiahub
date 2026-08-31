@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import prisma from "@/prisma/connection";
 import { sendPasswordResetEmail, getResetTokenExpiry } from "@/lib/email";
+import { requestContext, securityLog } from "@/lib/logging/securityLog";
 
 const RATE_LIMIT_SECONDS = 60;
 const GENERIC_RESPONSE = {
@@ -52,6 +53,13 @@ export async function POST(req: NextRequest) {
     });
 
     await sendPasswordResetEmail(email, token);
+
+    securityLog({
+      event: "auth.password.reset.requested",
+      outcome: "success",
+      actor: { userId: user.id, email },
+      request: requestContext(req.headers),
+    });
 
     return NextResponse.json(GENERIC_RESPONSE, { status: 200 });
   } catch (error) {

@@ -4,6 +4,7 @@ import {
   MAX_VERIFICATION_ATTEMPTS,
   verificationCodeMatches,
 } from "@/lib/email";
+import { requestContext, securityLog } from "@/lib/logging/securityLog";
 
 export async function POST(req: NextRequest) {
   try {
@@ -64,6 +65,16 @@ export async function POST(req: NextRequest) {
               verificationAttempts: 0,
             }
           : { verificationAttempts: attempts },
+      });
+
+      securityLog({
+        event: exhausted
+          ? "auth.email.verification.locked"
+          : "auth.email.verification.failure",
+        outcome: "failure",
+        actor: { userId: user.id, email },
+        request: requestContext(req.headers),
+        detail: { attempts },
       });
 
       return NextResponse.json(
