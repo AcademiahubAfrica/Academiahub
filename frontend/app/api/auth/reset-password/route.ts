@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import argon2 from "argon2";
 import prisma from "@/prisma/connection";
+import { requestContext, securityLog } from "@/lib/logging/securityLog";
 
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
 
@@ -64,6 +65,13 @@ export async function POST(req: NextRequest) {
         passwordResetExpiry: null,
         lastPasswordResetRequestAt: null,
       },
+    });
+
+    securityLog({
+      event: "auth.password.reset.completed",
+      outcome: "success",
+      actor: { userId: user.id },
+      request: requestContext(req.headers),
     });
 
     return NextResponse.json(

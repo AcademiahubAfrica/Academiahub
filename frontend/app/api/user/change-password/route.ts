@@ -4,6 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import argon2 from "argon2";
 import { passwordSchema } from "@/lib/schemas/settingsSchema";
+import { requestContext, securityLog } from "@/lib/logging/securityLog";
 
 export async function PUT(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -32,8 +33,19 @@ export async function PUT(request: NextRequest) {
     );
   }
 
+  const context = requestContext(request.headers);
+
   const isValid = await argon2.verify(user.password, currentPassword);
   if (!isValid) {
+    /* A signed-in session failing to produce its own current password is worth
+       noticing: it is what a borrowed session looks like from here. */
+    securityLog({
+      event: "auth.password.changed",
+      outcome: "failure",
+      actor: { userId: session.user.id },
+      request: context,
+      detail: { reason: "current_password_incorrect" },
+    });
     return NextResponse.json(
       { error: "Current password is incorrect" },
       { status: 400 }
@@ -44,6 +56,13 @@ export async function PUT(request: NextRequest) {
   await prisma.user.update({
     where: { id: session.user.id },
     data: { password: hashedPassword },
+  });
+
+  securityLog({
+    event: "auth.password.changed",
+    outcome: "success",
+    actor: { userId: session.user.id },
+    request: context,
   });
 
   return NextResponse.json({ message: "Password updated successfully" });
