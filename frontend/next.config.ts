@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withSentryConfig } from "@sentry/nextjs";
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -104,4 +105,17 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+/**
+ * The wrapper is what makes route handlers Sentry-aware at build time, and that
+ * is what makes logs actually arrive. On this host each request runs as a
+ * function that is frozen the moment it responds, while Sentry sends in the
+ * background — so without the wrapping, events are written and then discarded
+ * when the function freezes, silently. The wrapper adds the "finish sending
+ * first" step.
+ *
+ * It only adds to the config below; the headers survive it unchanged.
+ */
+export default withSentryConfig(nextConfig, {
+  silent: true,
+  telemetry: false,
+});
