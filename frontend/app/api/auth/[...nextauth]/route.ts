@@ -1,8 +1,9 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
+import GoogleProvider, { type GoogleProfile } from "next-auth/providers/google";
 import prisma from "@/prisma/connection";
 import argon2 from "argon2";
+import { decideGoogleSignIn } from "@/lib/auth/googleSignIn";
 
 declare module "next-auth" {
   interface Session {
@@ -16,7 +17,6 @@ declare module "next-auth" {
 }
 
 export const authOptions:NextAuthOptions = {
-  // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
     name: "Email and Password",
@@ -56,20 +56,61 @@ export const authOptions:NextAuthOptions = {
   })
   ],
   callbacks: {
-    async signIn({ user, account}) {
-      if (account?.provider === "google") {
-        const existingUser = await prisma.user.findFirst({ where: { email: user.email! } });
-        if (!existingUser) {
+    async signIn({ user, account, profile }) {
+      if (account?.provider !== "google") return true;
+
+      const email = user.email;
+      if (!email) return false;
+
+      const existingUser = await prisma.user.findFirst({
+        where: { email },
+        select: { id: true, password: true, emailVerified: true },
+      });
+
+      const decision = decideGoogleSignIn({
+        googleEmailVerified: (profile as GoogleProfile | undefined)
+          ?.email_verified,
+        existingAccount: existingUser,
+      });
+
+      switch (decision.action) {
+        case "refuse":
+          return "/login?error=GoogleEmailUnverified";
+
+        case "create":
           await prisma.user.create({
             data: {
               name: user.name!,
-              email: user.email!,
-              image: user.image!
+              email,
+              image: user.image!,
+              emailVerified: new Date(),
             },
           });
-        }
+          return true;
+
+        case "reclaim":
+          await prisma.user.update({
+            where: { id: existingUser!.id },
+            data: {
+              password: null,
+              emailVerified: new Date(),
+              verificationCode: null,
+              codeExpiry: null,
+              verificationAttempts: 0,
+            },
+          });
+          return true;
+
+        case "verify":
+          await prisma.user.update({
+            where: { id: existingUser!.id },
+            data: { emailVerified: new Date() },
+          });
+          return true;
+
+        case "allow":
+          return true;
       }
-      return true
     },
     async jwt({ token, user, trigger, session }) {
       if (
