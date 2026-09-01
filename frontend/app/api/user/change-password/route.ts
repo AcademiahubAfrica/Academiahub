@@ -27,7 +27,7 @@ export async function PUT(request: NextRequest) {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { password: true },
+    select: { password: true, sessionVersion: true },
   });
 
   if (!user?.password) {
@@ -59,7 +59,14 @@ export async function PUT(request: NextRequest) {
   const hashedPassword = await argon2.hash(newPassword);
   await prisma.user.update({
     where: { id: session.user.id },
-    data: { password: hashedPassword },
+    data: {
+      password: hashedPassword,
+      /* Retires every session issued before now, which is the point of
+         changing a password when somebody else is in your account. Computed
+         rather than `{ increment: 1 }`, because the column is nullable and
+         incrementing an absent value is not something to rely on. */
+      sessionVersion: (user.sessionVersion ?? 0) + 1,
+    },
   });
 
   securityLog({
