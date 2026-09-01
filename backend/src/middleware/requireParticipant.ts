@@ -64,7 +64,7 @@ export async function requireParticipant(
 
     req.conversation = conversation;
     next();
-  } catch {
-    res.status(500).json({ error: "Something went wrong" });
+  } catch (err) {
+    next(err);
   }
 }

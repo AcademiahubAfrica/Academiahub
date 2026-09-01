@@ -58,6 +58,7 @@ model User {
   passwordResetTokenHash      String?
   passwordResetExpiry         DateTime?
   lastPasswordResetRequestAt  DateTime?
+  sessionVersion              Int?
   Profile           Profile[]
   Document          Document[]
   conversationsA    Conversation[] @relation("participantA")

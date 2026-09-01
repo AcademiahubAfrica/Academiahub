@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import "../types";
 import prisma from "../lib/prisma";
 import { verifySession } from "../middleware/verifySession";
@@ -18,7 +18,7 @@ router.get(
   "/:id/messages",
   verifySession,
   requireParticipant,
-  async (req: Request, res: Response): Promise<void> => {
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const conversationId = req.params.id as string;
       /* Dropped rather than rejected when malformed: a bad cursor should
@@ -47,8 +47,8 @@ router.get(
         messages: results,
         nextCursor,
       });
-    } catch {
-      res.status(500).json({ error: "Something went wrong" });
+    } catch (err) {
+      next(err);
     }
   }
 );

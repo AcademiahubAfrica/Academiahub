@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
     const user = await prisma.user.findFirst({
       where: { passwordResetTokenHash: tokenHash },
-      select: { id: true, passwordResetExpiry: true },
+      select: { id: true, passwordResetExpiry: true, sessionVersion: true },
     });
 
     if (
@@ -65,6 +65,9 @@ export async function POST(req: NextRequest) {
         passwordResetTokenHash: null,
         passwordResetExpiry: null,
         lastPasswordResetRequestAt: null,
+        /* A reset is the recovery path for a compromised account, so it has to
+           retire outstanding sessions the same way a change does. */
+        sessionVersion: (user.sessionVersion ?? 0) + 1,
       },
     });
 

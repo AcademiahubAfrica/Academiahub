@@ -81,6 +81,12 @@ export async function handleMessageSend(
     // Verify sender is a participant
     const conversation = await prisma.conversation.findUnique({
       where: { id: conversationId },
+      /* Both participants' preference comes back with the conversation rather
+         than in a second query. Only the id and the flag, nothing else. */
+      include: {
+        participantA: { select: { id: true, allowMessages: true } },
+        participantB: { select: { id: true, allowMessages: true } },
+      },
     });
 
     if (!conversation) {
@@ -93,6 +99,18 @@ export async function handleMessageSend(
       conversation.participantBId !== userId
     ) {
       socket.emit("error", { message: "Forbidden" });
+      return;
+    }
+
+    /* Checked here as well as at conversation creation, so that turning the
+       setting off also stops messages in threads that already exist. */
+    const recipient =
+      conversation.participantAId === userId
+        ? conversation.participantB
+        : conversation.participantA;
+
+    if (!recipient.allowMessages) {
+      socket.emit("error", { message: "This user is not accepting messages" });
       return;
     }
 

@@ -4,8 +4,8 @@ import { requestContext, securityLog } from "../lib/securityLog";
 
 /**
  * Global error handler.
- * In production: generic error message, no stack traces.
  * In development: full error details for debugging.
+ * Everywhere else: a generic message, no stack traces.
  */
 export function errorHandler(
   err: Error,
@@ -33,12 +33,17 @@ export function errorHandler(
     console.error(err.stack);
   }
 
-  if (process.env.NODE_ENV === "production") {
-    res.status(500).json({ error: "Something went wrong" });
-  } else {
+  /* Fails closed. This used to ask whether NODE_ENV was exactly "production"
+     and send the stack trace otherwise, so a missing, misspelled, or "prod"
+     value published internal paths and library versions to every caller.
+     Detail is now opt-in: nothing but development gets it. */
+  if (process.env.NODE_ENV === "development") {
     res.status(500).json({
       error: err.message,
       stack: err.stack,
     });
+    return;
   }
+
+  res.status(500).json({ error: "Something went wrong" });
 }
