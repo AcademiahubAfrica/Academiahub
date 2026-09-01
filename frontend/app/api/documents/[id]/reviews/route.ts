@@ -5,6 +5,7 @@ import prisma from "@/prisma/connection";
 import { revalidatePath } from "next/cache";
 import { getReviewAggregate } from "@/lib/reviews/aggregate";
 import { denied } from "@/lib/logging/denied";
+import { isObjectId } from "@/lib/queryParams";
 
 /**
  * GET /api/documents/:id/reviews
@@ -16,6 +17,13 @@ export async function GET(
 ) {
   try {
     const { id: documentId } = await params;
+    if (!isObjectId(documentId)) {
+      return NextResponse.json(
+        { error: "Invalid document id" },
+        { status: 400 },
+      );
+    }
+
     const session = await getServerSession(authOptions);
 
     const [aggregate, userReview] = await Promise.all([
@@ -58,6 +66,13 @@ export async function POST(
     }
 
     const { id: documentId } = await params;
+    if (!isObjectId(documentId)) {
+      return NextResponse.json(
+        { error: "Invalid document id" },
+        { status: 400 },
+      );
+    }
+
     const userId = session.user.id;
 
     const body = await request.json().catch(() => null);
@@ -120,6 +135,13 @@ export async function DELETE(
     }
 
     const { id: documentId } = await params;
+    if (!isObjectId(documentId)) {
+      return NextResponse.json(
+        { error: "Invalid document id" },
+        { status: 400 },
+      );
+    }
+
     const userId = session.user.id;
 
     const existing = await prisma.review.findUnique({

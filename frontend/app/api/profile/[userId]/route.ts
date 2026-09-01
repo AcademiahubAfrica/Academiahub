@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { denied } from "@/lib/logging/denied";
+import { isObjectId } from "@/lib/queryParams";
 
 /**
  * GET /api/profile/:userId
@@ -22,6 +23,12 @@ export async function GET(
     }
 
     const { userId } = await params;
+    if (!isObjectId(userId)) {
+      return NextResponse.json(
+        { error: "Invalid user id" },
+        { status: 400 },
+      );
+    }
 
     const user = await prisma.user.findUnique({
       where: { id: userId },

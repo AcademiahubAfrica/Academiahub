@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { passwordPolicy } from "./passwordPolicy";
 
 /**
  * Server-side shape of a signup request.
@@ -26,10 +27,7 @@ export const signupSchema = z.object({
     .trim()
     .max(254, "Email must be at most 254 characters")
     .pipe(z.email("Please enter a valid email address")),
-  password: z
-    .string({ error: "Password is required" })
-    .min(8, "Password must be at least 8 characters long")
-    .max(128, "Password must be at most 128 characters"),
+  password: passwordPolicy,
 });
 
 export type SignupSchemaType = z.infer<typeof signupSchema>;

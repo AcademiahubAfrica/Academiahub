@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { denied } from "@/lib/logging/denied";
+import { isObjectId } from "@/lib/queryParams";
 
 /**
  * POST /api/documents/:id/download
@@ -22,6 +23,13 @@ export async function POST(
     }
 
     const { id: documentId } = await params;
+    if (!isObjectId(documentId)) {
+      return NextResponse.json(
+        { error: "Invalid document id" },
+        { status: 400 },
+      );
+    }
+
     const userId = session.user.id;
 
     const document = await prisma.document.findUnique({

@@ -5,6 +5,7 @@ import prisma from "@/prisma/connection";
 import { revalidatePath } from "next/cache";
 import { pushNotification } from "@/lib/notifications/pushNotification";
 import { denied } from "@/lib/logging/denied";
+import { isObjectId } from "@/lib/queryParams";
 
 /**
  * POST /api/documents/:id/like
@@ -24,6 +25,13 @@ export async function POST(
     }
 
     const { id: documentId } = await params;
+    if (!isObjectId(documentId)) {
+      return NextResponse.json(
+        { error: "Invalid document id" },
+        { status: 400 },
+      );
+    }
+
     const userId = session.user.id;
 
     const existing = await prisma.like.findUnique({
@@ -93,6 +101,13 @@ export async function DELETE(
     }
 
     const { id: documentId } = await params;
+    if (!isObjectId(documentId)) {
+      return NextResponse.json(
+        { error: "Invalid document id" },
+        { status: 400 },
+      );
+    }
+
     const userId = session.user.id;
 
     const existing = await prisma.like.findUnique({

@@ -5,6 +5,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { revalidatePath } from "next/cache";
 import { denied } from "@/lib/logging/denied";
+import { isObjectId } from "@/lib/queryParams";
 
 type Params = { params: Promise<{ id: string; commentId: string }> };
 
@@ -23,6 +24,20 @@ export async function PUT(request: NextRequest, { params }: Params) {
     }
 
     const { id: documentId, commentId } = await params;
+    if (!isObjectId(documentId)) {
+      return NextResponse.json(
+        { error: "Invalid document id" },
+        { status: 400 },
+      );
+    }
+
+    if (!isObjectId(commentId)) {
+      return NextResponse.json(
+        { error: "Invalid comment id" },
+        { status: 400 },
+      );
+    }
+
     const { content } = await request.json();
 
     if (!content || typeof content !== "string" || content.trim().length === 0) {
@@ -94,6 +109,19 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
     }
 
     const { id: documentId, commentId } = await params;
+    if (!isObjectId(documentId)) {
+      return NextResponse.json(
+        { error: "Invalid document id" },
+        { status: 400 },
+      );
+    }
+
+    if (!isObjectId(commentId)) {
+      return NextResponse.json(
+        { error: "Invalid comment id" },
+        { status: 400 },
+      );
+    }
 
     const comment = await prisma.comment.findUnique({
       where: { id: commentId },
