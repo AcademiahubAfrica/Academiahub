@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { denied } from "@/lib/logging/denied";
+import { isObjectId } from "@/lib/queryParams";
 
 /**
  * PATCH /api/notifications/:id/read
@@ -22,6 +23,13 @@ export async function PATCH(
     }
 
     const { id: notificationId } = await params;
+    if (!isObjectId(notificationId)) {
+      return NextResponse.json(
+        { error: "Invalid notification id" },
+        { status: 400 },
+      );
+    }
+
     const userId = session.user.id;
 
     const notification = await prisma.notification.findUnique({

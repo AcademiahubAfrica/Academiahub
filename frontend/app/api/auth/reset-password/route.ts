@@ -3,8 +3,11 @@ import crypto from "crypto";
 import argon2 from "argon2";
 import prisma from "@/prisma/connection";
 import { requestContext, securityLog } from "@/lib/logging/securityLog";
+import { passwordPolicy } from "@/lib/schemas/passwordPolicy";
 
-const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+/* The upper/lower/special regex that used to live here is gone. It was one of
+   three disagreeing rules, and it was the strict one — a user could sign up
+   with a password this endpoint would then refuse to let them set again. */
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,12 +27,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!PASSWORD_REGEX.test(newPassword)) {
+    const password = passwordPolicy.safeParse(newPassword);
+    if (!password.success) {
       return NextResponse.json(
-        {
-          message:
-            "Password must be at least 8 characters and include uppercase, lowercase, and a special character.",
-        },
+        { message: password.error.issues[0]?.message ?? "Invalid password" },
         { status: 400 },
       );
     }
