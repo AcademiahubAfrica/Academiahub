@@ -33,7 +33,11 @@ export async function PATCH(request: NextRequest) {
     });
 
     return NextResponse.json(updated);
-  } catch {
+  } catch (error) {
+    /* The generic message to the caller is right; discarding the cause is not.
+       Without this a database outage and a schema mismatch look identical, and
+       neither is visible to anyone. */
+    console.error("Error updating banner:", error);
     return NextResponse.json(
       { error: "Failed to update banner" },
       { status: 500 },
