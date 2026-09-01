@@ -229,7 +229,7 @@ export default function ExploreContent() {
 
         {/* Load More Button */}
         {hasMore && (
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 mb-12">
             <Button
               size="lg"
               className="px-8"
