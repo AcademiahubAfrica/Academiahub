@@ -6,6 +6,9 @@ import { searchLimiter } from "../middleware/rateLimit";
 
 const router = Router();
 
+// Names are short; anything longer is not a search. 
+const MAX_SEARCH_QUERY_LENGTH = 100;
+
 /**
  * GET /users/search?q=
  * Search for users by name to start a DM.
@@ -23,6 +26,15 @@ router.get(
 
       if (!query || query.trim().length < 3) {
         res.status(400).json({ error: "Query must be at least 3 characters" });
+        return;
+      }
+
+      /* There is no body size limit on a query string, so this had no ceiling
+         at all. The column it searches is far shorter than this. */
+      if (query.trim().length > MAX_SEARCH_QUERY_LENGTH) {
+        res.status(400).json({
+          error: `Query must be at most ${MAX_SEARCH_QUERY_LENGTH} characters`,
+        });
         return;
       }
 

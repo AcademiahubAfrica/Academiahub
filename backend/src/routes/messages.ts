@@ -3,6 +3,7 @@ import "../types";
 import prisma from "../lib/prisma";
 import { verifySession } from "../middleware/verifySession";
 import { requireParticipant } from "../middleware/requireParticipant";
+import { objectIdOrUndefined, positiveInt } from "../lib/queryParams";
 
 const router = Router();
 
@@ -20,9 +21,11 @@ router.get(
   async (req: Request, res: Response): Promise<void> => {
     try {
       const conversationId = req.params.id as string;
-      const cursor = req.query.cursor as string | undefined;
-      const limitParam = parseInt(req.query.limit as string, 10);
-      const limit = Math.min(Math.max(limitParam || 50, 1), 100);
+      /* Dropped rather than rejected when malformed: a bad cursor should
+         return the first page, not an error. Passing it on would reach Prisma
+         as an invalid ObjectId and raise. */
+      const cursor = objectIdOrUndefined(req.query.cursor);
+      const limit = positiveInt(req.query.limit, 50, 100);
 
       const messages = await prisma.message.findMany({
         where: { conversationId },
