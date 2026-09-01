@@ -42,11 +42,20 @@ router.post(
       // Validate recipient exists
       const recipient = await prisma.user.findUnique({
         where: { id: recipientId },
-        select: { id: true },
+        select: { id: true, allowMessages: true },
       });
 
       if (!recipient) {
         res.status(404).json({ error: "User not found" });
+        return;
+      }
+
+      /* The setting was written and never read, so a user who turned messages
+         off still received them. */
+      if (!recipient.allowMessages) {
+        res
+          .status(403)
+          .json({ error: "This user is not accepting messages" });
         return;
       }
 
