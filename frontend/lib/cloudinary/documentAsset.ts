@@ -1,3 +1,5 @@
+import { v2 as cloudinary } from "cloudinary";
+
 /**
  * Server-side helpers for the Cloudinary assets behind a publication.
  *
@@ -57,4 +59,44 @@ export function deriveDocumentFileKey(fileUrl: string): string | null {
   }
 
   return DOCUMENT_KEY_PATTERN.test(key) ? key : null;
+}
+
+export type UploadSizeCheck =
+  /** Cloudinary reported a size within the limit. */
+  | { status: "ok"; bytes: number } // Cloudinary reported a size within the limit. 
+  | { status: "too_large"; bytes: number } // Cloudinary reported a size over the limit. The asset still exists.
+  | { status: "unverifiable" }; // The asset could not be looked up, so nothing is known about it.
+
+/**
+ * Asks Cloudinary how large an upload actually is.
+ *
+ * Files go from the browser straight to Cloudinary, and the size the browser
+ * then reports is a number it chose. Believing it means a caller can upload two
+ * gigabytes and describe it as one kilobyte, with the storage already spent by
+ * the time anything is checked.
+ *
+ * Never throws: a lookup that fails comes back as `unverifiable` so the caller
+ * can refuse, rather than falling back to the claimed size.
+ */
+export async function checkUploadedSize(
+  fileKey: string,
+  resourceType: CloudinaryResourceType,
+  maxBytes: number,
+): Promise<UploadSizeCheck> {
+  try {
+    cloudinary.config({ secure: true });
+    const resource = await cloudinary.api.resource(fileKey, {
+      resource_type: resourceType,
+    });
+
+    const bytes = resource?.bytes;
+    if (typeof bytes !== "number" || !Number.isFinite(bytes)) {
+      return { status: "unverifiable" };
+    }
+
+    return bytes > maxBytes ? { status: "too_large", bytes } : { status: "ok", bytes };
+  } catch (error) {
+    console.error("Cloudinary lookup failed for", fileKey, error);
+    return { status: "unverifiable" };
+  }
 }

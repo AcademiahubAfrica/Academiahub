@@ -10,6 +10,7 @@ export interface SignResponse {
   overwrite?: boolean;
   invalidate?: boolean;
   eager?: string;
+  uploadPreset?: string;
   maxBytes: number;
   allowedFormats: string;
 }
@@ -52,6 +53,8 @@ export function uploadToCloudinaryWithProgress(
     if (sign.overwrite) body.append("overwrite", "true");
     if (sign.invalidate) body.append("invalidate", "true");
     if (sign.eager) body.append("eager", sign.eager);
+    // Must match the signed set exactly, or Cloudinary rejects the signature.
+    if (sign.uploadPreset) body.append("upload_preset", sign.uploadPreset);
     body.append("allowed_formats", sign.allowedFormats);
 
     const xhr = new XMLHttpRequest();

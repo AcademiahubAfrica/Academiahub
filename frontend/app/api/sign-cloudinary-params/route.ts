@@ -15,6 +15,9 @@ interface UploadPolicy {
   invalidate?: boolean;
   eager?: string;
   stripMetadata?: boolean;
+  /** Cloudinary-side preset. Carries the size cap, which is not a signable
+      upload parameter and so cannot be enforced from here. */
+  uploadPreset?: string;
 }
 
 // max_bytes and strip_metadata are not signable upload-API parameters
@@ -34,6 +37,7 @@ const POLICIES: Record<UploadKind, UploadPolicy> = {
     folder: "academiahub/documents",
     maxBytes: 10 * 1024 * 1024,
     allowedFormats: "pdf",
+    uploadPreset: "academiahub-documents",
   },
 };
 
@@ -81,6 +85,10 @@ export async function POST(request: NextRequest) {
   if (policy.overwrite) paramsToSign.overwrite = true;
   if (policy.invalidate) paramsToSign.invalidate = true;
   if (policy.eager) paramsToSign.eager = policy.eager;
+  /* Signed alongside everything else. Cloudinary checks the signature over
+     every parameter it receives, so naming the preset without signing it is
+     rejected outright. */
+  if (policy.uploadPreset) paramsToSign.upload_preset = policy.uploadPreset;
 
   const signature = cloudinary.utils.api_sign_request(paramsToSign, api_secret);
 
@@ -94,6 +102,7 @@ export async function POST(request: NextRequest) {
     overwrite: policy.overwrite,
     invalidate: policy.invalidate,
     eager: policy.eager,
+    uploadPreset: policy.uploadPreset,
     maxBytes: policy.maxBytes,
     allowedFormats: policy.allowedFormats,
   });
