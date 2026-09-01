@@ -14,6 +14,22 @@ import internalRoutes from "./routes/internal";
 import { errorHandler } from "./middleware/errorHandler";
 import { createSocketServer } from "./ws/handler";
 
+/* Names only, never values. Not fatal: every path that needs one of these
+   already fails closed without it, and stopping the process would take
+   messaging down over a variable only notifications use. The point is that a
+   misconfigured deploy says so on the first line of its logs. */
+const REQUIRED_ENV = [
+  "NODE_ENV",
+  "DATABASE_URL",
+  "NEXTAUTH_SECRET",
+  "INTERNAL_API_SECRET",
+] as const;
+
+const missingEnv = REQUIRED_ENV.filter((name) => !process.env[name]);
+if (missingEnv.length > 0) {
+  console.error(`Missing environment variables: ${missingEnv.join(", ")}`);
+}
+
 const app = express();
 
 app.use(helmet());

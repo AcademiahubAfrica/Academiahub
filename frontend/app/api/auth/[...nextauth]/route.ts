@@ -5,6 +5,7 @@ import prisma from "@/prisma/connection";
 import argon2 from "argon2";
 import { decideGoogleSignIn } from "@/lib/auth/googleSignIn";
 import { requestContext, securityLog } from "@/lib/logging/securityLog";
+import { isCheckDue, isSessionRetired } from "@/lib/auth/sessionVersion";
 
 const LOGIN_ERRORS = {
   no_such_account: "No user found with the given email",
@@ -25,7 +26,23 @@ declare module "next-auth" {
   }
 }
 
+declare module "next-auth/jwt" {
+  interface JWT {
+    // The account's session version at the time this token was last checked.
+    sv?: number;
+    // When that check happened, in seconds. 
+    svAt?: number;
+  }
+}
+
+// Explicit rather than inherited: the default is 30 days with no idle expiry.
+const SESSION_MAX_AGE_SECONDS = 7 * 24 * 60 * 60;
+
 export const authOptions:NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+    maxAge: SESSION_MAX_AGE_SECONDS,
+  },
   providers: [
     CredentialsProvider({
     name: "Email and Password",
@@ -170,15 +187,44 @@ export const authOptions:NextAuthOptions = {
         token.picture = session.image;
       }
       
+      const now = Math.floor(Date.now() / 1000);
+
       if (user && token.email) {
         const dbUser = await prisma.user.findFirst({
           where: { email: token.email },
-          select: { id: true },
+          select: { id: true, sessionVersion: true },
         });
         if (dbUser) {
           token.sub = dbUser.id;
+          token.sv = dbUser.sessionVersion ?? 0;
+          token.svAt = now;
         }
+        return token;
       }
+
+      /* Sessions are self-contained tokens, so there is nothing to delete when
+         a password changes. Instead the account carries a version, and a token
+         minted before the current one is refused.
+
+         Checked on a timer rather than on every request: this callback runs on
+         every session read, and a database round trip per request is a real
+         cost. The trade is that a retired session keeps working for up to one
+         interval. */
+      if (token.sub && isCheckDue(token.svAt, now)) {
+        const current = await prisma.user.findUnique({
+          where: { id: token.sub },
+          select: { sessionVersion: true },
+        });
+
+        // Also covers a deleted account, whose token would otherwise outlive it.
+        if (!current || isSessionRetired(token.sv, current.sessionVersion)) {
+          // Empty token: no `sub`, so the session callback below assigns no id.
+          return {};
+        }
+
+        token.svAt = now;
+      }
+
       return token;
     },
     async session({ session, token }) {
