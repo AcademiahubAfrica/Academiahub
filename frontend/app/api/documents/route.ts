@@ -3,10 +3,18 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { DOCUMENT_CARD_SELECT } from "@/lib/documentSelect";
-import { deriveDocumentFileKey } from "@/lib/cloudinary/documentAsset";
+import { v2 as cloudinary } from "cloudinary";
+import {
+  checkUploadedSize,
+  deriveDocumentFileKey,
+  parseResourceType,
+} from "@/lib/cloudinary/documentAsset";
 import type { Prisma } from "@prisma/client";
 import { denied } from "@/lib/logging/denied";
-import { documentSchema } from "@/lib/schemas/documentSchema";
+import {
+  documentSchema,
+  MAX_DOCUMENT_BYTES,
+} from "@/lib/schemas/documentSchema";
 import { isObjectId, positiveInt } from "@/lib/queryParams";
 
 type DocumentCategory = "RESEARCH" | "SEMINAR" | "PROJECT" | "ANALYSIS";
@@ -63,7 +71,6 @@ export async function POST(request: NextRequest) {
       year,
       fileUrl,
       fileName,
-      fileSize,
     } = parsed.data;
 
     /* The storage key is what a later delete acts on, so it is derived from
@@ -72,6 +79,45 @@ export async function POST(request: NextRequest) {
     const fileKey = deriveDocumentFileKey(fileUrl);
     if (!fileKey) {
       return NextResponse.json({ error: "Invalid file URL" }, { status: 400 });
+    }
+
+    /* The size in the body is the uploader's own claim about a file they sent
+       straight to Cloudinary, so it says nothing. Cloudinary is asked instead.
+       This also confirms the asset exists and is where the URL said it was. */
+    const resourceType = parseResourceType(fileUrl);
+    const sizeCheck = await checkUploadedSize(
+      fileKey,
+      resourceType,
+      MAX_DOCUMENT_BYTES,
+    );
+
+    if (sizeCheck.status === "unverifiable") {
+      /* Refuses rather than falling back to the claimed size, which would put
+         the honour system back. The asset is left alone: deleting on a lookup
+         that did not complete risks destroying a good upload. */
+      return NextResponse.json(
+        { error: "Could not verify the uploaded file. Please try again." },
+        { status: 502 },
+      );
+    }
+
+    if (sizeCheck.status === "too_large") {
+      /* Already stored and already being paid for by this point, so it goes
+         now rather than lingering as an orphan. Best effort: a failure here
+         must not turn a rejected upload into a 500. */
+      try {
+        await cloudinary.uploader.destroy(fileKey, {
+          resource_type: resourceType,
+          invalidate: true,
+        });
+      } catch (destroyError) {
+        console.error("Failed to remove oversized upload", fileKey, destroyError);
+      }
+
+      return NextResponse.json(
+        { error: "File exceeds 10 MB limit" },
+        { status: 400 },
+      );
     }
 
     const document = await prisma.document.create({
@@ -84,7 +130,7 @@ export async function POST(request: NextRequest) {
         fileUrl,
         fileKey,
         fileName,
-        fileSize,
+        fileSize: sizeCheck.bytes, // The measured size, never the claimed one.
         authorId: session.user.id,
       },
     });
