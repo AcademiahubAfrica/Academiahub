@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import "../types";
 import prisma from "../lib/prisma";
 import { requestContext, securityLog } from "../lib/securityLog";
+import { isObjectId } from "../lib/queryParams";
 
 /**
  * Middleware that verifies the authenticated user is a participant
@@ -20,6 +21,13 @@ export async function requireParticipant(
 
   if (!conversationId || typeof conversationId !== "string") {
     res.status(400).json({ error: "Conversation ID is required" });
+    return;
+  }
+
+  /* Checked before the lookup: a malformed id makes Prisma raise, and the
+     catch below would report that as a 500. */
+  if (!isObjectId(conversationId)) {
+    res.status(400).json({ error: "Invalid conversation ID" });
     return;
   }
 
