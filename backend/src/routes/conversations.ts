@@ -4,6 +4,7 @@ import prisma from "../lib/prisma";
 import { verifySession } from "../middleware/verifySession";
 import { requireParticipant } from "../middleware/requireParticipant";
 import { conversationCreateLimiter } from "../middleware/rateLimit";
+import { isObjectId } from "../lib/queryParams";
 
 const router = Router();
 
@@ -23,6 +24,12 @@ router.post(
 
       if (!recipientId || typeof recipientId !== "string") {
         res.status(400).json({ error: "recipientId is required" });
+        return;
+      }
+
+      // Checked before the lookup, which would otherwise raise and become a 500.
+      if (!isObjectId(recipientId)) {
+        res.status(400).json({ error: "Invalid recipientId" });
         return;
       }
 
