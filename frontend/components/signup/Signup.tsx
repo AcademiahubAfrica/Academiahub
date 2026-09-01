@@ -8,6 +8,10 @@ import Image from "next/image";
 import SignUpImg from "../../public/assets/images/signup-image.png";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {
+  MIN_PASSWORD_LENGTH,
+  PASSWORD_RULE_MESSAGE,
+} from "@/lib/passwordRules";
 
 interface FormData {
   fullName: string;
@@ -52,8 +56,8 @@ const Signup = () => {
 
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
+    } else if (formData.password.length < MIN_PASSWORD_LENGTH) {
+      newErrors.password = PASSWORD_RULE_MESSAGE;
     }
 
     if (!formData.confirmPassword) {

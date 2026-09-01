@@ -6,6 +6,7 @@ import prisma from "@/prisma/connection";
 import { revalidatePath } from "next/cache";
 import { pushNotification } from "@/lib/notifications/pushNotification";
 import { denied } from "@/lib/logging/denied";
+import { isObjectId, positiveInt } from "@/lib/queryParams";
 
 /**
  * GET /api/documents/:id/comments
@@ -25,9 +26,20 @@ export async function GET(
     }
 
     const { id: documentId } = await params;
+    if (!isObjectId(documentId)) {
+      return NextResponse.json(
+        { error: "Invalid document id" },
+        { status: 400 },
+      );
+    }
+
     const { searchParams } = new URL(request.url);
-    const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
-    const limit = Math.min(50, Math.max(1, parseInt(searchParams.get("limit") || "20")));
+    const page = positiveInt(
+      searchParams.get("page"),
+      1,
+      Number.MAX_SAFE_INTEGER,
+    );
+    const limit = positiveInt(searchParams.get("limit"), 20, 50);
     const skip = (page - 1) * limit;
 
     const [comments, total] = await Promise.all([
@@ -76,6 +88,13 @@ export async function POST(
     }
 
     const { id: documentId } = await params;
+    if (!isObjectId(documentId)) {
+      return NextResponse.json(
+        { error: "Invalid document id" },
+        { status: 400 },
+      );
+    }
+
     const userId = session.user.id;
     const { content } = await request.json();
 

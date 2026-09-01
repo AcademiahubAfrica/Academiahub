@@ -1,19 +1,20 @@
 import { z } from "zod";
+import { passwordPolicy } from "./passwordPolicy";
+import { MAX_PASSWORD_LENGTH } from "@/lib/passwordRules";
 
 export const passwordSchema = z
   .object({
+    /* Not `passwordPolicy`: this is the password the account already has, and
+       accounts predating the 12-character rule hold shorter ones. Judging it
+       against today's rule would lock those users out of changing it, which is
+       the opposite of what this endpoint is for. Length is capped only to stop
+       an unbounded string reaching argon2. */
     currentPassword: z
-      .string()
-      .min(8, "password must be at least 8 characters long")
-      .max(32, "password must be at most 32 characters long"),
-    newPassword: z
-      .string()
-      .min(8, "password must be at least 8 characters long")
-      .max(32, "password must be at most 32 characters long"),
-    confirmPassword: z
-      .string()
-      .min(8, "password must be at least 8 characters long")
-      .max(32, "password must be at most 32 characters long"),
+      .string({ error: "Current password is required" })
+      .min(1, "Current password is required")
+      .max(MAX_PASSWORD_LENGTH),
+    newPassword: passwordPolicy,
+    confirmPassword: z.string(),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords do not match",

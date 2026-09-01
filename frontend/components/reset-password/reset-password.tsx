@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import ResetYourPasswordImg from "@/public/assets/images/reset-password.png";
+import { MIN_PASSWORD_LENGTH } from "@/lib/passwordRules";
 
 interface FormData {
   newPassword: string;
@@ -22,20 +23,15 @@ interface PasswordRequirement {
   met: boolean;
 }
 
+/* Mirrors `passwordPolicy`, the rule the server actually applies. The
+   uppercase and symbol requirements are gone: length is what makes a password
+   hard to guess, and demanding a symbol mostly produces `Password1!`. */
 const checkPasswordRequirements = (
   password: string,
 ): PasswordRequirement[] => [
   {
-    text: "Must be 8 characters long",
-    met: password.length >= 8,
-  },
-  {
-    text: "Must have at least 1 uppercase and 1 lowercase",
-    met: /[a-z]/.test(password) && /[A-Z]/.test(password),
-  },
-  {
-    text: "Must have at least one special symbol",
-    met: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    text: `Must be at least ${MIN_PASSWORD_LENGTH} characters long`,
+    met: password.length >= MIN_PASSWORD_LENGTH,
   },
 ];
 

@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { denied } from "@/lib/logging/denied";
+import { objectIdOrUndefined, positiveInt } from "@/lib/queryParams";
 
 /**
  * GET /api/notifications
@@ -24,8 +25,11 @@ export async function GET(request: NextRequest) {
 
     const userId = session.user.id;
     const { searchParams } = new URL(request.url);
-    const cursor = searchParams.get("cursor") || undefined;
-    const limit = Math.min(50, Math.max(1, parseInt(searchParams.get("limit") || "20")));
+    /* A cursor that is not an ObjectId makes Prisma raise rather than return
+       nothing, so a malformed one is dropped and the caller gets the first
+       page instead of a 500. */
+    const cursor = objectIdOrUndefined(searchParams.get("cursor"));
+    const limit = positiveInt(searchParams.get("limit"), 20, 50);
 
     const notifications = await prisma.notification.findMany({
       where: { userId },

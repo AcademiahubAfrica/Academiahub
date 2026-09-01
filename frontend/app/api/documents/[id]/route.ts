@@ -9,6 +9,7 @@ import {
   parseResourceType,
 } from "@/lib/cloudinary/documentAsset";
 import { denied } from "@/lib/logging/denied";
+import { isObjectId } from "@/lib/queryParams";
 
 /**
  * GET /api/documents/:id
@@ -28,6 +29,13 @@ export async function GET(
     }
 
     const { id: documentId } = await params;
+    if (!isObjectId(documentId)) {
+      return NextResponse.json(
+        { error: "Invalid document id" },
+        { status: 400 },
+      );
+    }
+
     const userId = session.user.id;
 
     const document = await prisma.document.findUnique({
@@ -80,6 +88,12 @@ export async function DELETE(
     }
 
     const { id: documentId } = await params;
+    if (!isObjectId(documentId)) {
+      return NextResponse.json(
+        { error: "Invalid document id" },
+        { status: 400 },
+      );
+    }
 
     const document = await prisma.document.findUnique({
       where: { id: documentId },

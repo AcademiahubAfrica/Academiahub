@@ -3,12 +3,11 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/prisma/connection";
 import { DOCUMENT_CARD_SELECT } from "@/lib/documentSelect";
-import {
-  deriveDocumentFileKey,
-  isValidDocumentUrl,
-} from "@/lib/cloudinary/documentAsset";
+import { deriveDocumentFileKey } from "@/lib/cloudinary/documentAsset";
 import type { Prisma } from "@prisma/client";
 import { denied } from "@/lib/logging/denied";
+import { documentSchema } from "@/lib/schemas/documentSchema";
+import { isObjectId, positiveInt } from "@/lib/queryParams";
 
 type DocumentCategory = "RESEARCH" | "SEMINAR" | "PROJECT" | "ANALYSIS";
 
@@ -25,17 +24,9 @@ const SORT_OPTIONS: Record<string, Prisma.DocumentFindManyArgs["orderBy"]> = {
   popular: [{ likes: "desc" }, { createdAt: "desc" }],
 };
 
-const MAX_DOCUMENT_BYTES = 10 * 1024 * 1024;
-
-const REQUIRED_FIELDS = [
-  "title",
-  "description",
-  "category",
-  "institution",
-  "year",
-  "fileUrl",
-  "fileName",
-] as const;
+/** Pagination ceilings. A caller asking for more gets this many. */
+const MAX_PAGE_SIZE = 50;
+const DEFAULT_PAGE_SIZE = 12;
 
 export async function POST(request: NextRequest) {
   try {
@@ -56,6 +47,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid body" }, { status: 400 });
     }
 
+    const parsed = documentSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.issues[0]?.message ?? "Invalid publication" },
+        { status: 400 },
+      );
+    }
+
     const {
       title,
       description,
@@ -65,53 +64,21 @@ export async function POST(request: NextRequest) {
       fileUrl,
       fileName,
       fileSize,
-    } = body;
-
-    for (const field of REQUIRED_FIELDS) {
-      if (!body[field]) {
-        return NextResponse.json(
-          { error: `Missing required field: ${field}` },
-          { status: 400 },
-        );
-      }
-    }
-
-    const categoryEnum =
-      typeof category === "string" ? CATEGORY_MAP[category.toLowerCase()] : undefined;
-    if (!categoryEnum) {
-      return NextResponse.json({ error: "Invalid category" }, { status: 400 });
-    }
-
-    if (typeof fileUrl !== "string" || !isValidDocumentUrl(fileUrl)) {
-      return NextResponse.json(
-        { error: "Invalid file URL" },
-        { status: 400 },
-      );
-    }
+    } = parsed.data;
 
     /* The storage key is what a later delete acts on, so it is derived from
        the URL we just validated rather than read from the body. Taking it from
        the caller would let an upload point at somebody else's asset. */
     const fileKey = deriveDocumentFileKey(fileUrl);
     if (!fileKey) {
-      return NextResponse.json(
-        { error: "Invalid file URL" },
-        { status: 400 },
-      );
-    }
-
-    if (typeof fileSize !== "number" || fileSize > MAX_DOCUMENT_BYTES) {
-      return NextResponse.json(
-        { error: "File exceeds 10 MB limit" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "Invalid file URL" }, { status: 400 });
     }
 
     const document = await prisma.document.create({
       data: {
         title,
         description,
-        category: categoryEnum,
+        category: CATEGORY_MAP[category],
         institution,
         year,
         fileUrl,
@@ -139,17 +106,33 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get("category");
     const q = searchParams.get("q");
     const sort = searchParams.get("sort") || "recent";
-    const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
-    const limit = Math.min(50, Math.max(1, parseInt(searchParams.get("limit") || "12")));
+    const page = positiveInt(searchParams.get("page"), 1, Number.MAX_SAFE_INTEGER);
+    const limit = positiveInt(
+      searchParams.get("limit"),
+      DEFAULT_PAGE_SIZE,
+      MAX_PAGE_SIZE,
+    );
 
     const where: Prisma.DocumentWhereInput = {};
 
     if (authorId) {
+      /* Checked rather than passed through: an id that is not an ObjectId
+         makes Prisma raise instead of returning nothing. */
+      if (!isObjectId(authorId)) {
+        return NextResponse.json({ error: "Invalid authorId" }, { status: 400 });
+      }
       where.authorId = authorId;
     }
 
     if (category && category !== "all") {
-      where.category = category.toUpperCase() as Prisma.DocumentWhereInput["category"];
+      /* Was `category.toUpperCase() as ...`, which asserted rather than
+         checked — an unknown category reached Prisma as an invalid enum value
+         and came back as a 500. */
+      const mapped = CATEGORY_MAP[category.toLowerCase()];
+      if (!mapped) {
+        return NextResponse.json({ error: "Invalid category" }, { status: 400 });
+      }
+      where.category = mapped;
     }
 
     if (q && q.trim().length > 0) {
