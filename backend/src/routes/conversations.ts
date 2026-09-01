@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import "../types";
 import prisma from "../lib/prisma";
 import { verifySession } from "../middleware/verifySession";
@@ -17,7 +17,7 @@ router.post(
   "/",
   verifySession,
   conversationCreateLimiter,
-  async (req: Request, res: Response): Promise<void> => {
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { recipientId } = req.body;
       const userId = req.userId;
@@ -69,8 +69,8 @@ router.post(
       });
 
       res.status(200).json(conversation);
-    } catch {
-      res.status(500).json({ error: "Something went wrong" });
+    } catch (err) {
+      next(err);
     }
   }
 );
@@ -83,7 +83,7 @@ router.post(
 router.get(
   "/",
   verifySession,
-  async (req: Request, res: Response): Promise<void> => {
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userId = req.userId;
 
@@ -134,8 +134,8 @@ router.get(
       });
 
       res.status(200).json(result);
-    } catch {
-      res.status(500).json({ error: "Something went wrong" });
+    } catch (err) {
+      next(err);
     }
   }
 );
@@ -148,7 +148,7 @@ router.get(
   "/:id/receipts",
   verifySession,
   requireParticipant,
-  async (req: Request, res: Response): Promise<void> => {
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const conversationId = req.params.id as string;
 
@@ -160,8 +160,8 @@ router.get(
       });
 
       res.status(200).json(receipts);
-    } catch {
-      res.status(500).json({ error: "Something went wrong" });
+    } catch (err) {
+      next(err);
     }
   }
 );

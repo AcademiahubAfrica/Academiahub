@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import "../types";
 import prisma from "../lib/prisma";
 import { verifySession } from "../middleware/verifySession";
@@ -19,7 +19,7 @@ router.get(
   "/search",
   verifySession,
   searchLimiter,
-  async (req: Request, res: Response): Promise<void> => {
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const query = req.query.q as string | undefined;
       const userId = req.userId;
@@ -58,8 +58,8 @@ router.get(
       });
 
       res.status(200).json(users);
-    } catch {
-      res.status(500).json({ error: "Something went wrong" });
+    } catch (err) {
+      next(err);
     }
   }
 );
