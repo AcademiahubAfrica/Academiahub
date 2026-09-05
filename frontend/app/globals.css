@@ -188,6 +188,16 @@
   }
 }
 
+.terms-page-content p,
+.terms-page-content li {
+  line-height: 1.6;
+}
+
+.terms-page-content h2,
+.terms-page-content h3 {
+  line-height: 1.3;
+}
+
 /* Custom Classes based on design system */
 html {
   scroll-behavior: smooth;

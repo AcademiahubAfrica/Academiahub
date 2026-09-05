@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import type { Prisma } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -6,6 +7,14 @@ import { getInitials } from "@/lib/messaging/utils";
 import { getCategoryImage } from "@/lib/categoryImage";
 import ViewDetailsButton from "@/components/ViewDetailsButton";
 import prisma from "@/prisma/connection";
+
+type DocumentWithAuthor = Prisma.DocumentGetPayload<{
+  include: {
+    author: {
+      select: { id: true; name: true; image: true };
+    };
+  };
+}>;
 
 interface ExploreSectionProps {
   limit?: number;
@@ -17,15 +26,21 @@ const ExploreSection = async ({
   limit = 12,
   showViewAllButton = true,
 }: ExploreSectionProps) => {
-  const documents = await prisma.document.findMany({
-    include: {
-      author: {
-        select: { id: true, name: true, image: true },
+  let documents: DocumentWithAuthor[] = [];
+
+  try {
+    documents = await prisma.document.findMany({
+      include: {
+        author: {
+          select: { id: true, name: true, image: true },
+        },
       },
-    },
-    orderBy: { createdAt: "desc" },
-    take: limit,
-  });
+      orderBy: { createdAt: "desc" },
+      take: limit,
+    });
+  } catch (error) {
+    if (process.env.NODE_ENV === "production") throw error;
+  }
 
   return (
     <section className="flex flex-col items-center min-[1290px]:mt-43.75 p-3">

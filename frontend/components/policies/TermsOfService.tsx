@@ -1,26 +1,90 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
+const sections = [
+  { id: "section-1", title: "1. Eligibility and Account Registration" },
+  { id: "section-2", title: "2. Permitted Use" },
+  { id: "section-3", title: "3. Prohibited Conduct" },
+  { id: "section-4", title: "4. Intellectual Property" },
+  { id: "section-5", title: "5. Subscriptions and Payments" },
+  { id: "section-6", title: "6. Academic Integrity" },
+  { id: "section-7", title: "7. Termination" },
+  { id: "section-8", title: "8. Disclaimers and Limitation of Liability" },
+  { id: "section-9", title: "9. Indemnification" },
+  { id: "section-10", title: "10. Governing Law and Dispute Resolution" },
+  { id: "section-11", title: "11. Changes to Terms" },
+  { id: "section-12", title: "12. Contact Us" },
+] as const;
+
 const TermsOfService = () => {
-  const sections = [
-    { id: "section-1", title: "1. Eligibility and Account Registration" },
-    { id: "section-2", title: "2. Permitted Use" },
-    { id: "section-3", title: "3. Prohibited Conduct" },
-    { id: "section-4", title: "4. Intellectual Property" },
-    { id: "section-5", title: "5. Subscriptions and Payments" },
-    { id: "section-6", title: "6. Academic Integrity" },
-    { id: "section-7", title: "7. Termination" },
-    { id: "section-8", title: "8. Disclaimers and Limitation of Liability" },
-    { id: "section-9", title: "9. Indemnification" },
-    { id: "section-10", title: "10. Governing Law and Dispute Resolution" },
-    { id: "section-11", title: "11. Changes to Terms" },
-    { id: "section-12", title: "12. Contact Us" },
-  ];
+  const [activeSection, setActiveSection] = useState("section-1");
+
+  const scrollToSection = (sectionId: string) => {
+    const content = document.getElementById("terms-content");
+    const section = document.getElementById(sectionId);
+    if (!content || !section) return;
+
+    const contentTop = content.getBoundingClientRect().top;
+    const sectionTop = section.getBoundingClientRect().top;
+    const sectionOffset = sectionTop - contentTop + content.scrollTop;
+
+    content.scrollTo({ top: sectionOffset, behavior: "smooth" });
+    window.history.replaceState(null, "", `#${sectionId}`);
+  };
+
+  useEffect(() => {
+    const content = document.getElementById("terms-content");
+    if (!content) return;
+
+    const lastSectionId = sections[sections.length - 1].id;
+    const isAtBottom = () =>
+      content.scrollHeight - content.scrollTop - content.clientHeight < 4;
+
+    const handleScroll = () => {
+      if (isAtBottom()) setActiveSection(lastSectionId);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (isAtBottom()) {
+          setActiveSection(lastSectionId);
+          return;
+        }
+
+        const visibleSection = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (first, second) =>
+              second.intersectionRatio - first.intersectionRatio,
+          )[0];
+
+        if (visibleSection) setActiveSection(visibleSection.target.id);
+      },
+      {
+        root: content,
+        rootMargin: "-10% 0px -65% 0px",
+        threshold: [0, 0.25, 0.5, 1],
+      },
+    );
+
+    content
+      .querySelectorAll("section[id]")
+      .forEach((section) => observer.observe(section));
+    content.addEventListener("scroll", handleScroll);
+
+    return () => {
+      observer.disconnect();
+      content.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans p-4 md:p-8 text-slate-800">
-      <div className="mx-auto bg-white shadow-sm border border-slate-200 rounded-xl overflow-hidden max-w-6xl">
+    <div className="h-screen overflow-hidden bg-slate-50 font-sans p-4 md:p-8 text-slate-800">
+      <div className="mx-auto flex h-full max-w-6xl flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         {/* Header Section */}
-        <header className="border-b border-slate-100 p-8 md:p-12 bg-white">
+        <header className="z-10 shrink-0 border-b border-slate-100 bg-white p-8 md:p-12">
           <h1 className="text-3xl font-bold text-slate-900">
             AcademiaHub Africa
           </h1>
@@ -32,10 +96,10 @@ const TermsOfService = () => {
           </div>
         </header>
 
-        <div className="flex flex-col lg:flex-row">
-          {/* Sticky Navigation */}
-          <aside className="lg:w-80 border-r border-slate-100 bg-slate-50/50 p-8">
-            <nav className="sticky top-8">
+        <div className="min-h-0 flex-1 flex flex-col lg:flex-row">
+          {/* Agreement section navigation */}
+          <aside className="max-h-48 shrink-0 overflow-y-auto border-r border-slate-100 bg-slate-50/50 p-8 lg:max-h-none lg:w-80 lg:overflow-visible">
+            <nav>
               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
                 Agreement Sections
               </p>
@@ -44,7 +108,15 @@ const TermsOfService = () => {
                   <li key={section.id}>
                     <Link
                       href={`#${section.id}`}
-                      className="text-sm text-slate-600 hover:text-blue-600 transition-colors block leading-snug"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        scrollToSection(section.id);
+                      }}
+                      className={`block border-l-2 py-1 pl-3 text-sm leading-snug transition-colors ${
+                        activeSection === section.id
+                          ? "border-blue-600 font-semibold text-blue-700"
+                          : "border-transparent text-slate-600 hover:border-blue-300 hover:text-blue-600"
+                      }`}
                     >
                       {section.title}
                     </Link>
@@ -55,7 +127,10 @@ const TermsOfService = () => {
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1 p-8 md:p-12 leading-relaxed space-y-10 bg-white">
+          <main
+            id="terms-content"
+            className="terms-page-content min-h-0 flex-1 overflow-y-auto bg-white p-8 leading-relaxed space-y-10 md:p-12"
+          >
             <section>
               <p>
                 Please read these Terms of Service (“Terms”) carefully before
