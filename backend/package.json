@@ -18,15 +18,15 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.1.0",
-    "express-rate-limit": "^8.6.2",
+    "express-rate-limit": "^8.7.0",
     "helmet": "^8.3.0",
-    "jose": "^6.2.9",
+    "jose": "^6.2.12",
     "socket.io": "^4.8.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.5",
-    "@types/node": "^26.2.0",
+    "@types/node": "^26.5.1",
     "eslint": "^10.10.0",
     "prisma": "6.19",
     "ts-node": "^10.9.2",
