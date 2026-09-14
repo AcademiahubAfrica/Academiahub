@@ -10,12 +10,8 @@ import type { UserSummary } from "@/app/_types/messaging";
 
 interface ChatHeaderProps {
   partner: UserSummary | undefined;
-  conversationId: string | undefined;
 }
-export default function ChatHeader({
-  partner ,
-  conversationId,
-}: ChatHeaderProps) {
+export default function ChatHeader({ partner }: ChatHeaderProps) {
   const router = useRouter();
   const onlineUsers = usePresence();
   const isOnline = onlineUsers.has(partner?.id || '');
