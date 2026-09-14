@@ -10,7 +10,10 @@ function Progress({
   value,
   bg = `bg-primary`,
   ...props
-}: React.ComponentProps<typeof ProgressPrimitive.Root | any>) {
+}: React.ComponentProps<typeof ProgressPrimitive.Root> & {
+  /** Tailwind class for the indicator's fill colour. */
+  bg?: string;
+}) {
   return (
     <ProgressPrimitive.Root
       data-slot="progress"

@@ -60,6 +60,7 @@ const Comments = ({
   const [commentCount, setCommentCount] = useState(totalComments);
   const [newComment, setNewComment] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [renderedAt] = useState(() => Date.now());
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editContent, setEditContent] = useState("");
 
@@ -223,7 +224,7 @@ const Comments = ({
       >
         {comments.map((comment) => {
           const isEditable =
-            Date.now() - new Date(comment.createdAt).getTime() <=
+            renderedAt - new Date(comment.createdAt).getTime() <=
             72 * 60 * 60 * 1000;
 
           return (

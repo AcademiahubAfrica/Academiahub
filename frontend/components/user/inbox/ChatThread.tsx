@@ -95,7 +95,7 @@ export default function ChatThread({
 
   return (
     <section className="flex flex-col h-full border border-grey rounded-tr-[15px]">
-      <ChatHeader partner={partner} conversationId={conversationId} />
+      <ChatHeader partner={partner} />
 
       <div className="relative flex-1 flex flex-col overflow-hidden">
         <MessageList
