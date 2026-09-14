@@ -7,8 +7,9 @@ import { organizationJsonLd } from "@/lib/jsonld/organisation";
 import { rootLayoutMetaData } from "./data/metadataExports";
 import { personsJsonLd } from "@/lib/jsonld/person";
 import { Toaster } from "react-hot-toast";
-import { Analytics } from "@vercel/analytics/next";
 import LogRocketInit from "./_components/LogRocketInit";
+import VercelAnalytics from "./_components/VercelAnalytics";
+import { SENSITIVE_QUERY_PARAMS } from "@/lib/redactUrl";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -62,18 +63,25 @@ export default function RootLayout({
           <LogRocketInit />
           {children}
         </AppProvider>
-        <Analytics />
+        <VercelAnalytics />
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
               strategy="lazyOnload"
             />
+            {/* page_location is sent explicitly with sensitive query values
+                redacted. By default gtag sends the full URL, which on the
+                password reset page includes a working reset token. */}
             <Script id="ga-init" strategy="lazyOnload">
               {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');`}
+var gaLocation = new URL(window.location.href);
+${JSON.stringify(SENSITIVE_QUERY_PARAMS)}.forEach(function (name) {
+  if (gaLocation.searchParams.has(name)) gaLocation.searchParams.set(name, 'redacted');
+});
+gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { page_location: gaLocation.toString() });`}
             </Script>
           </>
         )}
