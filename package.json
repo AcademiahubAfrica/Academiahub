@@ -6,6 +6,6 @@
     "backend"
   ],
   "devDependencies": {
-    "eslint": "^10.8.1"
+    "eslint": "^10.10.0"
   }
 }
