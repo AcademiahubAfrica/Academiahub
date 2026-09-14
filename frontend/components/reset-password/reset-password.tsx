@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Eye, EyeOff, Lock, CheckCircle2, AlertTriangle } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
@@ -38,7 +38,26 @@ const checkPasswordRequirements = (
 const ResetPasswordContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+
+  /* Captured once. The address bar is cleaned below, and useSearchParams
+     follows it, so reading the token on every render would lose it as soon as
+     the URL changed and show "Invalid reset link". */
+  const [token] = useState(() => searchParams.get("token"));
+
+  /* The token is a working credential until it is used or expires. Left in the
+     address bar it reaches browser history, the referrer of any link clicked
+     from here, and every analytics script that reads the URL. */
+  useEffect(() => {
+    if (!token) return;
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has("token")) return;
+    url.searchParams.delete("token");
+    window.history.replaceState(
+      null,
+      "",
+      `${url.pathname}${url.search}${url.hash}`,
+    );
+  }, [token]);
 
   const [formData, setFormData] = useState<FormData>({
     newPassword: "",
