@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@prisma/client": "6.19",
+    "@prisma/client": "7.10",
     "@sentry/node": "^10.72.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
