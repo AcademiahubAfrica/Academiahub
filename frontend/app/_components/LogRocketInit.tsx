@@ -3,6 +3,11 @@
 import { useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import type LogRocketType from "logrocket";
+import {
+  redactUrl,
+  sanitizeRequest,
+  sanitizeResponse,
+} from "@/lib/logRocketPrivacy";
 
 let logRocketPromise: Promise<typeof LogRocketType> | null = null;
 
@@ -10,7 +15,18 @@ function loadLogRocket() {
   if (process.env.NODE_ENV !== "production") return null;
   if (!logRocketPromise) {
     logRocketPromise = import("logrocket").then((m) => {
-      m.default.init("jgsvfu/academiahub");
+      const origin = window.location.origin;
+      m.default.init("jgsvfu/academiahub", {
+        shouldCaptureIP: false,
+        /** Typed values are never recorded. Messages are excluded separately
+           with `data-private` on the inbox.*/
+        dom: { inputSanitizer: true },
+        browser: { urlSanitizer: (url) => redactUrl(url, origin) },
+        network: {
+          requestSanitizer: (request) => sanitizeRequest(request, origin),
+          responseSanitizer: (response) => sanitizeResponse(response, origin),
+        },
+      });
       return m.default;
     });
   }
@@ -21,8 +37,6 @@ export default function LogRocketInit() {
   const identified = useRef<string | null>(null);
   const { data: session } = useSession();
   const userId = session?.user?.id;
-  const userName = session?.user?.name;
-  const userEmail = session?.user?.email;
 
   useEffect(() => {
     void loadLogRocket();
@@ -31,13 +45,12 @@ export default function LogRocketInit() {
   useEffect(() => {
     if (!userId || identified.current === userId) return;
     loadLogRocket()?.then((LogRocket) => {
-      LogRocket.identify(userId, {
-        name: userName ?? "",
-        email: userEmail ?? "",
-      });
+      /* The opaque id is enough to find a session internally. Name and email
+         are not sent. */
+      LogRocket.identify(userId);
       identified.current = userId;
     });
-  }, [userId, userName, userEmail]);
+  }, [userId]);
 
   return null;
 }
