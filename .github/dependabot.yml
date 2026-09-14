@@ -1,0 +1,24 @@
+version: 2
+updates:
+  # One lockfile at the root covers every workspace.
+  - package-ecosystem: npm
+    directory: /
+    # Updates go through development like any other change. Left to the
+    # default, they would target the repository's default branch and could
+    # skip approval on their way to main.
+    target-branch: development
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    # Minor and patch updates arrive as one pull request instead of one each.
+    # Major versions still come separately, since those can break things.
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  # Keeps the SHA-pinned actions in ci.yml up to date, comment included.
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: development
+    schedule:
+      interval: weekly
