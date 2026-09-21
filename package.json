@@ -7,5 +7,14 @@
   ],
   "devDependencies": {
     "eslint": "^10.10.0"
+  },
+  "allowScripts": {
+    "prisma@6.19.3": true,
+    "@prisma/client@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "esbuild": false,
+    "@sentry/cli": false,
+    "argon2": false,
+    "unrs-resolver": false
   }
 }
