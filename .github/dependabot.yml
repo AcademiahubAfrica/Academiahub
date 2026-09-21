@@ -15,6 +15,13 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+    # Prisma majors need a deliberate migration, so they are upgraded by hand
+    # rather than proposed weekly. 6.x minor and patch updates still come through.
+    ignore:
+      - dependency-name: "prisma"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@prisma/client"
+        update-types: ["version-update:semver-major"]
 
   # Keeps the SHA-pinned actions in ci.yml up to date, comment included.
   - package-ecosystem: github-actions
