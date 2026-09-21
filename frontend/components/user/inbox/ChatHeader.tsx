@@ -32,7 +32,7 @@ export default function ChatHeader({ partner }: ChatHeaderProps) {
         </Avatar>
         <div className="md:space-y-3 space-y-1">
           <h2 className="text-[16px] md:text-xl leading-6">{partner?.name}</h2>
-          <p className="body-text max-sm:text-[10px] -tracking-normal leading-4.5 text-grey">
+          <p className="body-text max-sm:text-[10px] tracking-normal leading-4.5 text-grey">
             {isOnline ? "Active now" : "Offline"}
           </p>
         </div>

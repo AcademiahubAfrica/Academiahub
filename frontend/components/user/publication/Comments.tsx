@@ -219,7 +219,7 @@ const Comments = ({
       </div>
 
       <div
-        className="space-y-2 h-[50vh]! lg:h-[60vh]! pb-5 max-sm:overflow-y-auto md:overflow-hidden  md:space-y-2.75 max-sm:[scrollbar-width:none]
+        className="space-y-2 h-[50vh]! lg:h-[60vh]! pb-5 max-sm:overflow-y-auto md:overflow-hidden  md:space-y-2.75 max-sm:scrollbar-none
   max-sm:[&::-webkit-scrollbar]:display-none hover:overflow-auto"
       >
         {comments.map((comment) => {
