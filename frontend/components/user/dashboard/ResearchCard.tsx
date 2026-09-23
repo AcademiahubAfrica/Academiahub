@@ -6,20 +6,14 @@ import Like from "@/components/Like";
 import { ResearchCardType } from "@/app/_types/documents";
 import SaveButton from "@/components/SaveButton";
 import {
+  CATEGORY_GRADIENTS,
+  CATEGORY_LABELS,
   getCategoryBackground,
-  getCategoryImage,
   getCategoryOverlay,
 } from "@/lib/categoryImage";
 import { getInitials } from "@/lib/messaging/utils";
 import Link from "next/link";
 import KebabIcon from "../shared/KebabIcon";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useIsTruncated } from "@/lib/hooks/useIsTruncated";
-import { cn } from "@/lib/utils";
 
 import { memo, useState, useTransition } from "react";
 import toast from "react-hot-toast";
@@ -34,6 +28,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type ResearchCardProps = {
   data: ResearchCardType;
@@ -54,13 +49,14 @@ const ResearchCard = ({
   showSaveButton = true,
   onSaveToggle,
   onDelete,
-  priority = false,
 }: ResearchCardProps) => {
   const [showShareDialog, setShowShareDialog] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [isDeleting, startDeleteTransition] = useTransition();
-  const { ref: titleRef, isTruncated: isTitleTruncated } =
-    useIsTruncated<HTMLHeadingElement>();
+
+  const [startGradientColor, endGradientColor] =
+    CATEGORY_GRADIENTS[data?.category];
+
   const shareData = {
     title: `New Research: ${data?.title}`,
     text: `Check out this latest publication by ${data?.author?.name} on Academia Hub Africa. It explores key insights into ${data?.title}.`,
@@ -106,68 +102,54 @@ const ResearchCard = ({
   return (
     <>
       <article
-        className=" relative w-full bg-white px-1 py-1 lg:py-2.75 lg:px-3 border rounded-[15px] border-[#D9D9D9]"
+        className=" relative w-full bg-white  rounded-[15px] border-[#D9D9D9]"
         key={data.id}
       >
-        <KebabIcon
-          isOwnDocument={isOwnDocument}
-          documentId={data.id as string}
-          handleShare={onShare}
-          onDeleteRequest={() => setConfirmOpen(true)}
-        />
+        {/* research category */}
 
-        <div className="relative aspect-343/240 w-full">
-          <Image
-            className="rounded-t-[15px] object-cover"
-            fill
-            sizes="(min-width: 1024px) 343px, (min-width: 640px) 50vw, 100vw"
-            src={getCategoryImage(data.category)}
-            alt="Publication image"
-            priority={priority}
-            loading={priority ? "eager" : "lazy"}
-          />
+        <div
+          className="relative h-35 lg:h-47  px-2.25 rounded-t-[12px] border w-full "
+          style={{
+            backgroundImage: `url('/assets/images/Aicon.png'), linear-gradient(to bottom right, ${startGradientColor} 75%, ${endGradientColor})`,
+            backgroundSize: "contain",
+
+            backgroundPosition: "right",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          <div className="absolute rounded-t-[12px] inset-0  bg-linear-to-r from-[rgba(0,0,0,0.1)]/80 to-[rgba(0,0,0,0.4)] pointer-events-none" />
+          <div className="flex items-center my-4 justify-between">
+            <span className="border-grey border bg-white p-1 md:p-1.5 rounded-sm flex items-center justify-center ">
+              <small className="text-[8px] md:text-xs text-black">
+                {" "}
+                {CATEGORY_LABELS[data.category] || data.category}
+              </small>
+            </span>
+            <KebabIcon
+              isOwnDocument={isOwnDocument}
+              documentId={data.id as string}
+              handleShare={onShare}
+              onDeleteRequest={() => setConfirmOpen(true)}
+            />
+          </div>
+          <h3 className="text-sm  md:text-base leading-[100%] lg:leading-5 font-bold text-white line-clamp-4">
+            {data.title}
+          </h3>
         </div>
         {/* content */}
-        <div className=" mt-2  w-full">
-          {(() => {
-            const heading = (
-              <h3
-                ref={titleRef}
-                tabIndex={isTitleTruncated ? 0 : undefined}
-                className={cn(
-                  "font-medium line-clamp-1 text-[8px]  md:text-lg leading-[130%]",
-                  isTitleTruncated &&
-                    "rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                )}
-              >
-                {data.title}
-              </h3>
-            );
-
-            if (!isTitleTruncated) return heading;
-
-            return (
-              <Tooltip>
-                <TooltipTrigger asChild>{heading}</TooltipTrigger>
-                <TooltipContent side="top" className="max-w-xs">
-                  {data.title}
-                </TooltipContent>
-              </Tooltip>
-            );
-          })()}
-          <div className="flex items-center  mt-2  gap-1.5 mb-3 ">
+        <div className=" mt-3  w-full px-1  lg:px-3 ">
+          <div className="flex items-center   gap-1.5 mb-3 ">
             {data.author.image ? (
               <div className="w-5 h-5 md:w-10 md:h-10 relative">
-                <Image
-                  className="rounded-full "
-                  fill
-                  sizes="(min-width: 768px) 40px, 20px"
-                  src={data.author.image}
-                  alt={`${data.author.name}'s profile picture`}
-                />
+                <Avatar className="size-5 md:size-10">
+                  <AvatarImage src={data.author.image} />
+                  <AvatarFallback className="text-[8px] md:text-sm">
+                    {getInitials(data.author.name || "")}
+                  </AvatarFallback>
+                </Avatar>
               </div>
             ) : (
-              <div className="size-5 md:size-10 rounded-full bg-grey flex items-center justify-center text-[6px] md:text-xs font-medium">
+              <div className="size-5! md:size-10! rounded-full! bg-grey flex items-center justify-center text-[6px] md:text-xs font-medium">
                 {getInitials(data.author.name || "")}
               </div>
             )}
@@ -182,29 +164,32 @@ const ResearchCard = ({
           </div>
           {/* stats section */}
           <div
-            className={`flex items-center py-1 justify-between  mb-1.5 ${showSaveButton ? "lg:justify-around" : "justify-between "}  lg:gap-12.5  pr-2`}
+            className={`flex items-center  justify-between  mb-1.5  lg:gap-2.5  `}
           >
-            <div
-              className={`flex items-center ${!showSaveButton && "justify-between w-full px-2"} gap-6 sm:gap-8 md:gap-12.5`}
-            >
-              <Like
-                documentId={data.id as string}
-                initialLiked={isLiked}
-                initialCount={data.likes}
+            <Like
+              documentId={data.id as string}
+              initialLiked={isLiked}
+              initialCount={data.likes}
+            />
+            <div className="flex items-center gap-0.75">
+              <MessageCircle
+                strokeWidth={1.5}
+                className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5"
               />
-              <div className="flex items-center gap-0.75">
-                <MessageCircle strokeWidth={1.5} className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
-                <small className="text-[6.84px] md:text-sm">
-                  {data._count.commentRecords}
-                </small>
-              </div>
-              <div className="flex items-center gap-0.75">
-                <Download strokeWidth={1.5} className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5" />
-                <small className="text-[6.84px] md:text-sm">
-                  {data?.downloads}
-                </small>
-              </div>
+              <small className="text-[6.84px] md:text-sm">
+                {data._count.commentRecords}
+              </small>
             </div>
+            <div className="flex items-center gap-0.75">
+              <Download
+                strokeWidth={1.5}
+                className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5"
+              />
+              <small className="text-[6.84px] md:text-sm">
+                {data?.downloads}
+              </small>
+            </div>
+
             {showSaveButton && (
               <SaveButton
                 documentId={data.id as string}
@@ -213,15 +198,15 @@ const ResearchCard = ({
               />
             )}
           </div>
+          <Button
+            asChild
+            variant="default"
+            size="lg"
+            className="w-full md:h-9 lg:h-11 h-5.25 text-[7.7px] mt-0.75 mb-1.5 flex items-center justify-center  font-medium md:text-[16px] leading-[130%]"
+          >
+            <Link href={`/publication/${data.id}`}>View Details</Link>
+          </Button>
         </div>
-        <Button
-          asChild
-          variant="default"
-          size="lg"
-          className="w-full md:h-9 lg:h-11 h-5.25 text-[7.7px] mt-0.75 mb-1.5 flex items-center justify-center  font-medium md:text-[16px] leading-[130%]"
-        >
-          <Link href={`/publication/${data.id}`}>View Details</Link>
-        </Button>
       </article>
 
       <ShareDialog
