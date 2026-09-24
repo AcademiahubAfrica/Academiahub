@@ -25,7 +25,11 @@ const KebabIcon = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <EllipsisVertical strokeWidth={1.5} className="absolute max-sm:top-4 max-sm:left-2 max-lg:top-8 max-lg:left-4 lg:top-8 lg:left-4 cursor-pointer text-white z-20" />
+        <EllipsisVertical
+          strokeWidth={1.5}
+          size={18}
+          className="cursor-pointer text-white z-20"
+        />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
@@ -36,7 +40,7 @@ const KebabIcon = ({
       >
         <DropdownMenuItem
           onSelect={handleShare}
-          className="border-[#AEAEAE] border-b max-sm:text-xs h-7 md:h-10 flex justify-center items-center "
+          className="border-grey border-b max-sm:text-xs h-7 md:h-10 flex justify-center items-center "
         >
           Share
         </DropdownMenuItem>
@@ -57,9 +61,7 @@ const KebabIcon = ({
             asChild
             className="border-[#AEAEAE] border-b max-sm:text-xs h-7 md:h-10 flex justify-center items-center "
           >
-            <Link href={`/publication/${documentId}/report-issue`}>
-              Report
-            </Link>
+            <Link href={`/publication/${documentId}/report-issue`}>Report</Link>
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>
