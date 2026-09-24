@@ -58,12 +58,16 @@ const SaveButton = ({
   }
 
   return (
-    <Bookmark
-      strokeWidth={1.5}
-      fill={isSaved ? "#1e3a8a" : "none"}
-      className="cursor-pointer text-primary w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5"
-      onClick={handleToggle}
-    />
+    <div
+      className={`size-5 lg:size-10 border cursor-pointer border-grey/30 rounded-full flex items-center justify-center ${isSaved ? "bg-[#1e3a8a]/10" : "bg-transparent"}`}
+    >
+      <Bookmark
+        strokeWidth={1.5}
+        fill={isSaved ? "#1e3a8a" : "none"}
+        className="cursor-pointer text-primary w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5"
+        onClick={handleToggle}
+      />
+    </div>
   );
 };
 
