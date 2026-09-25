@@ -24,7 +24,7 @@ import shokanlaFawaz from "./assets/images/shokanla-oladotun-fawaz.png";
 import stellaOyewole from "./assets/images/stella-oyewole.png";
 import tinyangEnjeck from "./assets/images/tinyang-stacey-enjeck.png";
 
-// The places online where you can find a team member.
+// Online team member appears.
 type TeamMemberSocials = {
   linkedin?: string;
   x?: string;
@@ -34,21 +34,17 @@ type TeamMemberSocials = {
   website?: string;
 };
 
-// Everything we know about one person on the team.
+// Team Details.
 type TeamMember = {
   id: number;
   name: string;
   role: string;
   bio: string;
-  // Their picture. It can be a picture from our ./assets folder or a web
-  // link to a picture. No picture? We show the first letters of their name.
   image?: StaticImageData | string;
   socials: TeamMemberSocials;
 };
 
-// This is our list of team members. Each one gets their own card.
-// To add someone's link, paste the whole web address between the quotes.
-// If the quotes are empty (""), that icon just won't show on their card.
+// Team member cards.
 const teamMembers: TeamMember[] = [
   {
     id: 1,
@@ -113,8 +109,8 @@ const teamMembers: TeamMember[] = [
   {
     id: 5,
     name: "Odumuyiwa Kaosara Ibukunoluwa",
-    role: "Social Media Manager",
-    bio: "I helped create AcademiaHub Africa to make learning feel more accessible to everyone with one platform.",
+    role: "Social Media Manager, Data Analyst",
+    bio: "When Africa builds together, knowledge stays home and grows the continent.",
     image: odumuyiwaKaosara,
     socials: {
       linkedin:
@@ -258,20 +254,6 @@ const teamMembers: TeamMember[] = [
   },
   {
     id: 15,
-    name: "Odumuyiwa Kaosara Ibukunoluwa",
-    role: "Data Analyst",
-    bio: "When Africa builds together, knowledge stays home and grows the continent.",
-    image: odumuyiwaKaosara,
-    socials: {
-      linkedin: " https://www.linkedin.com/in/kaosara-odumuyiwa-929b19318?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
-      x: "",
-      instagram: "",
-      behance: "",
-      website: "",
-    },
-  },
-  {
-    id: 16,
     name: "Ikenna Uchenna Ezeani",
     role: "Data Analyst",
     bio: "Your brainchild is too groundbreaking to not share with the rest of the world. Don't rob us of the opportunity of witnessing your brilliance.",
@@ -286,7 +268,7 @@ const teamMembers: TeamMember[] = [
     },
   },
   {
-    id: 17,
+    id: 16,
     name: "Abayomi Akinruli",
     role: "Front-end Dev",
     bio: "I joined AcademiaHub Africa to make knowledge more accessible, connected, and visible across Africa.",
@@ -301,7 +283,7 @@ const teamMembers: TeamMember[] = [
     },
   },
   {
-    id: 18,
+    id: 17,
     name: "Tinyang Stacey Enjeck",
     role: "Compliance Officer",
     bio: "I joined AcademiaHub partly because GRC isn't a fully integrated function across the education sector in general. Being part of that, in a compliance role, felt just right.",
@@ -316,7 +298,7 @@ const teamMembers: TeamMember[] = [
   },
 ];
 
-// Which little picture (icon) and name to use for each kind of link.
+// Icon links
 const socialIcons: Record<
   keyof TeamMemberSocials,
   { icon: IconType; label: string }
@@ -329,8 +311,7 @@ const socialIcons: Record<
   website: { icon: Globe, label: "Website" },
 };
 
-// Takes the first letter of the first two names.
-// "Jucal Asitok" becomes "JA".
+// suffix ("Jucal Asitok" becomes "JA").
 const getInitials = (name: string) =>
   name
     .split(" ")
@@ -339,8 +320,6 @@ const getInitials = (name: string) =>
     .join("")
     .toUpperCase();
 
-// One card for one person: their picture, name, job, a few words about
-// them, and their links at the bottom.
 const TeamCard = ({ member }: { member: TeamMember }) => {
   // Keep only the links that are filled in, so we don't show empty icons.
   const socials = (
@@ -358,7 +337,7 @@ const TeamCard = ({ member }: { member: TeamMember }) => {
           className="object-cover object-top"
         />
       ) : (
-        // No picture, so we show their letters on a colored background.
+        // No picture. Shows their letters on a colored background.
         <div
           aria-hidden="true"
           className="absolute inset-0 flex items-start justify-center bg-linear-to-b from-primary-300 to-primary-600 pt-[18%] text-3xl font-semibold text-white md:text-4xl"
@@ -368,9 +347,6 @@ const TeamCard = ({ member }: { member: TeamMember }) => {
       )}
 
       <div className="absolute inset-x-1.5 bottom-1.5 flex h-[42%] flex-col gap-1 overflow-hidden rounded-md bg-white p-2 shadow-md md:inset-x-2 md:bottom-2 md:gap-2 md:p-3 xl:inset-x-4 xl:bottom-4 xl:h-[190px] xl:gap-4 xl:rounded-xl xl:px-6 xl:py-4">
-        {/* This is the white box on top of the picture. On big screens it is
-            always 190px tall, like the design. On smaller screens it grows
-            and shrinks with the card. The links always sit at the bottom. */}
         <div>
           <h3 className="line-clamp-2 text-[11px] font-semibold leading-tight text-gray-900 md:text-sm">
             {member.name}
