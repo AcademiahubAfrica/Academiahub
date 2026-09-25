@@ -283,6 +283,20 @@ export const aboutUsMetadata: Metadata = {
   },
 };
 
+export const teamMetadata: Metadata = {
+  title: "Meet the team",
+  description:
+    "Meet the people building AcademiaHub and working to make learning, teaching, and academic resources more accessible across Africa.",
+  alternates: { canonical: "/team" },
+  openGraph: {
+    title: "Meet the team | AcademiaHub",
+    description:
+      "Meet the people building AcademiaHub and working to make learning, teaching, and academic resources more accessible across Africa.",
+    url: `${siteUrl}/team`,
+    type: "website",
+  },
+};
+
 export const faqsMetadata: Metadata = {
   title: "FAQs",
   description:
