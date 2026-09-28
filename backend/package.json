@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@prisma/client": "6.19",
-    "@sentry/node": "^10.72.0",
+    "@sentry/node": "^11.0.0",
     "cors": "^2.8.6",
     "dotenv": "^18.0.2",
     "express": "^5.1.0",
