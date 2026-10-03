@@ -1,0 +1,36 @@
+@property --count-value {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.count {
+  display: inline-block;
+  position: relative;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .count {
+    --count-value: 0;
+    color: transparent;
+  }
+
+  .count::after {
+    color: white;
+    content: counter(count-value) "+";
+    counter-reset: count-value var(--count-value);
+    position: absolute;
+    inset: 0;
+  }
+
+  .started {
+    animation: count-up 3s ease-out forwards;
+  }
+}
+
+@keyframes count-up {
+  to {
+    --count-value: var(--count-target);
+  }
+}
