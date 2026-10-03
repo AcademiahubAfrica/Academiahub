@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "build": "prisma generate --schema ../prisma/schema.prisma && tsc && cp -r src/generated dist/generated",
     "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -29,7 +29,7 @@
     "@types/node": "^26.6.2",
     "eslint": "^10.11.0",
     "prisma": "6.19",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }
 }
