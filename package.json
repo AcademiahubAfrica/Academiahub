@@ -8,6 +8,11 @@
   "devDependencies": {
     "eslint": "^10.11.0"
   },
+  "overrides": {
+    "@react-email/ui": {
+      "next": "16.3.8"
+    }
+  },
   "allowScripts": {
     "prisma@6.19.3": true,
     "@prisma/client@6.19.3": true,
