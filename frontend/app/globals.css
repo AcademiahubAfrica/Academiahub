@@ -119,6 +119,7 @@
 
   --color-primary-light: #e9ebf3;
   --color-primary-light-hover: #dde1ed;
+  --color-primary-darker: #0b1430;
   --color-primary-100: #e8ebf3;
   --color-primary-200: #bcc4dc;
   --color-primary-300: #8e9cc4;
@@ -215,7 +216,11 @@ html {
 .label {
   @apply text-xs;
 }
-
+.container {
+  @apply mx-auto px-2 md:px-4
+  /* margin-inline: auto; */
+  /* padding-inline: 2rem; */;
+}
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

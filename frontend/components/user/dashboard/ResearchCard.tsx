@@ -36,6 +36,7 @@ type ResearchCardProps = {
   isOwnDocument: boolean;
   isSaved: boolean;
   showSaveButton?: boolean;
+  loginRequired?: boolean;
   onSaveToggle?: (isSaved: boolean) => void;
   onDelete?: (id: string) => void;
   priority?: boolean;
@@ -47,6 +48,7 @@ const ResearchCard = ({
   isLiked,
   isSaved,
   showSaveButton = true,
+  loginRequired = false,
   onSaveToggle,
   onDelete,
 }: ResearchCardProps) => {
@@ -105,6 +107,7 @@ const ResearchCard = ({
         className=" relative w-full bg-white  rounded-[15px] border-[#D9D9D9]"
         key={data.id}
       >
+        <div inert={loginRequired}>
         {/* research category */}
 
         <div
@@ -207,9 +210,17 @@ const ResearchCard = ({
             <Link href={`/publication/${data.id}`}>View Details</Link>
           </Button>
         </div>
+        </div>
+        {loginRequired && (
+          <Link
+            href="/login"
+            className="absolute inset-0 z-30 rounded-[15px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            aria-label={`Log in to interact with ${data.title}`}
+          />
+        )}
       </article>
 
-      <ShareDialog
+      {!loginRequired && <ShareDialog
         setShowShareDialog={setShowShareDialog}
         showShareDialog={showShareDialog}
         shareData={shareData}
@@ -266,9 +277,9 @@ const ResearchCard = ({
             </div>
           </div>
         </div>
-      </ShareDialog>
+      </ShareDialog>}
 
-      <AlertDialog
+      {!loginRequired && <AlertDialog
         open={confirmOpen}
         onOpenChange={(open) => {
           if (!isDeleting) setConfirmOpen(open);
@@ -293,7 +304,7 @@ const ResearchCard = ({
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>
+      </AlertDialog>}
     </>
   );
 };
