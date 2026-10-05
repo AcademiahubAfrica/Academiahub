@@ -1,11 +1,10 @@
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getInitials } from "@/lib/messaging/utils";
-import { getCategoryImage } from "@/lib/categoryImage";
-import ViewDetailsButton from "@/components/ViewDetailsButton";
 import prisma from "@/prisma/connection";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { DOCUMENT_CARD_SELECT } from "@/lib/documentSelect";
+import ResearchCard from "@/components/user/dashboard/ResearchCard";
 
 interface ExploreSectionProps {
   limit?: number;
@@ -17,93 +16,81 @@ const ExploreSection = async ({
   limit = 12,
   showViewAllButton = true,
 }: ExploreSectionProps) => {
-  const documents = await prisma.document.findMany({
-    include: {
-      author: {
-        select: { id: true, name: true, image: true },
-      },
-    },
-    orderBy: { createdAt: "desc" },
-    take: limit,
-  });
+  const [session, documents] = await Promise.all([
+    getServerSession(authOptions),
+    prisma.document.findMany({
+      select: DOCUMENT_CARD_SELECT,
+      orderBy: { createdAt: "desc" },
+      take: limit,
+    }),
+  ]);
+  const userId = session?.user?.id;
+  const documentIds = documents.map((document) => document.id);
+  const [likes, saves] =
+    userId && documentIds.length
+      ? await Promise.all([
+          prisma.like.findMany({
+            where: { userId, documentId: { in: documentIds } },
+            select: { documentId: true },
+          }),
+          prisma.save.findMany({
+            where: { userId, documentId: { in: documentIds } },
+            select: { documentId: true },
+          }),
+        ])
+      : [[], []];
+  const likedIds = new Set(likes.map((like) => like.documentId));
+  const savedIds = new Set(saves.map((save) => save.documentId));
 
   return (
-    <section className="flex flex-col items-center min-[1290px]:mt-43.75 p-3">
-      <header className="text-center mt-7.5 flex flex-col items-center gap-2">
-        <h2 className="max-lg:font-medium max-lg:text-[20px]  leading-[130%] lg:font-bold lg:text-[32px]">
-          Explore and Find What You Need
-        </h2>
-        <p className="max-lg:font-medium max-lg:text-sm max-lg:leading-[130%] lg:font-normal lg:text-[24px] mb-5">
-          Search through thousands of publications by topic, university or field
-          of study
-        </p>
-      </header>
-
-      <div>
-        <h3 className="font-medium text-xl leading-[130%] mb-5 md:pl-10 lg:pl-0 text-center">
-          Suggested publications
-        </h3>
-
-        {documents.length === 0 ? (
-          <p className="text-center text-gray-500 py-8">
-            No publications found
+    <section className="relative isolate py-15">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-0 top-0 hidden h-[98%] w-110 bg-[url('/assets/images/Aicon.png')] bg-cover bg-right bg-no-repeat opacity-10 brightness-0 hidden lg:block"
+      />
+      <div className="container relative z-10">
+        <header className="text-center lg:text-start space-y-2 md:space-y-4 mb-2 md:mb-8 lg:mb-10">
+          <h2 className="text-xl font-medium leading-6 md:font-semibold md:text-4xl md:leading-10 lg:text-[46px]">
+            Explore our library and find what you need
+          </h2>
+          <p className="text-sm leading-4.5 md:font-medium md:leading-5 md:text-xl lg:text-2xl text-[#6B6B6B]">
+            Search through thousands of publications by topic, university, or
+            field of study
           </p>
-        ) : (
-          <div className="publication-list flex max-sm:flex-col sm:flex-row sm:flex-wrap items-center sm:justify-center gap-12.5">
-            {documents.map((doc) => (
-              <section
-                className="max-[1290px]:w-76 min-[1290px]:w-91 py-3 px-2 rounded-lg border-[#D9D9D9] border flex flex-col max-[1290px]:gap-2.5 min-[1290px]:gap-4.5 "
-                key={doc.id}
-              >
-                <Image
-                  className="rounded-t-[15px] min-[1290px]:w-87"
-                  src={getCategoryImage(doc.category)}
-                  width={290}
-                  height={246}
-                  alt="Publication image"
-                  loading="lazy"
-                />
-                <div className="flex flex-col gap-2.5 w-74">
-                  <h4 className="font-medium  max-[1290px]:text-[16px] min-[1290px]:text-[18px] leading-[130%] truncate">
-                    {doc.title}
-                  </h4>
-                  <div className="flex items-center gap-1.5">
-                    <Avatar className="w-10 h-10 shrink-0">
-                      <AvatarImage
-                        src={doc.author.image || undefined}
-                        alt={`${doc.author.name ?? "Author"} profile picture`}
-                      />
-                      <AvatarFallback>
-                        {getInitials(doc.author.name || "")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-sm leading-[130%]">
-                        {doc.author.name}
-                      </p>
-                      <p className="text-[#6B7280] text-[14px] leading-[130%]">
-                        {doc.institution}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <ViewDetailsButton documentId={doc.id} />
-              </section>
-            ))}
-          </div>
-        )}
-      </div>
+        </header>
 
-      {showViewAllButton && (
-        <Button
-          asChild
-          variant={"outline2"}
-          size={"lg"}
-          className="w-68 border-primary text-primary h-11 font-medium text-[16px] leading-[130%] mt-9"
-        >
-          <Link href="/explore">Explore full library</Link>
-        </Button>
-      )}
+        <div className="flex flex-col gap-4 items-center">
+          {documents.length === 0 ? (
+            <p className="text-center text-gray-500 py-8">
+              No publications found
+            </p>
+          ) : (
+            <div className="publication-list grid mx-auto lg:w-[95%] grid-cols-2 gap-2 md:gap-4 lg:grid-cols-3">
+              {documents.map((doc, index) => (
+                <div key={doc.id} className={index === 3 ? "lg:hidden" : ""}>
+                  <ResearchCard
+                    data={doc}
+                    isLiked={likedIds.has(doc.id)}
+                    isOwnDocument={doc.authorId === userId}
+                    isSaved={savedIds.has(doc.id)}
+                    showSaveButton={doc.authorId !== userId}
+                    loginRequired={!userId}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+          {showViewAllButton && (
+            <Button
+              asChild
+              size={"lg"}
+              className="w-68 h-11 font-medium text-[16px] leading-[130%] mt-4"
+            >
+              <Link href={"/explore"}>Explore full library</Link>
+            </Button>
+          )}
+        </div>
+      </div>
     </section>
   );
 };

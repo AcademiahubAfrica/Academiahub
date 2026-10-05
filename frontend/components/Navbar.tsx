@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import Logo from "./Logo";
 // import { useRouter } from "next/navigation";
 
-
 // placed navlins array outside the component to prevent recreating it on every rerender
 const navlinks = [
   {
@@ -52,7 +51,7 @@ const Navbar = () => {
   // const router = useRouter();
 
   return (
-    <nav className="flex relative items-center justify-between bg-white py-5 px-6">
+    <nav className="flex relative items-center justify-between bg-white py-5 px-6 container">
       <div className="right flex items-center gap-7">
         {/* Menu Button */}
         <Menu
@@ -85,7 +84,6 @@ const Navbar = () => {
 
       {/* CTA Buttons  */}
       <div className="buttons hidden md:flex items-center gap-4.5">
-      
         <Link href={"/login"}>
           <Button
             variant="secondary"
