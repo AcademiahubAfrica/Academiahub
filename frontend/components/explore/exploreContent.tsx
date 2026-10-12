@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import ViewDetailsButton from "@/components/ViewDetailsButton";
@@ -21,51 +22,57 @@ interface Pagination {
   totalPages: number;
 }
 
+interface DocumentsPage {
+  documents: Document[];
+  pagination: Pagination;
+}
+
+async function fetchDocuments(
+  query: string,
+  page: number,
+  signal: AbortSignal
+): Promise<DocumentsPage> {
+  const params = new URLSearchParams({ page: String(page), limit: "12" });
+  if (query) params.set("q", query);
+
+  const res = await fetch(`/api/documents?${params}`, { signal });
+  if (!res.ok) throw new Error("Failed to fetch documents");
+  return res.json();
+}
+
 export default function ExploreContent() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [documents, setDocuments] = useState<Document[]>([]);
-  const [pagination, setPagination] = useState<Pagination | null>(null);
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const fetchDocuments = useCallback(
-    async (query: string, pageNum: number, append = false) => {
-      setIsLoading(true);
-      try {
-        const params = new URLSearchParams({ page: String(pageNum), limit: "12" });
-        if (query.trim()) params.set("q", query.trim());
-
-        const res = await fetch(`/api/documents?${params}`);
-        if (!res.ok) throw new Error("Failed to fetch documents");
-
-        const data = await res.json();
-        setDocuments((prev) => (append ? [...prev, ...data.documents] : data.documents));
-        setPagination(data.pagination);
-      } catch (error) {
-        console.error("Error fetching documents:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    []
-  );
+  const [debouncedQuery, setDebouncedQuery] = useState("");
 
   useEffect(() => {
-    fetchDocuments("", 1);
-  }, [fetchDocuments]);
+    const timeout = setTimeout(() => {
+      setDebouncedQuery(searchQuery.trim());
+    }, 400);
 
-  useEffect(() => {
-  const timeout = setTimeout(() => {
-    setPage(1);
-    fetchDocuments(searchQuery, 1);
-  }, 400);
+    return () => clearTimeout(timeout);
+  }, [searchQuery]);
 
-  return () => clearTimeout(timeout); 
-}, [searchQuery, fetchDocuments]);
+  const {
+    data,
+    isPending,
+    isPlaceholderData,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["explore-documents", debouncedQuery],
+    queryFn: ({ pageParam, signal }) =>
+      fetchDocuments(debouncedQuery, pageParam, signal),
+    initialPageParam: 1,
+    getNextPageParam: ({ pagination }) =>
+      pagination.page < pagination.totalPages ? pagination.page + 1 : undefined,
+    placeholderData: keepPreviousData,
+  });
+
+  const documents = data?.pages.flatMap((page) => page.documents) ?? [];
 
   const handleSearch = () => {
-    setPage(1);
-    fetchDocuments(searchQuery, 1);
+    setDebouncedQuery(searchQuery.trim());
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -74,19 +81,10 @@ export default function ExploreContent() {
     }
   };
 
-  const handleLoadMore = () => {
-    const nextPage = page + 1;
-    setPage(nextPage);
-    fetchDocuments(searchQuery, nextPage, true);
-  };
-
   const handleClearSearch = () => {
     setSearchQuery("");
-    setPage(1);
-    fetchDocuments("", 1);
+    setDebouncedQuery("");
   };
-
-  const hasMore = pagination ? pagination.page < pagination.totalPages : false;
 
   return (
     <main className="min-h-screen bg-linear-to-b from-gray-50 to-white">
@@ -141,7 +139,7 @@ export default function ExploreContent() {
           </p>
         </div>
 
-        {isLoading && documents.length === 0 ? (
+        {isPending ? (
           <ExploreSkeleton />
         ) : documents.length === 0 ? (
           <div className="text-center py-16">
@@ -228,15 +226,15 @@ export default function ExploreContent() {
         )}
 
         {/* Load More Button */}
-        {hasMore && (
+        {hasNextPage && (
           <div className="text-center mt-12">
             <Button
               size="lg"
               className="px-8"
-              onClick={handleLoadMore}
-              disabled={isLoading}
+              onClick={() => fetchNextPage()}
+              disabled={isFetchingNextPage || isPlaceholderData}
             >
-              {isLoading ? (
+              {isFetchingNextPage ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   Loading...
