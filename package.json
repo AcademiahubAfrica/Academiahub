@@ -10,7 +10,7 @@
   },
   "overrides": {
     "@react-email/ui": {
-      "next": "16.3.8"
+      "next": "^16.4.2"
     }
   },
   "allowScripts": {
