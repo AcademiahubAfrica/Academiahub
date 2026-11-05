@@ -31,7 +31,7 @@ const reasons = [
   },
 ];
 
-const WhyChooseUs = () => {
+const WhyChooseUs = ({fancyStyle = false} : {fancyStyle: boolean}) => {
   return (
     <section className="bg-primary-darker py-20 text-white">
       <div className="container">
@@ -53,7 +53,7 @@ const WhyChooseUs = () => {
               key={id}
             >
               <div className="flex md:flex-col max-sm:gap-4">
-                <h4 className="text-3xl md:text-6xl md:leading-10 italic leading-8 md:mb-10">
+                <h4 className={`ext-3xl md:text-6xl md:leading-10 ${fancyStyle ? "italic" : ""} leading-8 md:mb-10`}>
                   {id}
                 </h4>
                 <div className="">

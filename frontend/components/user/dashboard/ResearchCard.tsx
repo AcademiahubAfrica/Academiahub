@@ -120,7 +120,7 @@ const ResearchCard = ({
             backgroundRepeat: "no-repeat",
           }}
         >
-          <div className="absolute rounded-t-[12px] inset-0  bg-linear-to-r from-[rgba(0,0,0,0.1)]/80 to-[rgba(0,0,0,0.4)] pointer-events-none" />
+          <div className="absolute rounded-t-[12px] inset-0  bg-linear-to-r from-[rgba(0,0,0,0.1)]/80 to-[rgba(0,0,0,0.2)] pointer-events-none" />
           <div className="flex items-center my-4 justify-between">
             <span className="border-grey border bg-white p-1 md:p-1.5 rounded-sm flex items-center justify-center ">
               <small className="text-[8px] md:text-xs text-black">
@@ -135,7 +135,7 @@ const ResearchCard = ({
               onDeleteRequest={() => setConfirmOpen(true)}
             />
           </div>
-          <h3 className="text-sm  md:text-base leading-[100%] lg:leading-5 font-bold text-white line-clamp-4">
+          <h3 className="text-sm   md:text-base leading-[100%] lg:leading-5 font-bold text-white line-clamp-4">
             {data.title}
           </h3>
         </div>
