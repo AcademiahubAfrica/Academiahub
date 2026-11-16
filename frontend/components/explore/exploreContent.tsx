@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import JoinUs from "@/components/landing/JoinUs";
@@ -25,12 +26,8 @@ interface Pagination {
 }
 
 interface DocumentsPage {
-  documents: ExploreDocument[];
+  documents: Document[];
   pagination: Pagination;
-}
-
-interface ExploreContentProps {
-  userId?: string;
 }
 
 async function fetchDocuments(
@@ -44,12 +41,19 @@ async function fetchDocuments(
   const res = await fetch(`/api/documents?${params}`, { signal });
   if (!res.ok) throw new Error("Failed to fetch documents");
   return res.json();
-} 
+}
 
-export default function ExploreContent({ userId }: ExploreContentProps) {
+export default function ExploreContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedQuery(searchQuery.trim());
+    }, 400);
+
+    return () => clearTimeout(timeout);
+  }, [searchQuery]);
 
   const {
     data,
@@ -57,6 +61,7 @@ export default function ExploreContent({ userId }: ExploreContentProps) {
     isPlaceholderData,
     isFetchingNextPage,
     hasNextPage,
+    fetchNextPage,
   } = useInfiniteQuery({
     queryKey: ["explore-documents", debouncedQuery],
     queryFn: ({ pageParam, signal }) =>
@@ -69,6 +74,9 @@ export default function ExploreContent({ userId }: ExploreContentProps) {
 
   const documents = data?.pages.flatMap((page) => page.documents) ?? [];
 
+  const handleSearch = () => {
+    setDebouncedQuery(searchQuery.trim());
+  };
 
 
   const handleClearSearch = () => {
@@ -135,10 +143,18 @@ export default function ExploreContent({ userId }: ExploreContentProps) {
             <Link href={"/dashboard"}>
             <Button
               size="lg"
-              className="px-8 bg-transparent border-primary hover:text-white hover:bg-primary text-primary border"
+              className="px-8"
+              onClick={() => fetchNextPage()}
               disabled={isFetchingNextPage || isPlaceholderData}
-              >
-              Explore full library
+            >
+              {isFetchingNextPage ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                "Load More Publications"
+              )}
             </Button>
               </Link>
           </div>
