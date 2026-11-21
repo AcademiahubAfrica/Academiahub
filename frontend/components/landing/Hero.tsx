@@ -25,13 +25,13 @@ const attributeMap = [
 const Hero = () => {
   return (
     <section className="bg-[#F2F2F2]">
-      <div className="container  pt-10 md:py-15">
+      <div className="container  pt-10 md:pb-15">
         <div className="flex items-center flex-col justify-between gap-6 lg:flex-row">
           {/* text section */}
           <div className=" lg:basis-[52%]">
             <h1 className="font-bold text-4xl md:text-[48px] 2xl:text-[77px] 2xl:leading-22.5  md:leading-12.5  leading-10 mb-5 lg:mb-10">
               Access and Share{" "}
-              <span className="text-primary lg:inline-block italic">
+              <span className="text-primary font-galada lg:inline-block ">
                 free publications
               </span>
             </h1>

@@ -18,7 +18,7 @@ export default function Home() {
       <Hero />
       <CountUpSection />
       <Explore limit={4} />
-      <WhyChooseUs />
+      <WhyChooseUs fancyStyle={true}/>
       <HowItWorks />
       {/* <Platform /> */}
       <Mission />

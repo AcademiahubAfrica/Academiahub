@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { DOCUMENT_CARD_SELECT } from "@/lib/documentSelect";
 import ResearchCard from "@/components/user/dashboard/ResearchCard";
+import { getDocumentUserState } from "@/lib/server/documentUserState";
 
 interface ExploreSectionProps {
   limit?: number;
@@ -25,22 +26,10 @@ const ExploreSection = async ({
     }),
   ]);
   const userId = session?.user?.id;
-  const documentIds = documents.map((document) => document.id);
-  const [likes, saves] =
-    userId && documentIds.length
-      ? await Promise.all([
-          prisma.like.findMany({
-            where: { userId, documentId: { in: documentIds } },
-            select: { documentId: true },
-          }),
-          prisma.save.findMany({
-            where: { userId, documentId: { in: documentIds } },
-            select: { documentId: true },
-          }),
-        ])
-      : [[], []];
-  const likedIds = new Set(likes.map((like) => like.documentId));
-  const savedIds = new Set(saves.map((save) => save.documentId));
+  const { likedIds, savedIds } = await getDocumentUserState(
+    userId,
+    documents.map((document) => document.id),
+  );
 
   return (
     <section className="relative isolate py-15">
