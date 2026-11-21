@@ -4,7 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const ExplorePage = async () => {
   const session = await getServerSession(authOptions);
-  return <ExploreContent userId={session?.user?.id} />;
+  return <ExploreContent userId={session?.user?.id || ""} />;
 };
 
 export default ExplorePage;

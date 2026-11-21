@@ -30,6 +30,10 @@ interface DocumentsPage {
   pagination: Pagination;
 }
 
+interface ExploreContentProps {
+  userId: string;
+}
+
 async function fetchDocuments(
   query: string,
   page: number,
