@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono, IBM_Plex_Sans } from "next/font/google";
+import { Galada, Geist, Geist_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import AppProvider from "./AppProvider";
 import Script from "next/script";
@@ -15,6 +15,11 @@ const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
+const galada = Galada({
+  variable: "--font-galada",
+  weight: "400"
+});
+
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -56,7 +61,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${ibmPlexSans.variable} antialiased`}
+        className={`${geistSans.variable} ${galada.variable} ${geistMono.variable} ${ibmPlexSans.variable} antialiased`}
       >
         <AppProvider>
           <Toaster position="top-right" reverseOrder={false} />
