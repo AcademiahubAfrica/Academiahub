@@ -46,10 +46,10 @@ const AdditionalBenefits = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <header className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+          <h1 className="text-2xl font-medium  mb-3">
             Additional Benefits
           </h1>
-          <p className="text-base md:text-lg text-gray-700 font-medium">
+          <p className="text-base ">
             Even more reasons to choose AcademiaHub for your academic research needs
           </p>
         </header>
