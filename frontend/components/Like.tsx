@@ -46,11 +46,11 @@ const Like = ({ documentId, initialLiked, initialCount }: LikeProps) => {
       <div className="flex items-center gap-0.75" onClick={handleToggle}>
         <Heart
           strokeWidth={1.5}
-          className={`cursor-pointer w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-4.5 transition-colors duration-200 ${
+          className={`cursor-pointer w-2.75 h-2.75 md:w-3.5 @min-[13rem]:w-3.5 md:h-3.5 @min-[13rem]:h-3.5 lg:w-4.5 lg:h-4.5 transition-colors duration-200 ${
             isLiked ? "fill-[#fa2d37] text-[#fa2d37]" : ""
           }`}
         />
-        <small className="text-[6.84px] md:text-sm">{likeCount}</small>
+        <small className="text-[6.84px] md:text-sm @min-[13rem]:text-sm">{likeCount}</small>
       </div>
     </ClickSpark>
   );

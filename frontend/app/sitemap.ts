@@ -1,41 +1,8 @@
 import { siteUrl } from "@/lib/jsonld/organisation";
 import { MetadataRoute } from "next";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: `${siteUrl}`,
-      lastModified: new Date(),
-      priority: 1,
-    },
+const paths = ["", "/explore", "/features", "/about-us", "/how-it-works", "/testimonials", "/faqs", "/signup", "/login"];
 
-    {
-      url: `${siteUrl}/explore`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${siteUrl}/features`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${siteUrl}/about-us`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${siteUrl}/how-it-works`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${siteUrl}/faqs`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${siteUrl}/signup`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${siteUrl}/login`,
-      lastModified: new Date(),
-    },
-  ];
+export default function sitemap(): MetadataRoute.Sitemap {
+  return paths.map((path) => ({ url: `${siteUrl}${path}`, lastModified: new Date(), ...(path ? {} : { priority: 1 }) }));
 }

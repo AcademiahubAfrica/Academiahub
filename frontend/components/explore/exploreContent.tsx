@@ -54,6 +54,9 @@ export default function ExploreContent({ userId }: ExploreContentProps) {
   const {
     data,
     isPending,
+    isError,
+    isRefetching,
+    refetch,
     isPlaceholderData,
     isFetchingNextPage,
     hasNextPage,
@@ -92,6 +95,15 @@ export default function ExploreContent({ userId }: ExploreContentProps) {
 
         {isPending ? (
           <ExploreSkeleton />
+        ) : isError && documents.length === 0 ? (
+          // A failed load isn't "no results": say so and offer a retry.
+          <div role="alert" className="text-center py-16">
+            <h3 className="text-xl font-medium text-gray-900 mb-2">Publications are temporarily unavailable</h3>
+            <p className="text-gray-600">Please try again shortly.</p>
+            <Button onClick={() => refetch()} variant="outline" className="mt-4" disabled={isRefetching}>
+              {isRefetching ? "Retrying..." : "Try again"}
+            </Button>
+          </div>
         ) : documents.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-gray-400 mb-4">

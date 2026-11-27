@@ -1,5 +1,6 @@
 import { type StaticImageData } from "next/image";
 import JoinUs from "@/components/landing/JoinUs";
+import PageHero from "@/components/shared/PageHero";
 
 import albertVincent from "./assets/images/albert-uchechukwu-vincent.png";
 import akinyemiTitilope from "./assets/images/akinyemi-titilope.png";
@@ -297,21 +298,14 @@ export const teamMembers: TeamMember[] = [
 const MeetTheTeam = () => {
   return (
     <main className="min-h-screen bg-white">
-      <section className="bg-primary-100 px-6 py-10 md:py-14 lg:py-16">
-        <header className="mx-auto max-w-3xl text-center">
-          <h1 className="text-lg font-semibold leading-[130%] text-gray-900 md:text-2xl lg:text-3xl">
-            Meet the team building the future of African academia
-          </h1>
-          <p className="mt-2 text-sm leading-[130%] text-gray-500 md:text-base lg:text-lg">
-            Something short about the people working to make learning, teaching,
-            and academic resources more accessible.
-          </p>
-        </header>
-      </section>
+      <PageHero
+        title="Meet the team building the future of African academia"
+        subtitle="Something short about the people working to make learning, teaching, and academic resources more accessible."
+      />
 
       <section
         aria-label="Team members"
-        className="mx-auto max-w-5xl px-4 py-8 md:px-6 md:py-12 lg:py-14 xl:max-w-[1472px]"
+        className="mx-auto max-w-5xl px-4 py-8 md:px-6 md:py-12 lg:py-14 xl:max-w-368"
       >
         <ul className="grid grid-cols-2 gap-2 md:grid-cols-3 md:gap-3 lg:grid-cols-4 xl:gap-4">
           {teamMembers.map((member) => (

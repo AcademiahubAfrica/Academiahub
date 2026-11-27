@@ -104,7 +104,7 @@ const ResearchCard = ({
   return (
     <>
       <article
-        className=" relative w-full bg-white  rounded-[15px] border-[#D9D9D9]"
+        className="@container relative w-full bg-white  rounded-[15px] border-[#D9D9D9]"
         key={data.id}
       >
         <div inert={loginRequired}>
@@ -122,8 +122,8 @@ const ResearchCard = ({
         >
           <div className="absolute rounded-t-[12px] inset-0  bg-linear-to-r from-[rgba(0,0,0,0.1)]/80 to-[rgba(0,0,0,0.2)] pointer-events-none" />
           <div className="flex items-center my-4 justify-between">
-            <span className="border-grey border bg-white p-1 md:p-1.5 rounded-sm flex items-center justify-center ">
-              <small className="text-[8px] md:text-xs text-black">
+            <span className="border-grey border bg-white p-1 @min-[13rem]:p-1.5 rounded-sm flex items-center justify-center ">
+              <small className="text-[8px] @min-[13rem]:text-xs text-black">
                 {" "}
                 {CATEGORY_LABELS[data.category] || data.category}
               </small>
@@ -135,7 +135,7 @@ const ResearchCard = ({
               onDeleteRequest={() => setConfirmOpen(true)}
             />
           </div>
-          <h3 className="text-sm   md:text-base leading-[100%] lg:leading-5 font-bold text-white line-clamp-4">
+          <h3 className="text-sm  @min-[13rem]:text-base leading-[100%] lg:leading-5 font-bold text-white line-clamp-4">
             {data.title}
           </h3>
         </div>
@@ -143,24 +143,24 @@ const ResearchCard = ({
         <div className=" mt-3  w-full px-1  lg:px-3 ">
           <div className="flex items-center   gap-1.5 mb-3 ">
             {data.author.image ? (
-              <div className="w-5 h-5 md:w-10 md:h-10 relative">
-                <Avatar className="size-5 md:size-10">
+              <div className="w-5 h-5 @min-[13rem]:w-10 @min-[13rem]:h-10 relative">
+                <Avatar className="size-5 @min-[13rem]:size-10">
                   <AvatarImage src={data.author.image} />
-                  <AvatarFallback className="text-[8px] md:text-sm">
+                  <AvatarFallback className="text-[8px] @min-[13rem]:text-sm">
                     {getInitials(data.author.name || "")}
                   </AvatarFallback>
                 </Avatar>
               </div>
             ) : (
-              <div className="size-5! md:size-10! rounded-full! bg-grey flex items-center justify-center text-[6px] md:text-xs font-medium">
+              <div className="size-5! @min-[13rem]:size-10! rounded-full! bg-grey flex items-center justify-center text-[6px] @min-[13rem]:text-xs font-medium">
                 {getInitials(data.author.name || "")}
               </div>
             )}
             <div>
-              <p className="text-[8px] font-normal md:text-sm leading-[130%] mb-0.5">
+              <p className="text-[8px] font-normal @min-[13rem]:text-sm leading-[130%] mb-0.5">
                 {data.author.name}
               </p>
-              <p className="text-grey text-[8px] md:text-sm leading-[130%]">
+              <p className="text-grey text-[8px] @min-[13rem]:text-sm leading-[130%]">
                 {data.institution}
               </p>
             </div>
@@ -177,18 +177,18 @@ const ResearchCard = ({
             <div className="flex items-center gap-0.75">
               <MessageCircle
                 strokeWidth={1.5}
-                className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5"
+                className="cursor-pointer text-black w-2.75 h-2.75 @min-[13rem]:w-3.5 @min-[13rem]:h-3.5 lg:w-4.5 lg:h-5"
               />
-              <small className="text-[6.84px] md:text-sm">
+              <small className="text-[6.84px] @min-[13rem]:text-sm">
                 {data._count.commentRecords}
               </small>
             </div>
             <div className="flex items-center gap-0.75">
               <Download
                 strokeWidth={1.5}
-                className="cursor-pointer text-black w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5"
+                className="cursor-pointer text-black w-2.75 h-2.75 @min-[13rem]:w-3.5 @min-[13rem]:h-3.5 lg:w-4.5 lg:h-5"
               />
-              <small className="text-[6.84px] md:text-sm">
+              <small className="text-[6.84px] @min-[13rem]:text-sm">
                 {data?.downloads}
               </small>
             </div>
@@ -205,7 +205,7 @@ const ResearchCard = ({
             asChild
             variant="default"
             size="lg"
-            className="w-full md:h-9 lg:h-11 h-5.25 text-[7.7px] mt-0.75 mb-1.5 flex items-center justify-center  font-medium md:text-[16px] leading-[130%]"
+            className="w-full @min-[13rem]:h-9 lg:h-11 h-5.25 text-[7.7px] mt-0.75 mb-1.5 flex items-center justify-center  font-medium @min-[13rem]:text-[16px] leading-[130%]"
           >
             <Link href={`/publication/${data.id}`}>View Details</Link>
           </Button>

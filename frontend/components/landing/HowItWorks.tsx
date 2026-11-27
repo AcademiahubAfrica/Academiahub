@@ -1,6 +1,5 @@
 // import { howItWorks } from "@/app/data/howItWorks";
 import Link from "next/link";
-import React from "react";
 import { buttonVariants } from "../ui/button";
 
 const steps = [

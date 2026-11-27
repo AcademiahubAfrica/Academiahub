@@ -1,4 +1,3 @@
-import React from 'react'
 import Link from 'next/link'
 import { Button } from '../ui/button'
 
@@ -16,7 +15,7 @@ const JoinUs = () => {
               <Button variant={'outline'} size={'lg'} className='w-74 h-11 text-primary  text-base leading-[130%]'>Join Us Now</Button>
             </Link>
             <Link href={'/explore'}>
-              <Button variant={'outline2'} size={'lg'} className='w-74 h-11 text-white  text-base leading-[130%]'>Browse Projects</Button>
+              <Button variant={'outline2'} size={'lg'} className='w-74 h-11 text-white  text-base leading-[130%]'>Browse Publications</Button>
             </Link>
           </div>
        </div>

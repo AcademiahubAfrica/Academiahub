@@ -64,7 +64,7 @@ const SaveButton = ({
       <Bookmark
         strokeWidth={1.5}
         fill={isSaved ? "#1e3a8a" : "none"}
-        className="cursor-pointer text-primary w-2.75 h-2.75 md:w-3.5 md:h-3.5 lg:w-4.5 lg:h-5"
+        className="cursor-pointer text-primary w-2.75 h-2.75 md:w-3.5 @min-[13rem]:w-3.5 md:h-3.5 @min-[13rem]:h-3.5 lg:w-4.5 lg:h-5"
         onClick={handleToggle}
       />
     </div>

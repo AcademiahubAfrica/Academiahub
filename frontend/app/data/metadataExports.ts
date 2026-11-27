@@ -227,86 +227,18 @@ export const rootLayoutMetaData: Metadata = {
   },
 };
 
-export const exploreMetadata: Metadata = {
-  title: "Explore",
-  description:
-    "Browse and discover research, resources, and collaborators across African universities on AcademiaHub.",
-  alternates: { canonical: "/explore" },
-  openGraph: {
-    title: "Explore | AcademiaHub",
-    description:
-      "Browse and discover research, resources, and collaborators across African universities on AcademiaHub.",
-    url: `${siteUrl}/explore`,
-    type: "website",
-  },
-};
+// Public pages: same title, description and canonical URL for search and social previews.
+const page = (title: string, path: string, description: string): Metadata => ({
+  title,
+  description,
+  alternates: { canonical: path },
+  openGraph: { title: `${title} | AcademiaHub`, description, url: `${siteUrl}${path}`, type: "website" },
+});
 
-export const featuresMetadata: Metadata = {
-  title: "Features",
-  description:
-    "Learn about AcademiaHub's tools: collaborative research, knowledge marketplace, academic networking, and career development features.",
-  alternates: { canonical: "/features" },
-  openGraph: {
-    title: "Features | AcademiaHub",
-    description:
-      "Learn about AcademiaHub's tools: collaborative research, knowledge marketplace, academic networking, and career development features.",
-    url: `${siteUrl}/features`,
-    type: "website",
-  },
-};
-
-export const howItWorksMetadata: Metadata = {
-  title: "How it works",
-  description:
-    "Understand how AcademiaHub connects students, lecturers, and researchers to collaborate, learn, and grow across Africa.",
-  alternates: { canonical: "/how-it-works" },
-  openGraph: {
-    title: "How it works | AcademiaHub",
-    description:
-      "Understand how AcademiaHub connects students, lecturers, and researchers to collaborate, learn, and grow across Africa.",
-    url: `${siteUrl}/how-it-works`,
-    type: "website",
-  },
-};
-
-export const aboutUsMetadata: Metadata = {
-  title: "About us",
-  description:
-    "Learn about AcademiaHub, our mission to strengthen academic collaboration across Africa, and the team behind the platform.",
-  alternates: { canonical: "/about-us" },
-  openGraph: {
-    title: "About us | AcademiaHub",
-    description:
-      "Learn about AcademiaHub, our mission to strengthen academic collaboration across Africa, and the team behind the platform.",
-    url: `${siteUrl}/about-us`,
-    type: "website",
-  },
-};
-
-export const teamMetadata: Metadata = {
-  title: "Meet the team",
-  description:
-    "Meet the people building AcademiaHub and working to make learning, teaching, and academic resources more accessible across Africa.",
-  alternates: { canonical: "/team" },
-  openGraph: {
-    title: "Meet the team | AcademiaHub",
-    description:
-      "Meet the people building AcademiaHub and working to make learning, teaching, and academic resources more accessible across Africa.",
-    url: `${siteUrl}/team`,
-    type: "website",
-  },
-};
-
-export const faqsMetadata: Metadata = {
-  title: "FAQs",
-  description:
-    "Find answers to common questions about AcademiaHub, how to use the platform, and account or content-related guidance.",
-  alternates: { canonical: "/faqs" },
-  openGraph: {
-    title: "FAQs | AcademiaHub",
-    description:
-      "Find answers to common questions about AcademiaHub, how to use the platform, and account or content-related guidance.",
-    url: `${siteUrl}/faqs`,
-    type: "website",
-  },
-};
+export const exploreMetadata = page("Explore", "/explore", "Browse and discover research, resources, and collaborators across African universities on AcademiaHub.");
+export const featuresMetadata = page("Features", "/features", "Learn about AcademiaHub's tools: collaborative research, knowledge marketplace, academic networking, and career development features.");
+export const howItWorksMetadata = page("How it works", "/how-it-works", "Understand how AcademiaHub connects students, lecturers, and researchers to collaborate, learn, and grow across Africa.");
+export const testimonialsMetadata = page("Testimonials", "/testimonials", "Hear from students, researchers, and educators who use AcademiaHub every day to discover, share, and collaborate on academic work.");
+export const aboutUsMetadata = page("About us", "/about-us", "Learn about AcademiaHub, our mission to strengthen academic collaboration across Africa, and the team behind the platform.");
+export const teamMetadata = page("Meet the team", "/team", "Meet the people building AcademiaHub and working to make learning, teaching, and academic resources more accessible across Africa.");
+export const faqsMetadata = page("FAQs", "/faqs", "Find answers to common questions about AcademiaHub, how to use the platform, and account or content-related guidance.");
